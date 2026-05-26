@@ -8,9 +8,11 @@ export type Product = {
   currency: string;
   stock_quantity: number;
   is_active: boolean;
-  genre: string;
+  //created_at:
+  //updated_at:
   product_assets: ProductAsset[];
   product_variants: ProductVariant[];
+  product_attributes: ProductAttribute[];
 };
 
 export type ProductAsset = {
@@ -20,6 +22,7 @@ export type ProductAsset = {
   asset_type: string;
   alt_text: string;
   sort_order: number;
+  //created at:
   variant_id: string;
 };
 
@@ -29,4 +32,13 @@ export type ProductVariant = {
   name: string;
   price_cents: number;
   stock_quantity: number;
+  //created_at:
+};
+
+export type ProductAttribute = {
+  id: string;
+  product_id: string;
+  key: string;
+  value: string;
+  //create_at:
 };
