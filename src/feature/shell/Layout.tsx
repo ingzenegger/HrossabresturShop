@@ -12,6 +12,9 @@ const Layout = () => {
             <Button>
               <Link to="/">Home</Link>
             </Button>
+            <Button>
+              <Link to="/login">Log in</Link>
+            </Button>
           </nav>
         </div>
       </header>

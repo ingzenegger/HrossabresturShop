@@ -1,12 +1,10 @@
 //hook for fetching logic and setProjects to Zustand.
-
-import { supabase } from "../lib/supabaseClient";
+import { createClient } from "@/shared/lib/client";
 import { useAppStore } from "../store/appStore";
 import { useEffect } from "react";
 
-
-
 export function useProducts() {
+  const supabase = createClient();
   const setProducts = useAppStore((state) => state.setProducts);
   const myshopId = "17d6fc42-5daf-4e25-98d9-47716cf8850b";
 
@@ -26,8 +24,8 @@ export function useProducts() {
       console.error(error);
       return;
     }
-    console.log("raw product[0]", data?.[0]);
-    console.log("raw product[1]", data?.[1]);
+    // console.log("raw product[0]", data?.[0]);
+    // console.log("raw product[1]", data?.[1]);
     setProducts(data || []);
   }
 }

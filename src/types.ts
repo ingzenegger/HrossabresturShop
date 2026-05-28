@@ -42,3 +42,14 @@ export type ProductAttribute = {
   value: string;
   //create_at:
 };
+
+
+export type Customer = {
+  //shop_customer or user
+  id: string;
+  shop_id: string;
+  name: string;
+  email: string;
+  pin_code: string | null;
+  //created_at
+}
