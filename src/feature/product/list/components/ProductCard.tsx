@@ -5,16 +5,16 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import AddToCart from "./AddToCart";
-import type { Product } from "@/types";
+import type { Product } from "@/shared/types/product";
 import { useNavigate } from "react-router";
+
+//TODO: create a smaller variant to use in SimilarItems that only shows image? or a seperate Card component?
 
 const ProductCard = (product: Product) => {
   const navigate = useNavigate();
 
-  console.log(product.id);
-
   return (
-    <Card onClick={() => navigate(`/product/${product.id}`)}>
+    <Card>
       <div />
       <img
         src={product.product_assets[0].asset_url}
@@ -23,9 +23,11 @@ const ProductCard = (product: Product) => {
       />
       <CardHeader>
         <CardAction>
-          <AddToCart />
+          <AddToCart productId={product.id} />
         </CardAction>
-        <CardTitle>{product.name}</CardTitle>
+        <CardTitle onClick={() => navigate(`/product/${product.id}`)}>
+          {product.name}
+        </CardTitle>
       </CardHeader>
     </Card>
   );

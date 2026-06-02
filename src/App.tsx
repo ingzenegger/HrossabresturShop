@@ -9,9 +9,12 @@ import AccountLayout from "./feature/account/AccountLayout";
 import useAuth from "./shared/hooks/useAuth";
 import AuthConfirm from "./feature/auth/pages/auth.confirm";
 import AuthError from "./feature/auth/pages/auth.error";
+import { CartPage } from "./feature/cart/CartPage";
+import useCustomer from "./shared/hooks/useCustomer";
 
 function App() {
   useAuth();
+  useCustomer();
 
   return (
     <Routes>
@@ -21,6 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/account" element={<AccountLayout />}>
           {/* <Route path="orders" element={<orders />} /> */}
           {/* <Route path="settings" element={<userSettings />} /> */}

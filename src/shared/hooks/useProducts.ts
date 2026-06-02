@@ -1,18 +1,21 @@
 //hook for fetching logic and setProjects to Zustand.
 import { createClient } from "@/shared/lib/client";
 import { useAppStore } from "../store/appStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ProductSchema } from "../types/product";
+import { myshopId } from "../constants";
 
 export function useProducts() {
   const supabase = createClient();
   const setProducts = useAppStore((state) => state.setProducts);
-  const myshopId = "17d6fc42-5daf-4e25-98d9-47716cf8850b";
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getProducts();
   }, []);
 
   async function getProducts() {
+    setIsLoading(true);
     const { data, error } = await supabase
       .from("products")
       .select(
@@ -22,10 +25,18 @@ export function useProducts() {
 
     if (error) {
       console.error(error);
+      setIsLoading(false);
       return;
     }
-    // console.log("raw product[0]", data?.[0]);
-    // console.log("raw product[1]", data?.[1]);
-    setProducts(data || []);
+    const parsed = ProductSchema.array().safeParse(data ?? []);
+    if (!parsed.success) {
+      console.error("Validation error", parsed.error);
+      setIsLoading(false);
+      return;
+    }
+
+    setProducts(parsed.data);
+    setIsLoading(false);
   }
+  return isLoading;
 }

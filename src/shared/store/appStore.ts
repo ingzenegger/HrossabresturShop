@@ -1,25 +1,74 @@
-import type { Product } from "@/types";
+import type { Product } from "@/shared/types/product";
 import type { User } from "@supabase/supabase-js";
 import { create } from "zustand";
-
-//Zustand store for products with their assets and variants
-//itemsInCart
-//functions addToCart, updateQuantity, removeItem,
-//current user and login-state?
+import type { CartItem } from "../types/cart";
 
 interface AppStore {
+  //state of available products
   products: Product[];
   setProducts: (products: Product[]) => void;
+  //state of user/customer
   user: User | null;
   setUser: (user: User | null) => void;
+  customerId: string | null;
+  setCustomerId: (id: string | null) => void;
+  //state of cart
+  cartId: string | null;
+  setCartId: (id: string | null) => void;
+  cartItems: CartItem[];
+  setCartItems: (items: CartItem[]) => void;
+  addToCart: (item: CartItem) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (itemId: string) => void;
+  handleAddToCart: ((productId: string) => Promise<void>) | null;
+  handleUpdateQuantity:
+    | ((itemId: string, quantity: number) => Promise<void>)
+    | null;
+  handleRemoveItem: ((itemId: string) => Promise<void>) | null;
+  setCartHandlers: (
+    add: (productId: string) => Promise<void>,
+    update: (itemId: string, quantity: number) => Promise<void>,
+    remove: (itemId: string) => Promise<void>,
+  ) => void;
 }
 
 export const useAppStore = create<AppStore>((set) => ({
   products: [],
-
   setProducts: (newProducts: Product[]) => set({ products: newProducts }),
 
   user: null,
-
   setUser: (currentUser: User | null) => set({ user: currentUser }),
+
+  customerId: null,
+  setCustomerId: (id: string | null) => set({ customerId: id }),
+
+  cartId: null,
+  setCartId: (id: string | null) => set({ cartId: id }),
+
+  cartItems: [],
+  setCartItems: (newItems: CartItem[]) => set({ cartItems: newItems }),
+  addToCart: (item) =>
+    set((state) => ({
+      cartItems: [...state.cartItems, item],
+    })),
+
+  updateQuantity: (itemId, quantity) =>
+    set((state) => ({
+      cartItems: state.cartItems.map((i) =>
+        i.id === itemId ? { ...i, quantity } : i,
+      ),
+    })),
+  removeItem: (itemId) =>
+    set((state) => ({
+      cartItems: state.cartItems.filter((i) => i.id !== itemId),
+    })),
+  handleAddToCart: null,
+  handleUpdateQuantity: null,
+  handleRemoveItem: null,
+  setCartHandlers: (add, update, remove) =>
+    set({
+      handleAddToCart: add,
+      handleUpdateQuantity: update,
+      handleRemoveItem: remove,
+    }),
 }));

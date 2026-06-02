@@ -1,10 +1,20 @@
 import ProductCard from "@/feature/product/list/components/ProductCard";
+import Loader from "@/shared/components/Loader";
+
 import { useProducts } from "@/shared/hooks/useProducts";
 import { useAppStore } from "@/shared/store/appStore";
 
 const HomePage = () => {
-  useProducts();
   const products = useAppStore((state) => state.products);
+  const isLoading = useProducts();
+
+  if (products.length === 0 && isLoading) {
+    return (
+      <div className="flex items-center w-full justify-center">
+        <Loader message="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <div>
