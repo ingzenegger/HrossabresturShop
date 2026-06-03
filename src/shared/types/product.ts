@@ -41,8 +41,8 @@ export const ProductSchema = z.object({
   created_at: z.string(), //date
   updated_at: z.string(), //date
   product_assets: z.array(AssetSchema),
-  product_variants: z.array(VariantSchema),
-  product_attributes: z.array(AttributeSchema),
+  product_variants: z.array(VariantSchema).default([]),
+  product_attributes: z.array(AttributeSchema).default([]),
 });
 
 export type Product = z.infer<typeof ProductSchema>;

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { createClient } from "@/shared/lib/client";
-import { useAppStore } from "../store/appStore";
-import { myshopId } from "../constants";
+import { useAppStore } from "../../../shared/store/appStore";
+import { CartItemSchema } from "../../../shared/types/cart";
+import { getCart } from "@/feature/cart/api/cartApi";
 
 export function useCart() {
   const supabase = createClient();
@@ -21,48 +22,12 @@ export function useCart() {
       return;
     }
 
-    getCart();
+    getCart({ customerId, setCartId, setCartItems });
   }, [customerId]);
 
   useEffect(() => {
     setCartHandlers(handleAddToCart, handleUpdateQuantity, handleRemoveItem);
   }, [cartId]);
-
-  async function getCart() {
-    const { data: cart, error } = await supabase
-      .from("carts")
-      .select("*, cart_items(*)")
-      .eq("shop_id", myshopId)
-      .eq("customer_id", customerId)
-      .single();
-
-    if (error) {
-      if (error.code === "PGRST116") {
-        //error - row not found
-        const { data, error } = await supabase
-          .from("carts")
-          .insert({
-            shop_id: myshopId,
-            customer_id: customerId,
-            status: "active",
-          })
-          .select();
-        if (error) {
-          console.error(error);
-          return;
-        }
-        setCartId(data?.[0].id);
-        setCartItems([]);
-        return;
-      } else {
-        console.error(error);
-        return;
-      }
-    }
-
-    setCartId(cart.id);
-    setCartItems(cart.cart_items);
-  }
 
   async function handleAddToCart(productId: string) {
     const { data: existingItem, error } = await supabase
@@ -95,7 +60,13 @@ export function useCart() {
         return;
       }
 
-      addToCart(item);
+      const parsed = CartItemSchema.safeParse(item);
+      if (!parsed.success) {
+        console.error("Validation error", parsed.error);
+        return;
+      }
+
+      addToCart(parsed.data);
     }
   }
 
@@ -110,7 +81,12 @@ export function useCart() {
       console.error(error);
       return;
     }
-    updateQuantity(updatedRow.id, updatedRow.quantity);
+    const parsed = CartItemSchema.safeParse(updatedRow);
+    if (!parsed.success) {
+      console.error("Validation error", parsed.error);
+      return;
+    }
+    updateQuantity(parsed.data.id, parsed.data.quantity);
   }
 
   async function handleRemoveItem(itemId: string) {

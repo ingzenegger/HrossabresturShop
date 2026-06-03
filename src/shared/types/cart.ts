@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const cartItemSchema = z.object({
+export const CartItemSchema = z.object({
   id: z.uuid(),
   cart_id: z.uuid(),
   product_id: z.uuid(),
@@ -9,18 +9,18 @@ export const cartItemSchema = z.object({
   updated_at: z.string(), //date
 });
 
-export type CartItem = z.infer<typeof cartItemSchema>;
+export const CartStatusEnum = z.enum(["active", "checked_out"]);
 
-export const cartStatusEnum = z.enum(["active", "checked_out"]);
-
-export const cartSchema = z.object({
+export const CartSchema = z.object({
   id: z.uuid(),
   shop_id: z.uuid(),
   customer_id: z.uuid(),
-  status: cartStatusEnum.default("active"),
+  status: CartStatusEnum.default("active"),
   created_at: z.string(), //date,,
   updated_at: z.string(), //date,,
+  cart_items: z.array(CartItemSchema).default([]),
 });
 
-export type CartStatus = z.infer<typeof cartStatusEnum>;
-export type Cart = z.infer<typeof cartSchema>;
+export type CartItem = z.infer<typeof CartItemSchema>;
+export type CartStatus = z.infer<typeof CartStatusEnum>;
+export type Cart = z.infer<typeof CartSchema>;

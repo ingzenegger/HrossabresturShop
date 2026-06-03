@@ -1,4 +1,4 @@
-import { useCart } from "@/shared/hooks/useCart";
+import { useCart } from "@/feature/cart/hooks/useCart";
 import { Home, ShoppingCart, UserRound } from "lucide-react";
 import { Link, Outlet } from "react-router";
 

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { myshopId } from "../constants";
 import { createClient } from "../lib/client";
 import { useAppStore } from "../store/appStore";
+import { shopCustomerSchema } from "../types/customer";
 
 export default function useCustomer() {
   const supabase = createClient();
@@ -41,11 +42,21 @@ export default function useCustomer() {
               console.error(error);
               return;
             }
-            setCustomerId(data.id);
+            const parsed = shopCustomerSchema.safeParse(data);
+            if (!parsed.success) {
+              console.error("Validation error", parsed.error);
+              return;
+            }
+            setCustomerId(parsed.data.id);
 
             return;
           }
-          setCustomerId(customer?.[0]?.id);
+          const parsed = shopCustomerSchema.safeParse(customer[0]);
+          if (!parsed.success) {
+              console.error("Validation error", parsed.error);
+              return;
+            }
+          setCustomerId(parsed.data.id);
         };
         updateUser();
       } else if (event === "SIGNED_OUT") {
