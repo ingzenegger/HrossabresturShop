@@ -1,12 +1,8 @@
-import type { Product } from "@/shared/types/product";
 import type { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 import type { CartItem } from "../types/cart";
 
 interface AppStore {
-  //state of available products
-  products: Product[];
-  setProducts: (products: Product[]) => void;
   //state of user/customer
   user: User | null;
   setUser: (user: User | null) => void;
@@ -33,9 +29,6 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
-  products: [],
-  setProducts: (newProducts: Product[]) => set({ products: newProducts }),
-
   user: null,
   setUser: (currentUser: User | null) => set({ user: currentUser }),
 

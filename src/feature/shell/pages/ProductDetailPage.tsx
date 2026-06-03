@@ -2,7 +2,8 @@ import SimilarItems from "@/feature/product/detail/components/SimilarItems";
 import Variants from "@/feature/product/detail/components/Variants";
 import WarnBanner from "@/feature/product/detail/components/WarnBanner";
 import AddToCart from "@/feature/product/list/components/AddToCart";
-import { useAppStore } from "@/shared/store/appStore";
+import Loader from "@/shared/components/Loader";
+import { useProducts } from "@/feature/product/hooks/useProducts";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
@@ -12,16 +13,27 @@ const ProductDetailPage = () => {
   let params = useParams();
   let productId = params.productId;
 
-  const products = useAppStore((state) => state.products);
-
-  const product = products.find((product) => product.id === productId);
-  const [selectedVariant, setSelectedVariant] = useState(
-    product?.product_variants[0].name,
+  const { data: products, isLoading, error } = useProducts();
+  const [selectedVariant, setSelectedVariant] = useState<string | undefined>(
+    undefined,
   );
 
   useEffect(() => {
+    const product = products?.find((product) => product.id === productId);
     setSelectedVariant(product?.product_variants[0].name);
-  }, [productId]);
+  }, [productId, products]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center w-full justify-center">
+        <Loader message="Loading..." />
+      </div>
+    );
+  }
+  //TODO add error handling
+  if (!products) return;
+
+  const product = products.find((product) => product.id === productId);
 
   if (!product) return <div>product not found</div>;
 

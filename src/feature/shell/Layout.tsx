@@ -1,10 +1,8 @@
 import { useCart } from "@/shared/hooks/useCart";
-import { useProducts } from "@/shared/hooks/useProducts";
 import { Home, ShoppingCart, UserRound } from "lucide-react";
 import { Link, Outlet } from "react-router";
 
 const Layout = () => {
-  useProducts();
   useCart();
   return (
     <div>

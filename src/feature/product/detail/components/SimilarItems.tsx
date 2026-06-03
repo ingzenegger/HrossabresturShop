@@ -1,6 +1,7 @@
-import { useAppStore } from "@/shared/store/appStore";
+import Loader from "@/shared/components/Loader";
 import ProductCard from "../../list/components/ProductCard";
 import { Card, CardContent } from "@/shared/components/ui/card";
+import { useProducts } from "@/feature/product/hooks/useProducts";
 
 type props = {
   category: string | undefined;
@@ -8,9 +9,18 @@ type props = {
 };
 
 const SimilarItems = ({ category, currentProduct }: props) => {
-  const products = useAppStore((state) => state.products);
+  const { data: products, isLoading, error } = useProducts();
 
   if (!category) return;
+
+  if (isLoading) {
+    return <Loader message="loading" />;
+  }
+  if (error) {
+    console.error(error);
+    return;
+  }
+  if (!products) return;
 
   return (
     <Card className="flex gap-3 m-3">
