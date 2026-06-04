@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import HomePage from "./feature/shell/pages/HomePage";
 import Layout from "./feature/shell/Layout";
-import ProductDetailPage from "./feature/shell/pages/ProductDetailPage";
+import ProductDetailPage from "./feature/product/detail/ProductDetailPage";
 import Login from "./feature/auth/pages/login";
 import SignUp from "./feature/auth/pages/sign-up";
 import ForgotPassword from "./feature/auth/pages/forgot-password";

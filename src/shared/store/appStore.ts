@@ -16,13 +16,15 @@ interface AppStore {
   addToCart: (item: CartItem) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
-  handleAddToCart: ((productId: string) => Promise<void>) | null;
+  handleAddToCart:
+    | ((productId: string, variantId: string) => Promise<void>)
+    | null;
   handleUpdateQuantity:
     | ((itemId: string, quantity: number) => Promise<void>)
     | null;
   handleRemoveItem: ((itemId: string) => Promise<void>) | null;
   setCartHandlers: (
-    add: (productId: string) => Promise<void>,
+    add: (productId: string, variantId: string) => Promise<void>,
     update: (itemId: string, quantity: number) => Promise<void>,
     remove: (itemId: string) => Promise<void>,
   ) => void;

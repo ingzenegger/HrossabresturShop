@@ -25,24 +25,27 @@ const HomePage = () => {
         .flatMap((attribute) => attribute.value),
     ),
   ];
-  
 
   return (
     <div>
-      <h1>HomePage</h1>
+      <div className="flex justify-center pt-2">
+        <h1>Welcome to Craft Shop</h1>
+      </div>
 
       {categories.map((category) => (
-        <div className="flex gap-2 ml-3 mr-3" key={category}>
+        <div>
           <h2>{category}</h2>
-          {products
-            .filter((product) =>
-              product.product_attributes?.some(
-                (attr) => attr.value === category,
-              ),
-            )
-            .map((product) => (
-              <ProductCard {...product} key={product.id} />
-            ))}
+          <div className="flex gap-2 ml-3 mr-3" key={category}>
+            {products
+              .filter((product) =>
+                product.product_attributes?.some(
+                  (attr) => attr.value === category,
+                ),
+              )
+              .map((product) => (
+                <ProductCard {...product} key={product.id} />
+              ))}
+          </div>
         </div>
       ))}
     </div>

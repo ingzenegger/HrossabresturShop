@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 export const CartItemSchema = z.object({
   id: z.uuid(),
   cart_id: z.uuid(),
@@ -7,6 +8,22 @@ export const CartItemSchema = z.object({
   quantity: z.number().int().positive(),
   created_at: z.string(), //date,
   updated_at: z.string(), //date
+  variant_id: z.uuid().nullable(),
+  product: z.object({
+    id: z.uuid(),
+    name: z.string(),
+    price_cents: z.number().int().nonnegative(),
+    currency: z.string(),
+    stock_quantity: z.number(),
+    is_active: z.boolean(),
+  }),
+  variant: z
+    .object({
+      name: z.string(),
+      price_cents: z.number().int().nonnegative(),
+      stock_quantity: z.number(),
+    })
+    .nullable(),
 });
 
 export const CartStatusEnum = z.enum(["active", "checked_out"]);

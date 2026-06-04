@@ -9,7 +9,9 @@ export default function Cart() {
         <div>
           {cartItems.map((item, i) => (
             <li key={item.id}>
-              product {i + 1}: {item.product_id} quantity: {item.quantity}
+              product {i + 1}: {item.product_id}
+              product name: {item.product.name} - {item.variant?.name}
+              quantity: {item.quantity} variant: {item.variant_id}
             </li>
           ))}
         </div>

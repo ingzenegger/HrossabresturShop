@@ -10,20 +10,32 @@ import type { ProductVariant } from "@/shared/types/product";
 
 type props = {
   productVariants: ProductVariant[];
-  selectedVariant: string | undefined;
-  setSelectedVariant: (value: string) => void;
+  selectedVariant: ProductVariant;
+  setSelectedVariant: (variant: ProductVariant) => void;
 };
 
-const Variants = ({
+const VariantSelect = ({
   productVariants,
   selectedVariant,
   setSelectedVariant,
 }: props) => {
+  console.log("product variants:", productVariants);
+
+  function handleValueChange(value: string) {
+    console.log("value change triggered, value:", value);
+    const selected = productVariants.find((variant) => variant.name === value);
+    if (!selected) return;
+    console.log("selected:", selected);
+    setSelectedVariant(selected);
+  }
+
   return (
     <div>
       <Select
-        value={selectedVariant}
-        onValueChange={(value) => setSelectedVariant(value)}
+        value={selectedVariant.name}
+        onValueChange={(value) => {
+          handleValueChange(value);
+        }}
       >
         <SelectTrigger>
           <SelectValue placeholder="Select color" />
@@ -42,4 +54,4 @@ const Variants = ({
   );
 };
 
-export default Variants;
+export default VariantSelect;

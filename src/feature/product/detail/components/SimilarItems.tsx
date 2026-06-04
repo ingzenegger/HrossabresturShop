@@ -8,6 +8,8 @@ type props = {
   currentProduct: string | undefined;
 };
 
+//TODO: this component should be removed for now, or I need to fix the bug where selected item doesn't follow when similaritem box clicked causing main photo to disappear and product appear to have two selected variants
+
 const SimilarItems = ({ category, currentProduct }: props) => {
   const { data: products, isLoading, error } = useProducts();
 

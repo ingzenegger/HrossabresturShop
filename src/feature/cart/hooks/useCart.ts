@@ -29,12 +29,13 @@ export function useCart() {
     setCartHandlers(handleAddToCart, handleUpdateQuantity, handleRemoveItem);
   }, [cartId]);
 
-  async function handleAddToCart(productId: string) {
+  async function handleAddToCart(productId: string, variantId: string) {
     const { data: existingItem, error } = await supabase
       .from("cart_items")
       .select()
       .eq("cart_id", cartId)
-      .eq("product_id", productId);
+      .eq("product_id", productId)
+      .eq("variant_id", variantId);
     //   .single();
 
     if (error && error.code !== "PGRST116") {
@@ -51,6 +52,7 @@ export function useCart() {
           cart_id: cartId,
           product_id: productId,
           quantity: 1,
+          variant_id: variantId,
         })
         .select()
         .single();

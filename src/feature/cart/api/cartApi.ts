@@ -3,18 +3,21 @@ import { createClient } from "@/shared/lib/client";
 import { CartSchema, type CartItem } from "@/shared/types/cart";
 
 type GetCartProps = {
-    customerId: string,
-    setCartId: (id:string|null) => void,
-    setCartItems: (items: CartItem[]) => void;
-}
+  customerId: string;
+  setCartId: (id: string | null) => void;
+  setCartItems: (items: CartItem[]) => void;
+};
 
-export async function getCart({customerId, setCartId, setCartItems} :GetCartProps ){
-
+export async function getCart({
+  customerId,
+  setCartId,
+  setCartItems,
+}: GetCartProps) {
   const supabase = createClient();
-  
+
   const { data: cart, error } = await supabase
     .from("carts")
-    .select("*, cart_items(*)")
+    .select("*, cart_items(*, product:products(*),variant:product_variants(*))")
     .eq("shop_id", myshopId)
     .eq("customer_id", customerId)
     .single();
@@ -42,6 +45,8 @@ export async function getCart({customerId, setCartId, setCartItems} :GetCartProp
       return;
     }
   }
+  console.log("cart in getcart", cart);
+
   const parsed = CartSchema.safeParse(cart);
   if (!parsed.success) {
     console.error("Validation error", parsed.error);
