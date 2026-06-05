@@ -45,7 +45,6 @@ export async function getCart({
       return;
     }
   }
-  console.log("cart in getcart", cart);
 
   const parsed = CartSchema.safeParse(cart);
   if (!parsed.success) {
@@ -55,4 +54,23 @@ export async function getCart({
 
   setCartId(parsed.data.id);
   setCartItems(parsed.data.cart_items);
+}
+
+
+export async function getCartTotals(customerId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cart_with_totals')
+    .select('cart_id, shop_id, status, total_cents')
+    .eq('customer_id', customerId)
+    .eq('status', 'active')
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
 }

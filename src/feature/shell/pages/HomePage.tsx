@@ -33,9 +33,9 @@ const HomePage = () => {
       </div>
 
       {categories.map((category) => (
-        <div>
-          <h2>{category}</h2>
-          <div className="flex gap-2 ml-3 mr-3" key={category}>
+        <div key={category}>
+          <h1 className="capitalize gap-2 ml-3 mb-2 mt-5">{category}</h1>
+          <div className="flex gap-2 ml-3 mr-3">
             {products
               .filter((product) =>
                 product.product_attributes?.some(

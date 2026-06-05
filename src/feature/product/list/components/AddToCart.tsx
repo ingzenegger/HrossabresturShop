@@ -12,7 +12,12 @@ type props = {
 const AddToCart = ({ btnLabel = "Add", productId, variantId }: props) => {
   const handleAddToCart = useAppStore((state) => state.handleAddToCart);
   return (
-    <Button onClick={() => handleAddToCart?.(productId, variantId)}>{btnLabel}</Button>
+    <Button
+      onClick={() => handleAddToCart?.(productId, variantId)}
+      className="cursor-pointer"
+    >
+      {btnLabel}
+    </Button>
   );
 };
 

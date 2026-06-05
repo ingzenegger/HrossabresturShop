@@ -7,6 +7,7 @@ import { useState } from "react";
 import VariantSelect from "./VariantSelect";
 import AddToCart from "../../list/components/AddToCart";
 import SimilarItems from "./SimilarItems";
+import { formatPrice } from "@/shared/lib/formatPrice";
 
 type props = {
   product: Product;
@@ -36,9 +37,7 @@ const ProductDetail = ({ product, category }: props) => {
       <div className="flex flex-col m-5 p-3 gap-3">
         <h1>Product: {product.name}</h1>
         <p>Description: {product.description}</p>
-        <p>
-          Price: {selectedVariant.price_cents} {product.currency}
-        </p>
+        <p>Price: {formatPrice(selectedVariant.price_cents)}</p>
         {/* TODO: Do we need a fallback setup for a product that doesn't have variants? or just make sure with schema that all my products have variants? */}
         <p>
           Selected product: {selectedVariant?.name} {product.name}

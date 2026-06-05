@@ -1,23 +1,34 @@
 import { useAppStore } from "@/shared/store/appStore";
+import CartRow from "./CartRow";
+import { ItemGroup } from "@/shared/components/ui/item";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 
 export default function Cart() {
   const cartItems = useAppStore((state) => state.cartItems);
 
   return (
     <>
-      {cartItems.length > 0 ? (
-        <div>
-          {cartItems.map((item, i) => (
-            <li key={item.id}>
-              product {i + 1}: {item.product_id}
-              product name: {item.product.name} - {item.variant?.name}
-              quantity: {item.quantity} variant: {item.variant_id}
-            </li>
-          ))}
-        </div>
-      ) : (
-        <div>no items in cart</div>
-      )}
+      <Card className="flex max-w-2/3">
+        <CardHeader>
+          <CardTitle>Cart</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {cartItems.length > 0 ? (
+            <ItemGroup className="gap-1">
+              {cartItems.map((item) => (
+                <CartRow {...item} key={item.id} />
+              ))}
+            </ItemGroup>
+          ) : (
+            <div>no items in cart</div>
+          )}
+        </CardContent>
+      </Card>
     </>
   );
 }

@@ -3,6 +3,7 @@ import { createClient } from "@/shared/lib/client";
 import { useAppStore } from "../../../shared/store/appStore";
 import { CartItemSchema } from "../../../shared/types/cart";
 import { getCart } from "@/feature/cart/api/cartApi";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useCart() {
   const supabase = createClient();
@@ -14,6 +15,7 @@ export function useCart() {
   const updateQuantity = useAppStore((state) => state.updateQuantity);
   const removeItem = useAppStore((state) => state.removeItem);
   const setCartHandlers = useAppStore((state) => state.setCartHandlers);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!customerId) {
@@ -61,14 +63,9 @@ export function useCart() {
         console.error(error);
         return;
       }
-
-      const parsed = CartItemSchema.safeParse(item);
-      if (!parsed.success) {
-        console.error("Validation error", parsed.error);
-        return;
-      }
-
-      addToCart(parsed.data);
+      console.log("usecart item", item);
+      if (!customerId) return;
+      await getCart({ customerId, setCartId, setCartItems });
     }
   }
 
@@ -83,12 +80,9 @@ export function useCart() {
       console.error(error);
       return;
     }
-    const parsed = CartItemSchema.safeParse(updatedRow);
-    if (!parsed.success) {
-      console.error("Validation error", parsed.error);
-      return;
-    }
-    updateQuantity(parsed.data.id, parsed.data.quantity);
+
+    updateQuantity(updatedRow.id, updatedRow.quantity);
+    queryClient.invalidateQueries({ queryKey: ['cartTotals', customerId] });
   }
 
   async function handleRemoveItem(itemId: string) {
@@ -101,6 +95,7 @@ export function useCart() {
       return;
     }
     removeItem(itemId);
+    queryClient.invalidateQueries({ queryKey: ["cartTotals", customerId] });
   }
 
   return { handleAddToCart, handleUpdateQuantity, handleRemoveItem };
