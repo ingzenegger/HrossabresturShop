@@ -17,6 +17,10 @@ const ProductDetailPage = () => {
     setProduct(products?.find((product) => product.id === productId));
   }, [productId, products]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [productId]);
+
   if (isLoading) {
     return (
       <div className="flex items-center w-full justify-center">
@@ -35,7 +39,7 @@ const ProductDetailPage = () => {
   return (
     <div>
       <WarnBanner />
-      <ProductDetail product={product} category={category} />
+      <ProductDetail product={product} category={category} key={product.id} />
     </div>
   );
 };

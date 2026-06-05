@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createClient } from "@/shared/lib/client";
 import { useAppStore } from "../../../shared/store/appStore";
-import { CartItemSchema } from "../../../shared/types/cart";
 import { getCart } from "@/feature/cart/api/cartApi";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -11,7 +10,6 @@ export function useCart() {
   const cartId = useAppStore((state) => state.cartId);
   const setCartId = useAppStore((state) => state.setCartId);
   const setCartItems = useAppStore((state) => state.setCartItems);
-  const addToCart = useAppStore((state) => state.addToCart);
   const updateQuantity = useAppStore((state) => state.updateQuantity);
   const removeItem = useAppStore((state) => state.removeItem);
   const setCartHandlers = useAppStore((state) => state.setCartHandlers);
@@ -82,7 +80,7 @@ export function useCart() {
     }
 
     updateQuantity(updatedRow.id, updatedRow.quantity);
-    queryClient.invalidateQueries({ queryKey: ['cartTotals', customerId] });
+    queryClient.invalidateQueries({ queryKey: ["cartTotals", customerId] });
   }
 
   async function handleRemoveItem(itemId: string) {

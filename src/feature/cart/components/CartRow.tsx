@@ -1,3 +1,4 @@
+import Tooltip from "@/shared/components/Tooltip";
 import {
   Item,
   ItemActions,
@@ -26,23 +27,27 @@ const CartRow = (item: CartItem) => {
         <div className="flex items-center gap-2 mr-4">
           <div className="w-4">
             {item.quantity > 1 && (
-              <Minus
-                className="cursor-pointer"
-                onClick={() =>
-                  handleUpdateQuantity?.(item.id, item.quantity - 1)
-                }
-              />
+              <Tooltip label="Remove 1">
+                <Minus
+                  className="cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() =>
+                    handleUpdateQuantity?.(item.id, item.quantity - 1)
+                  }
+                />
+              </Tooltip>
             )}
           </div>
           <span>Qty: {item.quantity} </span>
           <div className="w-4">
             {item.quantity < 3 && (
-              <Plus
-                className="cursor-pointer"
-                onClick={() =>
-                  handleUpdateQuantity?.(item.id, item.quantity + 1)
-                }
-              />
+              <Tooltip label="Add 1">
+                <Plus
+                  className="cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() =>
+                    handleUpdateQuantity?.(item.id, item.quantity + 1)
+                  }
+                />
+              </Tooltip>
             )}
           </div>
         </div>
@@ -51,10 +56,12 @@ const CartRow = (item: CartItem) => {
         {formatPrice(item.product.price_cents * item.quantity)}
       </div>
       <ItemActions>
-        <Trash2
-          className="size-4 cursor-pointer"
-          onClick={() => handleRemoveItem?.(item.id)}
-        />
+        <Tooltip label="Delete item">
+          <Trash2
+            className="size-4 cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => handleRemoveItem?.(item.id)}
+          />
+        </Tooltip>
       </ItemActions>
     </Item>
   );

@@ -8,13 +8,16 @@ import { formatPrice } from "@/shared/lib/formatPrice";
 import type { Product } from "@/shared/types/product";
 import { useNavigate } from "react-router";
 
-const ProductCard = (product: Product) => {
+type Props = Product & { compact?: boolean };
+
+const ProductCard = ({ compact, ...product }: Props) => {
   const navigate = useNavigate();
 
   return (
     <Card
+      size={compact ? "sm" : "default"}
       onClick={() => navigate(`/product/${product.id}`)}
-      className="bg-gray-200 cursor-pointer"
+      className="bg-gray-200 cursor-pointer w-80 hover:scale-102 transition-transform"
     >
       <img
         src={product.product_assets[0].asset_url}

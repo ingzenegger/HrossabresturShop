@@ -8,6 +8,15 @@ import VariantSelect from "./VariantSelect";
 import AddToCart from "../../list/components/AddToCart";
 import SimilarItems from "./SimilarItems";
 import { formatPrice } from "@/shared/lib/formatPrice";
+import ProductImageCarousel from "./ProductImageCarousel";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { Separator } from "@/shared/components/ui/separator";
 
 type props = {
   product: Product;
@@ -19,40 +28,58 @@ const ProductDetail = ({ product, category }: props) => {
     product.product_variants[0],
   );
 
-  const variantImg = product.product_assets.find(
-    (asset) => asset.variant_id === selectedVariant?.id,
-  ); //TODO: this is a possible bug waiting to happen if more assets are added to same variantId
+  const isLowStock = selectedVariant.stock_quantity <= 2;
 
   return (
     <div className="flex gap-5">
       {/* TODO: make seperate component for productimages */}
-      <div className="max-w-150 m-5 p-3 flex">
-        <img
-          src={variantImg?.asset_url}
-          alt=""
-          className="max-h-fit rounded-md"
-        />
-      </div>
-      {/*  */}
-      <div className="flex flex-col m-5 p-3 gap-3">
-        <h1>Product: {product.name}</h1>
-        <p>Description: {product.description}</p>
-        <p>Price: {formatPrice(selectedVariant.price_cents)}</p>
-        {/* TODO: Do we need a fallback setup for a product that doesn't have variants? or just make sure with schema that all my products have variants? */}
-        <p>
-          Selected product: {selectedVariant?.name} {product.name}
-        </p>
-        <p>In stock: {selectedVariant?.stock_quantity}</p>
-        <VariantSelect
-          productVariants={product.product_variants}
-          setSelectedVariant={setSelectedVariant}
-          selectedVariant={selectedVariant}
-        />
-        <AddToCart
-          productId={product.id}
-          variantId={selectedVariant.id}
-          btnLabel="Add to cart"
-        />
+      <ProductImageCarousel
+        assets={product.product_assets}
+        variants={product.product_variants}
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
+      />
+
+      <div className="flex flex-col gap-5 m-3">
+        <Card className="ring-0 flex-1 max-w-md bg-amber-50">
+          <CardHeader>
+            <CardTitle className="text-2x1">{product.name}</CardTitle>
+            <p className="text-xl font-semibold">
+              {formatPrice(selectedVariant.price_cents)}
+            </p>
+          </CardHeader>
+          <Separator />
+          <CardContent className="flex flex-col gap-4 pt-4">
+            <p className="text-muted-foreground text-sm">
+              {product.description}
+            </p>
+
+            <span
+              className={`text-xs font-medium w-fit px-2 py-1 rounded-full ${
+                isLowStock
+                  ? "bg-red-100 text-red-700"
+                  : "bg-green-100 text-green-700"
+              }`}
+            >
+              {isLowStock
+                ? `Only ${selectedVariant.stock_quantity} left`
+                : `In stock: ${selectedVariant.stock_quantity}`}
+            </span>
+
+            <VariantSelect
+              productVariants={product.product_variants}
+              setSelectedVariant={setSelectedVariant}
+              selectedVariant={selectedVariant}
+            />
+          </CardContent>
+          <CardFooter className="border-t pt-4">
+            <AddToCart
+              productId={product.id}
+              variantId={selectedVariant.id}
+              btnLabel="Add to cart"
+            />
+          </CardFooter>
+        </Card>
         <SimilarItems category={category?.value} currentProduct={product.id} />
       </div>
     </div>
