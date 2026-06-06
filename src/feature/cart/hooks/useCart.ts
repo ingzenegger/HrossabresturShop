@@ -3,6 +3,7 @@ import { createClient } from "@/shared/lib/client";
 import { useAppStore } from "../../../shared/store/appStore";
 import { getCart } from "@/feature/cart/api/cartApi";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function useCart() {
   const supabase = createClient();
@@ -45,8 +46,9 @@ export function useCart() {
 
     if (existingItem && existingItem.length > 0) {
       handleUpdateQuantity(existingItem[0].id, existingItem[0].quantity + 1);
+      toast("Product has been added to cart");
     } else {
-      const { data: item, error } = await supabase
+      const { error } = await supabase
         .from("cart_items")
         .insert({
           cart_id: cartId,
@@ -61,9 +63,9 @@ export function useCart() {
         console.error(error);
         return;
       }
-      console.log("usecart item", item);
       if (!customerId) return;
       await getCart({ customerId, setCartId, setCartItems });
+      toast("Product has been added to cart");
     }
   }
 

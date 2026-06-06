@@ -3,6 +3,7 @@ import { createClient } from "@/shared/lib/client";
 import { Home, ShoppingCart, UserRound, LogOut } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router";
 import Tooltip from "../../shared/components/Tooltip";
+import { Toaster } from "@/shared/components/ui/sonner";
 
 const Layout = () => {
   useCart();
@@ -60,6 +61,7 @@ const Layout = () => {
           </button>
         </Tooltip>
       </footer>
+      <Toaster position="top-center" />
     </div>
   );
 };
