@@ -63,16 +63,17 @@ export async function checkout({
     return null;
   }
 
-  // Step 3: Mark the cart as checked out
+  // Step 3: Delete the cart
   const { error: cartError } = await supabase
     .from("carts")
-    .update({ status: "checked_out" })
+    .delete()
     .eq("id", cartId);
 
   if (cartError) {
-    console.error("Failed to update cart status:", cartError);
-    return null;
+    console.error("Failed to remove cart:", cartError);
+    return order.id;
   }
+  // TODO: for my store (not the assignment), make sure orders hold on to the cartId so the same cart cant be checked out twice if delete fails and cartItems come back from the dead on refresh.
 
   return order.id;
 }
