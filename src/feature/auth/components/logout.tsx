@@ -23,7 +23,11 @@ export default function LogOut() {
   };
 
   return (
-    <Button onClick={handleLogOut} disabled={loading}>
+    <Button
+      onClick={handleLogOut}
+      disabled={loading}
+      className="cursor-pointer"
+    >
       {loading ? "Logging out..." : "Log Out"}
     </Button>
   );

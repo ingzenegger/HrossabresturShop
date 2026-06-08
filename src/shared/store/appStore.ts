@@ -8,6 +8,8 @@ interface AppStore {
   setUser: (user: User | null) => void;
   customerId: string | null;
   setCustomerId: (id: string | null) => void;
+  customerName: string | null;
+  setCustomerName: (name: string | null) => void;
   //state of cart
   cartId: string | null;
   setCartId: (id: string | null) => void;
@@ -36,6 +38,9 @@ export const useAppStore = create<AppStore>((set) => ({
 
   customerId: null,
   setCustomerId: (id: string | null) => set({ customerId: id }),
+
+  customerName: null,
+  setCustomerName: (name: string | null) => set({ customerName: name }),
 
   cartId: null,
   setCartId: (id: string | null) => set({ cartId: id }),

@@ -13,6 +13,7 @@ import { shopCustomerSchema } from "../types/customer";
 export default function useCustomer() {
   const supabase = createClient();
   const setCustomerId = useAppStore((state) => state.setCustomerId);
+  const setCustomerName = useAppStore((state) => state.setCustomerName);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
@@ -48,19 +49,21 @@ export default function useCustomer() {
               return;
             }
             setCustomerId(parsed.data.id);
-
+            setCustomerName(parsed.data.name);
             return;
           }
           const parsed = shopCustomerSchema.safeParse(customer[0]);
           if (!parsed.success) {
-              console.error("Validation error", parsed.error);
-              return;
-            }
+            console.error("Validation error", parsed.error);
+            return;
+          }
           setCustomerId(parsed.data.id);
+          setCustomerName(parsed.data.name);
         };
         updateUser();
       } else if (event === "SIGNED_OUT") {
         setCustomerId(null);
+        setCustomerName(null);
       }
     });
     return () => data.subscription.unsubscribe();

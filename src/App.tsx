@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import HomePage from "./feature/shell/pages/HomePage";
 import Layout from "./feature/shell/Layout";
 import ProductDetailPage from "./feature/product/detail/ProductDetailPage";
@@ -13,6 +13,10 @@ import { CartPage } from "./feature/cart/CartPage";
 import useCustomer from "./shared/hooks/useCustomer";
 import CheckoutPage from "./feature/checkout/pages/CheckoutPage";
 import OrderConfirmationPage from "./feature/checkout/pages/OrderConfirmationPage";
+import OrderHistory from "./feature/account/components/OrderHistory";
+import CustomOrders from "./feature/account/components/CustomOrders";
+import AccountSettings from "./feature/account/components/AccountSettings";
+import UpdatePassword from "./feature/account/components/update-password";
 
 function App() {
   useAuth();
@@ -33,9 +37,11 @@ function App() {
           element={<OrderConfirmationPage />}
         />
         <Route path="/account" element={<AccountLayout />}>
-          {/* <Route path="orders" element={<orders />} /> */}
-          {/* <Route path="settings" element={<userSettings />} /> */}
-          {/* <Route path="custom-request" element={<CustomRequests />} /> //to be added later */}
+          <Route index element={<Navigate to="orders" replace />} />
+          <Route path="orders" element={<OrderHistory />} />
+          <Route path="custom-orders" element={<CustomOrders />} />
+          <Route path="settings" element={<AccountSettings />} />
+          <Route path="update-password" element={<UpdatePassword />} />
         </Route>
       </Route>
       <Route path="/auth/confirm" element={<AuthConfirm />} />

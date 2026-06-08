@@ -1,35 +1,27 @@
 import { Navigate, Outlet } from "react-router";
 import { useAppStore } from "@/shared/store/appStore";
-import LogOut from "@/feature/auth/components/logout";
-
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//   const { supabase } = createClient(request);
-
-//   const { data, error } = await supabase.auth.getUser();
-//   if (error || !data?.user) {
-//     return redirect("/login");
-//   }
-
-//   return data;
-// };
+import Sidebar from "./components/Sidebar";
 
 export default function AccountLayout() {
   const user = useAppStore((state) => state.user);
+  const customerName = useAppStore((state) => state.customerName);
 
   if (!user) return <Navigate to="/login" />;
 
+  const displayName =
+    customerName && customerName.trim() !== "" ? customerName : user.email;
+
   return (
-    <>
-      <div className="flex items-center justify-center h-screen gap-2">
-        <p>
-          Hello <span className="text-primary font-semibold">{user.email}</span>
-        </p>
-        <LogOut />
+    <div className="max-w-4xl mx-auto mt-8 px-4 flex flex-col gap-6">
+      <p>
+        Hello, <span className="text-primary font-semibold">{displayName}</span>
+      </p>
+      <div className="flex gap-8">
+        <Sidebar />
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </div>
-      {/* TODO navbar to user settings, purchase history and later custom requests */}
-      <div>
-        <Outlet />
-      </div>
-    </>
+    </div>
   );
 }

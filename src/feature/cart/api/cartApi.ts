@@ -7,7 +7,7 @@ type GetCartProps = {
   setCartId: (id: string | null) => void;
   setCartItems: (items: CartItem[]) => void;
 };
-
+//get ACTIVE cart
 export async function getCart({
   customerId,
   setCartId,
@@ -20,6 +20,7 @@ export async function getCart({
     .select("*, cart_items(*, product:products(*),variant:product_variants(*))")
     .eq("shop_id", myshopId)
     .eq("customer_id", customerId)
+    .eq("status", "active")
     .single();
 
   if (error) {
@@ -56,15 +57,14 @@ export async function getCart({
   setCartItems(parsed.data.cart_items);
 }
 
-
 export async function getCartTotals(customerId: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from('cart_with_totals')
-    .select('cart_id, shop_id, status, total_cents')
-    .eq('customer_id', customerId)
-    .eq('status', 'active')
+    .from("cart_with_totals")
+    .select("cart_id, shop_id, status, total_cents")
+    .eq("customer_id", customerId)
+    .eq("status", "active")
     .maybeSingle();
 
   if (error) {
