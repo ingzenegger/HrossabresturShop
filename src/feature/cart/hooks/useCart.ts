@@ -4,6 +4,7 @@ import { useAppStore } from "../../../shared/store/appStore";
 import { getCart } from "@/feature/cart/api/cartApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 export function useCart() {
   const supabase = createClient();
@@ -15,6 +16,7 @@ export function useCart() {
   const removeItem = useAppStore((state) => state.removeItem);
   const setCartHandlers = useAppStore((state) => state.setCartHandlers);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!customerId) {
@@ -46,7 +48,9 @@ export function useCart() {
 
     if (existingItem && existingItem.length > 0) {
       handleUpdateQuantity(existingItem[0].id, existingItem[0].quantity + 1);
-      toast("Product has been added to cart");
+      toast("Product has been added to cart", {
+        action: { label: "Go to Cart", onClick: () => navigate("/cart") },
+      });
     } else {
       const { error } = await supabase
         .from("cart_items")
@@ -65,7 +69,9 @@ export function useCart() {
       }
       if (!customerId) return;
       await getCart({ customerId, setCartId, setCartItems });
-      toast("Product has been added to cart");
+      toast("Product has been added to cart", {
+        action: { label: "Go to Cart", onClick: () => navigate("/cart") },
+      });
     }
   }
 

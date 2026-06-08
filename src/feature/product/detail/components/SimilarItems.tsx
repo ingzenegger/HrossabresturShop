@@ -32,7 +32,7 @@ const SimilarItems = ({ category, currentProduct }: props) => {
       <CardHeader>
         <CardTitle>You might also like</CardTitle>
       </CardHeader>
-      <CardContent className="flex gap-3 ">
+      <CardContent className="flex flex-col md:flex-row gap-3 ">
         {products
           .filter((product) =>
             product.product_attributes?.some((attr) => attr.value === category),

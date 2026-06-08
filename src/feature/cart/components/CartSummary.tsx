@@ -10,6 +10,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { useAppStore } from "@/shared/store/appStore";
 import { useNavigate } from "react-router";
+import { Separator } from "@/shared/components/ui/separator";
 
 export default function CartSummary() {
   const { data, isLoading, error } = useCartTotals();
@@ -23,20 +24,25 @@ export default function CartSummary() {
   const isEmpty = cartItems.length === 0;
 
   return (
-    <Card>
+    <Card className="self-start">
       <CardHeader>
-        <CardTitle>Order Summary</CardTitle>
+        <CardTitle>Cart Summary</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div>
+      <CardContent className="flex flex-col gap-2">
+        <div className="flex justify-between text-sm text-muted-foreground">
+          <span>Items({cartItems.length})</span>
+          <span>{formatPrice(data.total_cents)}</span>
           {/*TODO: update this part to look less amateur */}
-          <p>Total: {formatPrice(data.total_cents)}</p>
-          <p>Status: {data.status}</p>
+        </div>
+        <Separator />
+        <div className="flex justify-between font-semibold">
+          <span>Total: </span>
+          <span>{formatPrice(data.total_cents)}</span>
         </div>
       </CardContent>
       <CardFooter>
         <Button
-          className="w-full"
+          className="w-full cursor-pointer"
           disabled={isEmpty}
           onClick={() => navigate("/checkout")}
         >

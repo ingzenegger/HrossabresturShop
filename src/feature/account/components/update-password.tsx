@@ -30,7 +30,7 @@ export default function UpdatePassword() {
     const password = formData.get("password") as string;
 
     if (!password) {
-      setError("Password is required")
+      setError("Password is required");
       setLoading(false);
       return;
     }
@@ -47,7 +47,7 @@ export default function UpdatePassword() {
   };
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-0 w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col gap-6">
           <Card>

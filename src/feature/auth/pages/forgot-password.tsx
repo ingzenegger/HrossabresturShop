@@ -1,3 +1,5 @@
+//component mostly unchanged from supabase, no actual email action going on here, but want to keep for future use. TODO: checkout this email stuff after project has graded.
+
 import {
   data,
   Link,
@@ -49,7 +51,7 @@ export default function ForgotPassword() {
 
   if (success) {
     return (
-      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center p-6 md:p-10">
         <div className="w-full max-w-sm">
           <div className="flex flex-col gap-6">
             <Card>
@@ -73,7 +75,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col gap-6">
           {/* {success ? (

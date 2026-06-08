@@ -17,6 +17,8 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
+import { useNavigate } from "react-router";
+import { Button } from "@/shared/components/ui/button";
 
 type props = {
   product: Product;
@@ -27,11 +29,13 @@ const ProductDetail = ({ product, category }: props) => {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     product.product_variants[0],
   );
+  const navigate = useNavigate();
 
   const isLowStock = selectedVariant.stock_quantity <= 2;
+  const isOutOfStock = selectedVariant.stock_quantity === 0;
 
   return (
-    <div className="flex gap-5">
+    <div className="flex flex-col md:flex-row gap-5 items-center md:items-start">
       {/* TODO: make seperate component for productimages */}
       <ProductImageCarousel
         assets={product.product_assets}
@@ -40,7 +44,7 @@ const ProductDetail = ({ product, category }: props) => {
         setSelectedVariant={setSelectedVariant}
       />
 
-      <div className="flex flex-col gap-5 m-3">
+      <div className="flex flex-col gap-5 m-3 min-w-0">
         <Card className="ring-0 flex-1 max-w-md bg-amber-50">
           <CardHeader>
             <CardTitle className="text-2x1">{product.name}</CardTitle>
@@ -61,9 +65,11 @@ const ProductDetail = ({ product, category }: props) => {
                   : "bg-green-100 text-green-700"
               }`}
             >
-              {isLowStock
-                ? `Only ${selectedVariant.stock_quantity} left`
-                : `In stock: ${selectedVariant.stock_quantity}`}
+              {isLowStock && isOutOfStock
+                ? "Out of stock"
+                : isLowStock
+                  ? `Only ${selectedVariant.stock_quantity} left`
+                  : `In stock: ${selectedVariant.stock_quantity}`}
             </span>
 
             <VariantSelect
@@ -73,11 +79,21 @@ const ProductDetail = ({ product, category }: props) => {
             />
           </CardContent>
           <CardFooter className="border-t pt-4">
-            <AddToCart
-              productId={product.id}
-              variantId={selectedVariant.id}
-              btnLabel="Add to cart"
-            />
+            {isOutOfStock ? (
+              <Button
+                className="cursor-pointer"
+                onClick={() => navigate("/account/custom-orders")}
+              >
+                {/* TODO: make a custom order component that would recieve product info when button is clicked */}
+                Custom order
+              </Button>
+            ) : (
+              <AddToCart
+                productId={product.id}
+                variantId={selectedVariant.id}
+                btnLabel="Add to cart"
+              />
+            )}
           </CardFooter>
         </Card>
         <SimilarItems category={category?.value} currentProduct={product.id} />

@@ -35,7 +35,7 @@ export default function AuthConfirm() {
   }, []);
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center">
+    <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center">
       <p className="text-muted-foreground text-sm">
         Confirming your account...
       </p>

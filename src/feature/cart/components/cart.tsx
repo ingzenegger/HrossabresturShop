@@ -13,7 +13,7 @@ export default function Cart() {
 
   return (
     <>
-      <Card className="flex max-w-2/3">
+      <Card className="flex w-fit md:max-w-2/3">
         <CardHeader>
           <CardTitle>Cart</CardTitle>
         </CardHeader>

@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@/shared/lib/formatPrice";
 import { useAppStore } from "@/shared/store/appStore";
@@ -27,7 +26,7 @@ export default function OrderHistory() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-4">
       {orders.map((order) => (
         <Card key={order.id}>
           <CardHeader className="pb-2">

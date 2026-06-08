@@ -35,7 +35,7 @@ const ProductImageCarousel = ({
   }
 
   return (
-    <div className="flex flex-col gap-3 max-w-120 px-8 m-3">
+    <div className="flex flex-col gap-3 w-full max-w-120 px-8 mt-3">
       {/* Main image */}
       <img
         src={mainImage?.asset_url}
@@ -73,8 +73,8 @@ const ProductImageCarousel = ({
           </CarouselContent>
           {variantAssets.length > 3 && (
             <>
-              <CarouselPrevious className="-left-8" />
-              <CarouselNext className="-right-8" />
+              <CarouselPrevious className="-left-8 hidden md:flex" />
+              <CarouselNext className="-right-8 hidden md:flex" />
             </>
           )}
         </Carousel>
