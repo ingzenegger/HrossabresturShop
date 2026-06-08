@@ -1,4 +1,5 @@
-import Cart from "./components/cart";
+
+import Cart from "./components/Cart";
 import CartSummary from "./components/CartSummary";
 
 export function CartPage() {
