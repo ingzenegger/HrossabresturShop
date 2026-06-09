@@ -25,8 +25,7 @@ const ProductCard = ({ compact, ...product }: Props) => {
         className="relative z-20 aspect-video w-full object-cover brightness-60 dark:brightness-40 "
       />
       <CardHeader>
-        <CardAction> {formatPrice(product.price_cents)} </CardAction>{" "}
-        {/* TODO: rather than an add button that bypasses variant a hover menu of variants might offer a shorter path to cart for end user*/}
+        <CardAction> {formatPrice(product.price_cents)} </CardAction>
         <CardTitle>{product.name}</CardTitle>
       </CardHeader>
     </Card>

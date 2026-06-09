@@ -1,22 +1,17 @@
-import WarnBanner from "@/feature/product/detail/components/WarnBanner";
+// import WarnBanner from "@/feature/product/detail/components/WarnBanner";
 import Loader from "@/shared/components/Loader";
 import { useProducts } from "@/feature/product/hooks/useProducts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
-import type { Product } from "@/shared/types/product";
 import ProductDetail from "./components/ProductDetail";
 
 const ProductDetailPage = () => {
-  let params = useParams();
-  let productId = params.productId;
+  const params = useParams();
+  const productId = params.productId;
 
   const { data: products, isLoading, error } = useProducts();
-  const [product, setProduct] = useState<Product | undefined>(undefined);
-
-  useEffect(() => {
-    setProduct(products?.find((product) => product.id === productId));
-  }, [productId, products]);
-
+  const product = products?.find((product) => product.id === productId);
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productId]);
@@ -28,9 +23,20 @@ const ProductDetailPage = () => {
       </div>
     );
   }
-  //TODO: add more detailed error handling
-  if (!products) return;
-  if (!product) return;
+
+  if (error || !products) {
+    return (
+      <div className="flex items-center w-full justify-center">
+        Something went wrong. Please refresh or come back later.
+      </div>
+    );
+  }
+  if (!product)
+    return (
+      <div className="flex items-center w-full justify-center">
+        Product not found
+      </div>
+    );
 
   const category = product.product_attributes.find(
     (attribute) => attribute.key === "category",
@@ -38,7 +44,7 @@ const ProductDetailPage = () => {
 
   return (
     <div>
-      <WarnBanner />
+      {/* <WarnBanner />*/}
       <ProductDetail product={product} category={category} key={product.id} />
     </div>
   );

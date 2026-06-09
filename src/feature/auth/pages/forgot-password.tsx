@@ -1,14 +1,4 @@
-//component mostly unchanged from supabase, no actual email action going on here, but want to keep for future use. TODO: checkout this email stuff after project has graded.
-
-import {
-  data,
-  Link,
-  redirect,
-  useFetcher,
-  useNavigate,
-  useSearchParams,
-  type ActionFunctionArgs,
-} from "react-router";
+import { Link } from "react-router";
 
 import { createClient } from "@/shared/lib/client";
 import { Button } from "@/shared/components/ui/button";
@@ -24,7 +14,6 @@ import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
 
 export default function ForgotPassword() {
-  const navigate = useNavigate();
   const supabase = createClient();
 
   const [loading, setLoading] = useState(false);
@@ -78,22 +67,6 @@ export default function ForgotPassword() {
     <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col gap-6">
-          {/* {success ? (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Check Your Email</CardTitle>
-                <CardDescription>
-                  Password reset instructions sent
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  If you registered using your email and password, you will
-                  receive a password reset email.
-                </p>
-              </CardContent>
-            </Card>
-          ) : ( */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Reset Your Password</CardTitle>
@@ -129,7 +102,6 @@ export default function ForgotPassword() {
               </form>
             </CardContent>
           </Card>
-          {/* )} */}
         </div>
       </div>
     </div>

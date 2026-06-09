@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router";
-
 import { createClient } from "@/shared/lib/client";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,16 +12,17 @@ import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
 
 export default function UpdatePassword() {
-  const navigate = useNavigate();
   const supabase = createClient();
 
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setLoading(true);
+    setSuccess(false);
     setError(null);
 
     const formData = new FormData(event.currentTarget);
@@ -40,10 +39,12 @@ export default function UpdatePassword() {
     if (error) {
       setError(error.message);
       setLoading(false);
+      setSuccess(false);
       return;
+    } else {
+      setSuccess(true);
     }
-
-    //TODO: navigate back to account page? or display success message?
+    setLoading(false);
   };
 
   return (
@@ -71,6 +72,11 @@ export default function UpdatePassword() {
                     />
                   </div>
                   {error && <p className="text-sm text-red-500">{error}</p>}
+                  {success && (
+                    <p className="text-sm text-green-500">
+                      Password updated successfully!
+                    </p>
+                  )}
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Saving..." : "Save new password"}
                   </Button>

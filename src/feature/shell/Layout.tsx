@@ -20,7 +20,7 @@ const Layout = () => {
       <header className="flex gap-2 bg-amber-200 w-full">
         <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-4 px-4 py-4 ">
           <nav className="flex w-full items-center justify-between text-amber-900">
-            {/* TODO: make a seperate navBtn component? would take url and children components and handle styling */}
+            
 
             <Tooltip label="Home">
               <Link to="/" className="hover:opacity-70">

@@ -1,7 +1,6 @@
 // -< /checkout
 //warning banner with that says its a fake payment
 //Fake card form
-//TODO: check if I can use the same warning banner as in product component.
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -115,7 +114,7 @@ export default function CheckoutPage() {
       </Card>
 
       {/* Fake card form */}
-      <Card>
+      <Card className="mb-3">
         <CardHeader>
           <CardTitle>Payment Details</CardTitle>
         </CardHeader>

@@ -16,7 +16,7 @@ export default function AccountLayout() {
       <p>
         Hello, <span className="text-primary font-semibold">{displayName}</span>
       </p>
-      <div className="flex gap-8">
+      <div className="flex flex-col md:flex-row gap-8">
         <Sidebar />
         <div className="flex-1">
           <Outlet />

@@ -73,7 +73,6 @@ export async function checkout({
     console.error("Failed to remove cart:", cartError);
     return order.id;
   }
-  // TODO: for my store (not the assignment), make sure orders hold on to the cartId so the same cart cant be checked out twice if delete fails and cartItems come back from the dead on refresh.
 
   return order.id;
 }

@@ -18,7 +18,7 @@ const SearchBar = ({ products, query, onQueryChange }: SearchBarProps) => {
     : [];
 
   return (
-    <div className="flex px-3 pt-4 justify-center">
+    <div className="flex flex-col px-3 pt-4 items-center">
       <Input
         type="text"
         placeholder="Search products..."

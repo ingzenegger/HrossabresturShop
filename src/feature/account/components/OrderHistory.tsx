@@ -51,7 +51,7 @@ export default function OrderHistory() {
               <div key={item.id} className="flex justify-between text-sm">
                 <span>
                   {item.product_name}
-                  {item.variant_name ? ` — ${item.variant_name}` : ""} *
+                  {item.variant_name ? ` — ${item.variant_name}` : ""} x
                   {item.quantity}
                 </span>
                 <span>{formatPrice(item.line_total_cents)}</span>

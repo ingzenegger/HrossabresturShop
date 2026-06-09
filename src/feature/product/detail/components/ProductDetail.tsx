@@ -35,8 +35,7 @@ const ProductDetail = ({ product, category }: props) => {
   const isOutOfStock = selectedVariant.stock_quantity === 0;
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 items-center md:items-start">
-      {/* TODO: make seperate component for productimages */}
+    <div className="flex flex-col md:flex-row gap-5 items-center md:items-start justify-center">
       <ProductImageCarousel
         assets={product.product_assets}
         variants={product.product_variants}
@@ -84,7 +83,6 @@ const ProductDetail = ({ product, category }: props) => {
                 className="cursor-pointer"
                 onClick={() => navigate("/account/custom-orders")}
               >
-                {/* TODO: make a custom order component that would recieve product info when button is clicked */}
                 Custom order
               </Button>
             ) : (

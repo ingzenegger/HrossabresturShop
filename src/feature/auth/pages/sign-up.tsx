@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router";
-
+//component from supabase, no actual email action going on here, but want to keep for future use.
+import { Link } from "react-router";
 import { createClient } from "@/shared/lib/client";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,9 +14,7 @@ import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
 
 export default function SignUp() {
-  const navigate = useNavigate(); //TODO: have a navigate after successfull signup
   const supabase = createClient();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -67,7 +65,7 @@ export default function SignUp() {
                 You&apos;ve successfully signed up. Please check your email to
                 confirm your account before signing in.
               </p>
-              {/* TODO: það er enginn email fítus tengdur, svo þetta færi út í skiptum fyrir navigate á protected síðu */}
+              {/* það er enginn email fítus tengdur, þetta gæti farið út í skiptum fyrir navigate á protected síðu með kannski einhverjum "success" sonner, en held ég hafi þetta svona for future use */}
             </CardContent>
           </Card>
         </div>

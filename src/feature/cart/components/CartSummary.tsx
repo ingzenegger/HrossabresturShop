@@ -32,7 +32,6 @@ export default function CartSummary() {
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Items({cartItems.length})</span>
           <span>{formatPrice(data.total_cents)}</span>
-          {/*TODO: update this part to look less amateur */}
         </div>
         <Separator />
         <div className="flex justify-between font-semibold">

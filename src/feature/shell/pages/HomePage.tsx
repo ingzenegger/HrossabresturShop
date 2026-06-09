@@ -15,12 +15,11 @@ const HomePage = () => {
       </div>
     );
   }
-  //TODO: find a solution/text for error here
-  if (error) {
+
+  if (error || !products) {
     console.error(error);
-    return <div>Some error message?</div>;
+    return <div>Something went wrong. Please refresh or come back later.</div>;
   }
-  if (!products) return;
 
   const categories = [
     ...new Set(

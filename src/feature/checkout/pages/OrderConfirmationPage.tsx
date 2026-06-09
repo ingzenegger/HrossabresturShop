@@ -1,7 +1,5 @@
 //order placed!
 //  -> /order-confirmation/:orderId
-//TODO: add a zod schema for the order_items type check!
-
 
 import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +13,7 @@ import {
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
+import { OrderSchema, type Order } from "@/shared/types/order";
 
 async function getOrder(orderId: string) {
   const supabase = createClient();
@@ -30,14 +29,19 @@ async function getOrder(orderId: string) {
     return null;
   }
 
-  return data;
+  const parsed = OrderSchema.safeParse(data);
+  if (!parsed.success) {
+    console.error("Validation error", parsed.error);
+    return null;
+  }
+  return parsed.data;
 }
 
 export default function OrderConfirmationPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
 
-  const { data: order, isLoading } = useQuery({
+  const { data: order, isLoading } = useQuery<Order | null>({
     queryKey: ["order", orderId],
     queryFn: () => getOrder(orderId!),
     enabled: !!orderId,
@@ -65,24 +69,16 @@ export default function OrderConfirmationPage() {
           <p className="text-xs text-muted-foreground break-all">#{order.id}</p>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          {order.order_items.map(
-            (item: {
-              id: string;
-              product_name: string;
-              variant_name: string | null;
-              quantity: number;
-              line_total_cents: number;
-            }) => (
-              <div key={item.id} className="flex justify-between text-sm">
-                <span>
-                  {item.product_name}
-                  {item.variant_name ? ` — ${item.variant_name}` : ""} ×{" "}
-                  {item.quantity}
-                </span>
-                <span>{formatPrice(item.line_total_cents)}</span>
-              </div>
-            ),
-          )}
+          {order.order_items.map((item) => (
+            <div key={item.id} className="flex justify-between text-sm">
+              <span>
+                {item.product_name}
+                {item.variant_name ? ` — ${item.variant_name}` : ""} ×{" "}
+                {item.quantity}
+              </span>
+              <span>{formatPrice(item.line_total_cents)}</span>
+            </div>
+          ))}
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
             <span>Total</span>

@@ -1,5 +1,3 @@
-//TODO: set nameform as a seperate component?
-
 import { useState } from "react";
 import { Link } from "react-router";
 import { useAppStore } from "@/shared/store/appStore";

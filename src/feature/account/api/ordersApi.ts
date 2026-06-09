@@ -1,21 +1,5 @@
 import { createClient } from "@/shared/lib/client";
-
-//TODO: these should probably be zod schemas?
-type Order = {
-  id: string;
-  status: string;
-  total_cents: number;
-  submitted_at: string;
-  order_items: OrderItem[];
-};
-
-type OrderItem = {
-  id: string;
-  product_name: string;
-  variant_name: string | null;
-  quantity: number;
-  line_total_cents: number;
-};
+import { OrderSchema, type Order } from "@/shared/types/order";
 
 export async function getOrders(customerId: string): Promise<Order[]> {
   const supabase = createClient();
@@ -31,5 +15,12 @@ export async function getOrders(customerId: string): Promise<Order[]> {
     return [];
   }
 
-  return data ?? [];
+  return (data ?? []).flatMap((item) => {
+    const parsed = OrderSchema.safeParse(item);
+    if (!parsed.success) {
+      console.error("Validation error", parsed.error);
+      return [];
+    }
+    return [parsed.data];
+  });
 }

@@ -32,6 +32,7 @@ export default function AuthConfirm() {
     }
 
     confirm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

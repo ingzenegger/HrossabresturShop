@@ -8,7 +8,7 @@ import {
 } from "@/shared/components/ui/card";
 
 export default function AuthError() {
-  let [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   return (
     <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center p-6 md:p-10">

@@ -9,7 +9,7 @@ const links = [
 
 export default function Sidebar() {
   return (
-    <nav className="flex flex-col gap-1 w-48 shrink-0">
+    <nav className="flex flex-col gap-1 w-full md:w-48 shrink-0">
       {links.map((link) => (
         <NavLink
           key={link.to}
@@ -25,7 +25,7 @@ export default function Sidebar() {
           {link.label}
         </NavLink>
       ))}
-      <div className="mt-4 pt-4 border-t border-amber-200">
+      <div className="mt-3 py-3 border-y border-amber-200">
         <LogOut />
       </div>
     </nav>
