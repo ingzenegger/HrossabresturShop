@@ -32,7 +32,7 @@ const HomePage = () => {
   return (
     <div className="pt-4 pb-4">
       <div className="flex justify-center">
-        <h1>Welcome to Craft Shop</h1>
+        <h1>Welcome to Hrossabrestur Craft Shop</h1>
       </div>
 
       <SearchBar
