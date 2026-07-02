@@ -4,6 +4,7 @@ import { Home, ShoppingCart, UserRound, LogOut } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router";
 import Tooltip from "../../shared/components/Tooltip";
 import { Toaster } from "@/shared/components/ui/sonner";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
 const Layout = () => {
   useCart();
@@ -20,8 +21,6 @@ const Layout = () => {
       <header className="flex gap-2 bg-amber-200 w-full">
         <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-4 px-4 py-4 ">
           <nav className="flex w-full items-center justify-between text-amber-900">
-            
-
             <Tooltip label="Home">
               <Link to="/" className="hover:opacity-70">
                 <Home className="hover:scale-105 transition-transform" />
@@ -29,6 +28,7 @@ const Layout = () => {
             </Tooltip>
 
             <div className="flex gap-4">
+              <LanguageSwitcher />
               <Tooltip label="Cart">
                 <Link to="/cart" className="hover:opacity-70">
                   <ShoppingCart className="hover:scale-105 transition-transform" />

@@ -19,6 +19,7 @@ import {
 import { Separator } from "@/shared/components/ui/separator";
 import { useNavigate } from "react-router";
 import { Button } from "@/shared/components/ui/button";
+import { useAppStore } from "@/shared/store/appStore";
 
 type props = {
   product: Product;
@@ -30,6 +31,7 @@ const ProductDetail = ({ product, category }: props) => {
     product.product_variants[0],
   );
   const navigate = useNavigate();
+  const language = useAppStore((state) => state.language);
 
   const isLowStock = selectedVariant.stock_quantity <= 2;
   const isOutOfStock = selectedVariant.stock_quantity === 0;
@@ -46,7 +48,7 @@ const ProductDetail = ({ product, category }: props) => {
       <div className="flex flex-col gap-5 m-3 min-w-0">
         <Card className="ring-0 flex-1 max-w-md bg-amber-50">
           <CardHeader>
-            <CardTitle className="text-2x1">{product.name}</CardTitle>
+            <CardTitle className="text-2x1">{product.name[language]}</CardTitle>
             <p className="text-xl font-semibold">
               {formatPrice(selectedVariant.price)}
             </p>
@@ -54,7 +56,7 @@ const ProductDetail = ({ product, category }: props) => {
           <Separator />
           <CardContent className="flex flex-col gap-4 pt-4">
             <p className="text-muted-foreground text-sm">
-              {product.description}
+              {product.description[language]}
             </p>
 
             <span

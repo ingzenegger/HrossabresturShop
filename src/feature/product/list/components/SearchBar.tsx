@@ -1,6 +1,7 @@
 import { Input } from "@/shared/components/ui/input";
 import ProductCard from "./ProductCard";
 import type { Product } from "@/shared/types/product";
+import { useAppStore } from "@/shared/store/appStore";
 
 type SearchBarProps = {
   products: Product[];
@@ -9,11 +10,12 @@ type SearchBarProps = {
 };
 
 const SearchBar = ({ products, query, onQueryChange }: SearchBarProps) => {
+  const language = useAppStore((state) => state.language);
   const isSearching = query.length >= 2;
 
   const results = isSearching
     ? products.filter((product) =>
-        product.name.toLowerCase().includes(query.toLowerCase()),
+        product.name[language].toLowerCase().includes(query.toLowerCase()),
       )
     : [];
 

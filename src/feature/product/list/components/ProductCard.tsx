@@ -5,6 +5,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { formatPrice } from "@/shared/lib/formatPrice";
+import { useAppStore } from "@/shared/store/appStore";
 import type { Product } from "@/shared/types/product";
 import { useNavigate } from "react-router";
 
@@ -12,6 +13,7 @@ type Props = Product & { compact?: boolean };
 
 const ProductCard = ({ compact, ...product }: Props) => {
   const navigate = useNavigate();
+  const language = useAppStore((state) => state.language);
 
   return (
     <Card
@@ -26,7 +28,7 @@ const ProductCard = ({ compact, ...product }: Props) => {
       />
       <CardHeader>
         <CardAction> {formatPrice(product.price)} </CardAction>
-        <CardTitle>{product.name}</CardTitle>
+        <CardTitle>{product.name[language]}</CardTitle>
       </CardHeader>
     </Card>
   );

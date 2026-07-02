@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 import type { CartItem } from "../types/cart";
+import type { Language } from "../types/language";
 
 interface AppStore {
   //state of user/customer
@@ -30,6 +31,9 @@ interface AppStore {
     update: (itemId: string, quantity: number) => Promise<void>,
     remove: (itemId: string) => Promise<void>,
   ) => void;
+  //i18n
+  language: Language;
+  setLanguage: (lang: Language) => void;
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -71,4 +75,7 @@ export const useAppStore = create<AppStore>((set) => ({
       handleUpdateQuantity: update,
       handleRemoveItem: remove,
     }),
+
+  language: "is",
+  setLanguage: (lang) => set({ language: lang }),
 }));
