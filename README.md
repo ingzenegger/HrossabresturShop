@@ -2,9 +2,9 @@
 
 A handmade goods shop built with React, TypeScript, and Supabase. Browse crochet toys, hair accessories, home decor, clothing, and bookmarks.
 
-**Live site:** [https://hrossabrestur.vercel.app](https://hrossabrestur.vercel.app)
+**Live site:** [https://hrossabrestur.ingambeck.com](https://hrossabrestur.ingambeck.com)
 
-**GitHub:** [https://github.com/ingzenegger/NTVShop](https://github.com/ingzenegger/NTVShop)
+**GitHub:** [https://github.com/ingzenegger/HrossabresturShop](https://github.com/ingzenegger/HrossabresturShop)
 
 ---
 

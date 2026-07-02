@@ -40,14 +40,14 @@ const cartItems = [
     product: {
       id: "prod-1",
       name: "Handmade Thingy",
-      price_cents: 25000,
+      price: 25000,
       currency: "ISK",
       stock_quantity: 10,
       is_active: true,
     },
     variant: {
       name: "Blue",
-      price_cents: 25000,
+      price: 25000,
       stock_quantity: 10,
     },
   },

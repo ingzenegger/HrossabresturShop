@@ -1,4 +1,4 @@
-//updateCustomerName function .update() on shop_customers
+//updateCustomerName function .update() on profiles
 
 import { createClient } from "@/shared/lib/client";
 
@@ -16,7 +16,7 @@ export async function updateCustomerName({
   const supabase = createClient();
 
   const { data, error: nameError } = await supabase
-    .from("shop_customers")
+    .from("profiles")
     .update({ name: name })
     .eq("id", customerId)
     .select()

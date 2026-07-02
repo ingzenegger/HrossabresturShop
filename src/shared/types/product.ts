@@ -15,7 +15,7 @@ export const VariantSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
   name: z.string(),
-  price_cents: z.number().int().nonnegative(),
+  price: z.number().int().nonnegative(),
   stock_quantity: z.number(),
   created_at: z.string(), //date
 });
@@ -30,11 +30,10 @@ export const AttributeSchema = z.object({
 
 export const ProductSchema = z.object({
   id: z.uuid(),
-  shop_id: z.uuid(),
   name: z.string(),
   slug: z.string(),
   description: z.string(),
-  price_cents: z.number().int().nonnegative(),
+  price: z.number().int().nonnegative(),
   currency: z.string(),
   stock_quantity: z.number(),
   is_active: z.boolean(),

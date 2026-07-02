@@ -6,13 +6,13 @@ export const OrderItemSchema = z.object({
   product_name: z.string(),
   variant_name: z.string().nullable(),
   quantity: z.number().int().positive(),
-  line_total_cents: z.number().int().nonnegative(),
+  line_total: z.number().int().nonnegative(),
 });
 
 export const OrderSchema = z.object({
   id: z.uuid(),
   status: z.string(),
-  total_cents: z.number().int().nonnegative(),
+  total: z.number().int().nonnegative(),
   submitted_at: z.string(),
   order_items: z.array(OrderItemSchema).default([]),
 });

@@ -12,7 +12,7 @@ export const CartItemSchema = z.object({
   product: z.object({
     id: z.uuid(),
     name: z.string(),
-    price_cents: z.number().int().nonnegative(),
+    price: z.number().int().nonnegative(),
     currency: z.string(),
     stock_quantity: z.number(),
     is_active: z.boolean(),
@@ -20,7 +20,7 @@ export const CartItemSchema = z.object({
   variant: z
     .object({
       name: z.string(),
-      price_cents: z.number().int().nonnegative(),
+      price: z.number().int().nonnegative(),
       stock_quantity: z.number(),
     })
     .nullable(),
@@ -30,8 +30,7 @@ export const CartStatusEnum = z.enum(["active", "checked_out"]);
 
 export const CartSchema = z.object({
   id: z.uuid(),
-  shop_id: z.uuid(),
-  customer_id: z.uuid(),
+  // customer_id: z.uuid(), //auth uid?
   status: CartStatusEnum.default("active"),
   created_at: z.string(), //date,,
   updated_at: z.string(), //date,,

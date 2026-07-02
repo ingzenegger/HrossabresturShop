@@ -14,14 +14,14 @@ const mockItem: CartItem = {
   product: {
     id: "33333333-3333-3333-3333-333333333333",
     name: "Test Scarf",
-    price_cents: 2500,
+    price: 2500,
     currency: "ISK",
     stock_quantity: 10,
     is_active: true,
   },
   variant: {
     name: "Blue",
-    price_cents: 2500,
+    price: 2500,
     stock_quantity: 10,
   },
 };

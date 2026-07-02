@@ -6,7 +6,7 @@ export async function getOrders(customerId: string): Promise<Order[]> {
 
   const { data, error } = await supabase
     .from("orders")
-    .select("id, status, total_cents, submitted_at, order_items(*)")
+    .select("id, status, total, submitted_at, order_items(*)")
     .eq("customer_id", customerId)
     .order("submitted_at", { ascending: false });
 

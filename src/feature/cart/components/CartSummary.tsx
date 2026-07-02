@@ -1,5 +1,4 @@
 import { formatPrice } from "@/shared/lib/formatPrice";
-import { useCartTotals } from "../hooks/useCartTotals";
 import {
   Card,
   CardContent,
@@ -11,15 +10,12 @@ import { Button } from "@/shared/components/ui/button";
 import { useAppStore } from "@/shared/store/appStore";
 import { useNavigate } from "react-router";
 import { Separator } from "@/shared/components/ui/separator";
+import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
 
 export default function CartSummary() {
-  const { data, isLoading, error } = useCartTotals();
   const cartItems = useAppStore((state) => state.cartItems);
   const navigate = useNavigate();
-
-  if (isLoading) return <p>Loading totals...</p>;
-  if (error) return <p>Could not load totals.</p>;
-  if (!data) return null;
+  const total = calculateCartTotal(cartItems);
 
   const isEmpty = cartItems.length === 0;
 
@@ -31,12 +27,12 @@ export default function CartSummary() {
       <CardContent className="flex flex-col gap-2">
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Items({cartItems.length})</span>
-          <span>{formatPrice(data.total_cents)}</span>
+          <span>{formatPrice(total)}</span>
         </div>
         <Separator />
         <div className="flex justify-between font-semibold">
           <span>Total: </span>
-          <span>{formatPrice(data.total_cents)}</span>
+          <span>{formatPrice(total)}</span>
         </div>
       </CardContent>
       <CardFooter>
