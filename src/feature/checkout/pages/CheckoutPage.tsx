@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppStore } from "@/shared/store/appStore";
-import { useCartTotals } from "@/feature/cart/hooks/useCartTotals";
+// import { useCartTotals } from "@/feature/cart/hooks/useCartTotals";
 import { checkout } from "@/feature/checkout/api/checkoutApi";
 import { formatPrice } from "@/shared/lib/formatPrice";
 import {
@@ -18,6 +18,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Separator } from "@/shared/components/ui/separator";
+import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -26,8 +27,8 @@ export default function CheckoutPage() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
   const setCartId = useAppStore((state) => state.setCartId);
-
-  const { data: totals } = useCartTotals();
+  const total = calculateCartTotal(cartItems);
+  // const { data: totals } = useCartTotals();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export default function CheckoutPage() {
       return;
     }
     //just in case, shouldn't be seeing any checkout page if you are not logged in
-    if (!cartId || !customerId || cartItems.length === 0 || !totals) {
+    if (!cartId || !customerId || cartItems.length === 0 || !total) {
       setError("Your cart is empty or you are not signed in.");
       return;
     }
@@ -59,7 +60,7 @@ export default function CheckoutPage() {
       cartId,
       customerId,
       cartItems,
-      totalCents: totals.total_cents,
+      totalCents: total,
     });
 
     if (!orderId) {
@@ -92,8 +93,7 @@ export default function CheckoutPage() {
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {cartItems.map((item) => {
-            const unitPrice =
-              item.variant?.price_cents ?? item.product.price_cents;
+            const unitPrice = item.variant?.price ?? item.product.price;
             return (
               <div key={item.id} className="flex justify-between text-sm">
                 <span>
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
             <span>Total</span>
-            <span>{totals ? formatPrice(totals.total_cents) : "—"}</span>
+            <span>{total ? formatPrice(total) : "—"}</span>
           </div>
         </CardContent>
       </Card>
@@ -169,7 +169,7 @@ export default function CheckoutPage() {
             <Button type="submit" disabled={loading} className="w-full mt-2">
               {loading
                 ? "Placing order..."
-                : `Pay ${totals ? formatPrice(totals.total_cents) : ""}`}
+                : `Pay ${total ? formatPrice(total) : ""}`}
             </Button>
           </form>
         </CardContent>

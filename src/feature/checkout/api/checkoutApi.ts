@@ -1,6 +1,5 @@
 //insert new row into orders, take cart_items and insert the into order_items
 
-import { myshopId } from "@/shared/constants";
 import { createClient } from "@/shared/lib/client";
 import type { CartItem } from "@/shared/types/cart";
 
@@ -23,11 +22,10 @@ export async function checkout({
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert({
-      shop_id: myshopId,
       customer_id: customerId,
       status: "pending",
-      subtotal_cents: totalCents,
-      total_cents: totalCents,
+      subtotal: totalCents,
+      total: totalCents,
       currency: cartItems[0].product.currency,
       submitted_at: new Date().toISOString(),
     })
@@ -41,16 +39,16 @@ export async function checkout({
 
   // Step 2: Insert one order_item row per cart item
   const orderItems = cartItems.map((item) => {
-    const unitPrice = item.variant?.price_cents ?? item.product.price_cents;
+    const unitPrice = item.variant?.price ?? item.product.price;
     return {
       order_id: order.id,
       product_id: item.product_id,
       variant_id: item.variant_id,
       product_name: item.product.name,
       variant_name: item.variant?.name ?? null,
-      unit_price_cents: unitPrice,
+      unit_price: unitPrice,
       quantity: item.quantity,
-      line_total_cents: unitPrice * item.quantity,
+      line_total: unitPrice * item.quantity,
     };
   });
 

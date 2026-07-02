@@ -54,13 +54,13 @@ export default function OrderHistory() {
                   {item.variant_name ? ` — ${item.variant_name}` : ""} x
                   {item.quantity}
                 </span>
-                <span>{formatPrice(item.line_total_cents)}</span>
+                <span>{formatPrice(item.line_total)}</span>
               </div>
             ))}
             <Separator className="my-1" />
             <div className="flex justify-between font-semibold text-sm">
               <span>Total</span>
-              <span>{formatPrice(order.total_cents)}</span>
+              <span>{formatPrice(order.total)}</span>
             </div>
           </CardContent>
         </Card>

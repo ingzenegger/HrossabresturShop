@@ -19,13 +19,13 @@ const VariantSelect = ({
   selectedVariant,
   setSelectedVariant,
 }: props) => {
-  console.log("product variants:", productVariants);
+  // console.log("product variants:", productVariants);
 
   function handleValueChange(value: string) {
-    console.log("value change triggered, value:", value);
+    // console.log("value change triggered, value:", value);
     const selected = productVariants.find((variant) => variant.name === value);
     if (!selected) return;
-    console.log("selected:", selected);
+    // console.log("selected:", selected);
     setSelectedVariant(selected);
   }
 

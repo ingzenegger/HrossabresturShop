@@ -53,7 +53,7 @@ const CartRow = (item: CartItem) => {
         </div>
       </ItemActions>
       <div className="w-24 text-right">
-        {formatPrice(item.product.price_cents * item.quantity)}
+        {formatPrice(item.product.price * item.quantity)}
       </div>
       <ItemActions>
         <Tooltip label="Delete item">

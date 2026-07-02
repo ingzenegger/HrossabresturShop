@@ -16,7 +16,7 @@ vi.mock("react-router", () => ({
 }));
 // replace the react query hook with mock
 vi.mock("@/feature/cart/hooks/useCartTotals", () => ({
-  useCartTotals: () => ({ data: { total_cents: 50000 } }),
+  useCartTotals: () => ({ data: { total: 50000 } }),
 }));
 
 // Mock checkout so it doesn't go to Supabase
@@ -36,8 +36,8 @@ const mockStore = {
     {
       id: "item-1",
       quantity: 2,
-      product: { name: "Handmade Thingy", price_cents: 25000 },
-      variant: { name: "Blue", price_cents: 25000 },
+      product: { name: "Handmade Thingy", price: 25000 },
+      variant: { name: "Blue", price: 25000 },
     },
   ],
   setCartItems: mockSetCartItems,
@@ -93,8 +93,8 @@ describe("CheckoutPage form validation", () => {
       {
         id: "item-1",
         quantity: 2,
-        product: { name: "Handmade Thingy", price_cents: 25000 },
-        variant: { name: "Blue", price_cents: 25000 },
+        product: { name: "Handmade Thingy", price: 25000 },
+        variant: { name: "Blue", price: 25000 },
       },
     ];
   });
