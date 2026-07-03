@@ -13,14 +13,14 @@ const mockItem: CartItem = {
   variant_id: "44444444-4444-4444-4444-444444444444",
   product: {
     id: "33333333-3333-3333-3333-333333333333",
-    name: {en: "Test Scarf", is: "Prufu trefill"},
+    name: { en: "Test Scarf", is: "Prufu trefill" },
     price: 2500,
     currency: "ISK",
     stock_quantity: 10,
     is_active: true,
   },
   variant: {
-    name: "Blue",
+    name: { en: "Blue", is: "Blár" },
     price: 2500,
     stock_quantity: 10,
   },

@@ -48,7 +48,7 @@ const cartItems: CartItem[] = [
       is_active: true,
     },
     variant: {
-      name: "Blue",
+      name: { en: "Blue", is: "Blár" },
       price: 25000,
       stock_quantity: 10,
     },
@@ -146,6 +146,9 @@ describe("checkout", () => {
     // Assert: the order_items insert received the Icelandic name
     expect(mockInsert).toHaveBeenCalledWith([
       expect.objectContaining({ product_name: "handgert dót" }),
+    ]);
+    expect(mockInsert).toHaveBeenCalledWith([
+      expect.objectContaining({ variant_name: "Blár" }),
     ]);
     expect(mockInsert).not.toHaveBeenCalledWith([
       expect.objectContaining({ product_name: "Handmade Thingy" }),

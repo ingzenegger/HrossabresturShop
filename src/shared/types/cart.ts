@@ -20,7 +20,7 @@ export const CartItemSchema = z.object({
   }),
   variant: z
     .object({
-      name: z.string(),
+      name: TranslatedTextSchema,
       price: z.number().int().nonnegative(),
       stock_quantity: z.number(),
     })

@@ -21,7 +21,7 @@ const CartRow = (item: CartItem) => {
     <Item>
       <ItemContent>
         <ItemTitle>
-          {item.product.name[language]} - {item.variant?.name}
+          {item.product.name[language]} - {item.variant?.name[language]}
         </ItemTitle>
       </ItemContent>
       <ItemActions>

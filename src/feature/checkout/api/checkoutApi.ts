@@ -48,7 +48,7 @@ export async function checkout({
       product_id: item.product_id,
       variant_id: item.variant_id,
       product_name: item.product.name[language],
-      variant_name: item.variant?.name ?? null,
+      variant_name: item.variant?.name[language] ?? null,
       unit_price: unitPrice,
       quantity: item.quantity,
       line_total: unitPrice * item.quantity,

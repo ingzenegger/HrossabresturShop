@@ -15,7 +15,7 @@ export const AssetSchema = z.object({
 export const VariantSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
-  name: z.string(),
+  name: TranslatedTextSchema,
   price: z.number().int().nonnegative(),
   stock_quantity: z.number(),
   created_at: z.string(), //date
