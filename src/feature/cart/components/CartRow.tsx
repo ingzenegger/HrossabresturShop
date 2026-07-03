@@ -15,12 +15,13 @@ const CartRow = (item: CartItem) => {
   const handleUpdateQuantity = useAppStore(
     (state) => state.handleUpdateQuantity,
   );
+  const language = useAppStore((state) => state.language);
 
   return (
     <Item>
       <ItemContent>
         <ItemTitle>
-          {item.product.name} - {item.variant?.name}
+          {item.product.name[language]} - {item.variant?.name}
         </ItemTitle>
       </ItemContent>
       <ItemActions>

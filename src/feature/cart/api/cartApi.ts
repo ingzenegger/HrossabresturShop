@@ -16,7 +16,9 @@ export async function getCart({
 
   const { data: cart, error } = await supabase
     .from("carts")
-    .select("*, cart_items(*, product:products(*),variant:product_variants(*))")
+    .select(
+      "*, cart_items(*, product:products(id, name:name_i18n, price, currency, stock_quantity, is_active),variant:product_variants(*))",
+    )
     .eq("customer_id", customerId)
     .eq("status", "active")
     .maybeSingle();
