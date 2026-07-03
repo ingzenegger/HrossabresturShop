@@ -5,20 +5,14 @@ import { Link, Outlet, useNavigate } from "react-router";
 import Tooltip from "../../shared/components/Tooltip";
 import { Toaster } from "@/shared/components/ui/sonner";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import { useEffect } from "react";
-import { useAppStore } from "@/shared/store/appStore";
-import i18n from "@/shared/i18n/i18n";
+import { useLanguageSync } from "@/shared/i18n/useLanguageSync";
 
 const Layout = () => {
   useCart();
-  const language = useAppStore((state) => state.language);
+  useLanguageSync();
+
   const supabase = createClient();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    i18n.changeLanguage(language);
-    document.documentElement.lang = language;
-  }, [language]);
 
   const handleLogOut = async () => {
     await supabase.auth.signOut();
