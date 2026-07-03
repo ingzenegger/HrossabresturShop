@@ -28,6 +28,7 @@ export default function CheckoutPage() {
   const setCartItems = useAppStore((state) => state.setCartItems);
   const setCartId = useAppStore((state) => state.setCartId);
   const total = calculateCartTotal(cartItems);
+  const language = useAppStore((state) => state.language);
   // const { data: totals } = useCartTotals();
 
   const [loading, setLoading] = useState(false);
@@ -61,6 +62,7 @@ export default function CheckoutPage() {
       customerId,
       cartItems,
       totalCents: total,
+      language: language,
     });
 
     if (!orderId) {
@@ -97,7 +99,7 @@ export default function CheckoutPage() {
             return (
               <div key={item.id} className="flex justify-between text-sm">
                 <span>
-                  {item.product.name}
+                  {item.product.name[language]}
                   {item.variant ? ` — ${item.variant.name}` : ""} x
                   {item.quantity}
                 </span>

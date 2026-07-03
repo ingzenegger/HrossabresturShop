@@ -35,6 +35,7 @@ const ProductDetail = ({ product, category }: props) => {
 
   const isLowStock = selectedVariant.stock_quantity <= 2;
   const isOutOfStock = selectedVariant.stock_quantity === 0;
+  console.log(product);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 items-center md:items-start justify-center">

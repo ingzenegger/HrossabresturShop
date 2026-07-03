@@ -2,12 +2,14 @@
 
 import { createClient } from "@/shared/lib/client";
 import type { CartItem } from "@/shared/types/cart";
+import type { Language } from "@/shared/types/language";
 
 type CheckoutProps = {
   cartId: string;
   customerId: string;
   cartItems: CartItem[];
   totalCents: number;
+  language: Language;
 };
 
 export async function checkout({
@@ -15,6 +17,7 @@ export async function checkout({
   customerId,
   cartItems,
   totalCents,
+  language,
 }: CheckoutProps): Promise<string | null> {
   const supabase = createClient();
 
@@ -44,7 +47,7 @@ export async function checkout({
       order_id: order.id,
       product_id: item.product_id,
       variant_id: item.variant_id,
-      product_name: item.product.name,
+      product_name: item.product.name[language],
       variant_name: item.variant?.name ?? null,
       unit_price: unitPrice,
       quantity: item.quantity,

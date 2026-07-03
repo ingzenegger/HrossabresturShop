@@ -13,7 +13,7 @@ const mockItem: CartItem = {
   variant_id: "44444444-4444-4444-4444-444444444444",
   product: {
     id: "33333333-3333-3333-3333-333333333333",
-    name: "Test Scarf",
+    name: {en: "Test Scarf", is: "Prufu trefill"},
     price: 2500,
     currency: "ISK",
     stock_quantity: 10,

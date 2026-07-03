@@ -36,7 +36,7 @@ const mockStore = {
     {
       id: "item-1",
       quantity: 2,
-      product: { name: "Handmade Thingy", price: 25000 },
+      product: { name: { en: "Handmade Thingy", is: "handgert dót" }, price: 25000 },
       variant: { name: "Blue", price: 25000 },
     },
   ],
@@ -93,7 +93,7 @@ describe("CheckoutPage form validation", () => {
       {
         id: "item-1",
         quantity: 2,
-        product: { name: "Handmade Thingy", price: 25000 },
+        product: { name: { en: "Handmade Thingy", is: "handgert dót" }, price: 25000 },
         variant: { name: "Blue", price: 25000 },
       },
     ];
