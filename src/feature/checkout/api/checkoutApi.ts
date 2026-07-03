@@ -8,7 +8,7 @@ type CheckoutProps = {
   cartId: string;
   customerId: string;
   cartItems: CartItem[];
-  totalCents: number;
+  totalAmount: number;
   language: Language;
 };
 
@@ -16,7 +16,7 @@ export async function checkout({
   cartId,
   customerId,
   cartItems,
-  totalCents,
+  totalAmount,
   language,
 }: CheckoutProps): Promise<string | null> {
   const supabase = createClient();
@@ -27,8 +27,8 @@ export async function checkout({
     .insert({
       customer_id: customerId,
       status: "pending",
-      subtotal: totalCents,
-      total: totalCents,
+      subtotal: totalAmount,
+      total: totalAmount,
       currency: cartItems[0].product.currency,
       submitted_at: new Date().toISOString(),
     })

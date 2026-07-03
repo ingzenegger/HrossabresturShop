@@ -16,7 +16,7 @@ export default function CartSummary() {
   const cartItems = useAppStore((state) => state.cartItems);
   const navigate = useNavigate();
   const total = calculateCartTotal(cartItems);
-
+  const language = useAppStore((state) => state.language);
   const isEmpty = cartItems.length === 0;
 
   return (
@@ -27,12 +27,12 @@ export default function CartSummary() {
       <CardContent className="flex flex-col gap-2">
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Items({cartItems.length})</span>
-          <span>{formatPrice(total)}</span>
+          <span>{formatPrice(total, language)}</span>
         </div>
         <Separator />
         <div className="flex justify-between font-semibold">
           <span>Total: </span>
-          <span>{formatPrice(total)}</span>
+          <span>{formatPrice(total, language)}</span>
         </div>
       </CardContent>
       <CardFooter>

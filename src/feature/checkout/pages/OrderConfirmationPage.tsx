@@ -14,6 +14,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
 import { OrderSchema, type Order } from "@/shared/types/order";
+import { useAppStore } from "@/shared/store/appStore";
 
 async function getOrder(orderId: string) {
   const supabase = createClient();
@@ -40,6 +41,7 @@ async function getOrder(orderId: string) {
 export default function OrderConfirmationPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const language = useAppStore((state) => state.language);
 
   const { data: order, isLoading } = useQuery<Order | null>({
     queryKey: ["order", orderId],
@@ -76,13 +78,13 @@ export default function OrderConfirmationPage() {
                 {item.variant_name ? ` — ${item.variant_name}` : ""} ×{" "}
                 {item.quantity}
               </span>
-              <span>{formatPrice(item.line_total)}</span>
+              <span>{formatPrice(item.line_total, language)}</span>
             </div>
           ))}
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
             <span>Total</span>
-            <span>{formatPrice(order.total)}</span>
+            <span>{formatPrice(order.total, language)}</span>
           </div>
         </CardContent>
       </Card>

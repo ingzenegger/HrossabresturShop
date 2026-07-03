@@ -61,7 +61,7 @@ export default function CheckoutPage() {
       cartId,
       customerId,
       cartItems,
-      totalCents: total,
+      totalAmount: total,
       language: language,
     });
 
@@ -103,14 +103,14 @@ export default function CheckoutPage() {
                   {item.variant ? ` — ${item.variant.name}` : ""} x
                   {item.quantity}
                 </span>
-                <span>{formatPrice(unitPrice * item.quantity)}</span>
+                <span>{formatPrice(unitPrice * item.quantity, language)}</span>
               </div>
             );
           })}
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
             <span>Total</span>
-            <span>{total ? formatPrice(total) : "—"}</span>
+            <span>{total ? formatPrice(total, language) : "—"}</span>
           </div>
         </CardContent>
       </Card>
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
             <Button type="submit" disabled={loading} className="w-full mt-2">
               {loading
                 ? "Placing order..."
-                : `Pay ${total ? formatPrice(total) : ""}`}
+                : `Pay ${total ? formatPrice(total, language) : ""}`}
             </Button>
           </form>
         </CardContent>

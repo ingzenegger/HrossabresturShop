@@ -60,7 +60,7 @@ const checkoutArgs = {
   cartId: "cart-1",
   customerId: "customer-1",
   cartItems,
-  totalCents: 50000,
+  totalAmount: 50000,
   language,
 };
 

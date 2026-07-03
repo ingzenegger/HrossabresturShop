@@ -51,7 +51,7 @@ const ProductDetail = ({ product, category }: props) => {
           <CardHeader>
             <CardTitle className="text-2x1">{product.name[language]}</CardTitle>
             <p className="text-xl font-semibold">
-              {formatPrice(selectedVariant.price)}
+              {formatPrice(selectedVariant.price, language)}
             </p>
           </CardHeader>
           <Separator />

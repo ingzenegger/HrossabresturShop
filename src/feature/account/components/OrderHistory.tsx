@@ -12,7 +12,7 @@ import { getOrders } from "../api/ordersApi";
 
 export default function OrderHistory() {
   const customerId = useAppStore((state) => state.customerId);
-
+  const language = useAppStore((state) => state.language);
   const { data: orders, isLoading } = useQuery({
     queryKey: ["orders", customerId],
     queryFn: () => getOrders(customerId!),
@@ -54,13 +54,13 @@ export default function OrderHistory() {
                   {item.variant_name ? ` — ${item.variant_name}` : ""} x
                   {item.quantity}
                 </span>
-                <span>{formatPrice(item.line_total)}</span>
+                <span>{formatPrice(item.line_total, language)}</span>
               </div>
             ))}
             <Separator className="my-1" />
             <div className="flex justify-between font-semibold text-sm">
               <span>Total</span>
-              <span>{formatPrice(order.total)}</span>
+              <span>{formatPrice(order.total, language)}</span>
             </div>
           </CardContent>
         </Card>

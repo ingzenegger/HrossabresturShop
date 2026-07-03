@@ -27,7 +27,7 @@ const ProductCard = ({ compact, ...product }: Props) => {
         className="relative z-20 aspect-video w-full object-cover brightness-60 dark:brightness-40 "
       />
       <CardHeader>
-        <CardAction> {formatPrice(product.price)} </CardAction>
+        <CardAction> {formatPrice(product.price, language)} </CardAction>
         <CardTitle>{product.name[language]}</CardTitle>
       </CardHeader>
     </Card>
