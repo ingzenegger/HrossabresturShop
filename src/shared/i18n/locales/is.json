@@ -1,0 +1,116 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "total": "Total",
+    "somethingWentWrong": "Something went wrong. Please refresh or come back later."
+  },
+  "nav": {
+    "home": "Home",
+    "cart": "Cart",
+    "account": "Account",
+    "logOut": "Log out"
+  },
+  "home": {
+    "welcome": "Welcome to Hrossabrestur Craft Shop"
+  },
+  "search": {
+    "placeholder": "Search products...",
+    "noResults": "No products found."
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "add": "Add",
+    "logInToAdd": "Please log in to add to cart",
+    "customOrder": "Custom order",
+    "outOfStock": "Out of stock",
+    "onlyLeft_one": "Only {{count}} left",
+    "onlyLeft_other": "Only {{count}} left",
+    "inStock": "In stock: {{count}}",
+    "selectVariant": "Select color",
+    "notFound": "Product not found"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "no items in cart",
+    "quantity": "Qty: {{count}}",
+    "addOne": "Add 1",
+    "removeOne": "Remove 1",
+    "deleteItem": "Delete item",
+    "summaryTitle": "Cart Summary",
+    "itemCount": "Items ({{count}})",
+    "proceedToCheckout": "Proceed to Checkout",
+    "addedToCart": "Product has been added to cart",
+    "goToCart": "Go to Cart"
+  },
+  "checkout": {
+    "fakePaymentTitle": "⚠️ This is a fake payment",
+    "fakePaymentBody": "No real transaction will take place. Do not enter real card details. This checkout is for demonstration purposes only.",
+    "orderSummary": "Order Summary",
+    "paymentDetails": "Payment Details",
+    "nameOnCard": "Name on card",
+    "cardNumber": "Card number",
+    "expiry": "Expiry",
+    "expiryPlaceholder": "MM/YY",
+    "cvv": "CVV",
+    "pay": "Pay {{amount}}",
+    "placingOrder": "Placing order...",
+    "errorEmptyFields": "Please fill in all card fields.",
+    "errorEmptyCart": "Your cart is empty or you are not signed in.",
+    "errorOrderFailed": "Something went wrong placing your order. Please try again."
+  },
+  "orderConfirmation": {
+    "loading": "Loading your order...",
+    "notFound": "Order not found.",
+    "successTitle": "✓ Order placed successfully",
+    "successBody": "Thank you for your fake purchase! Your order is being pretend-processed and we will take our sweet time.",
+    "orderDetails": "Order Details",
+    "viewMyOrders": "View my orders",
+    "continueShopping": "Continue shopping"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "loginDescription": "Enter your email below to login to your account",
+    "loggingIn": "Logging in...",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "signUpDescription": "Create a new account",
+    "repeatPassword": "Repeat Password",
+    "creatingAccount": "Creating an account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "signUpSuccessTitle": "Thank you for signing up!",
+    "signUpSuccessDescription": "Check your email to confirm",
+    "signUpSuccessBody": "You've successfully signed up. Please check your email to confirm your account before signing in.",
+    "resetPasswordTitle": "Reset Your Password",
+    "resetPasswordDescription": "Type in your email and we'll send you a link to reset your password",
+    "sendResetEmail": "Send reset email",
+    "sending": "Sending...",
+    "resetSentTitle": "Check Your Email",
+    "resetSentDescription": "Password reset instructions sent",
+    "resetSentBody": "If you registered using your email and password, you will receive a password reset email."
+  },
+  "account": {
+    "myOrders": "My Orders",
+    "customOrders": "Custom Orders",
+    "settings": "Account Settings",
+    "loadingOrders": "Loading orders...",
+    "noOrders": "No orders yet.",
+    "customOrdersComingSoon": "Feature coming soon: Fill in form to submit custom orders or request restock of item in shop.",
+    "displayName": "Display name",
+    "yourNamePlaceholder": "Your name",
+    "saveName": "Save name",
+    "saving": "Saving...",
+    "nameUpdated": "Name updated!",
+    "nameUpdateFailed": "Failed to update name. Please try again.",
+    "passwordLabel": "Password",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "newPasswordDescription": "Please enter your new password below.",
+    "saveNewPassword": "Save new password",
+    "passwordRequired": "Password is required",
+    "passwordUpdated": "Password updated successfully!"
+  }
+}
