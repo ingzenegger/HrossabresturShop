@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { useProducts } from "@/feature/product/hooks/useProducts";
+import { useAppStore } from "@/shared/store/appStore";
 
 type props = {
   category: string | undefined;
@@ -15,6 +16,7 @@ type props = {
 
 const SimilarItems = ({ category, currentProduct }: props) => {
   const { data: products, isLoading, error } = useProducts();
+  const language = useAppStore((state) => state.language);
 
   if (!category) return;
 
@@ -35,7 +37,9 @@ const SimilarItems = ({ category, currentProduct }: props) => {
       <CardContent className="flex flex-col md:flex-row gap-3 ">
         {products
           .filter((product) =>
-            product.product_attributes?.some((attr) => attr.value === category),
+            product.product_attributes?.some(
+              (attr) => attr.value[language] === category,
+            ),
           )
           .filter((product) => product.id !== currentProduct)
           .map((product) => (

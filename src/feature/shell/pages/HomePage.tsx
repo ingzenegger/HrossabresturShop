@@ -3,10 +3,12 @@ import Loader from "@/shared/components/Loader";
 import { useProducts } from "@/feature/product/hooks/useProducts";
 import { useState } from "react";
 import SearchBar from "@/feature/product/list/components/SearchBar";
+import { useAppStore } from "@/shared/store/appStore";
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useProducts();
   const [searchQuery, setSearchQuery] = useState("");
+  const language = useAppStore((state) => state.language);
 
   if (isLoading) {
     return (
@@ -25,7 +27,8 @@ const HomePage = () => {
     ...new Set(
       products
         ?.flatMap((product) => product.product_attributes)
-        .flatMap((attribute) => attribute.value),
+        .filter((attribute) => attribute.key === "category")
+        .map((attribute) => attribute.value[language]),
     ),
   ];
 
@@ -51,7 +54,9 @@ const HomePage = () => {
               {products
                 .filter((product) =>
                   product.product_attributes?.some(
-                    (attr) => attr.value === category,
+                    (attr) =>
+                      attr.key === "category" &&
+                      attr.value[language] === category,
                   ),
                 )
                 .map((product) => (

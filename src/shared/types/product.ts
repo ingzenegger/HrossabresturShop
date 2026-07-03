@@ -1,8 +1,6 @@
 import * as z from "zod";
 import { TranslatedTextSchema } from "./language";
 
-
-
 export const AssetSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
@@ -27,7 +25,7 @@ export const AttributeSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
   key: z.string(),
-  value: z.string(),
+  value: TranslatedTextSchema,
   created_at: z.string(), //date
 });
 

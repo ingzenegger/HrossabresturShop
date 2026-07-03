@@ -96,7 +96,10 @@ const ProductDetail = ({ product, category }: props) => {
             )}
           </CardFooter>
         </Card>
-        <SimilarItems category={category?.value} currentProduct={product.id} />
+        <SimilarItems
+          category={category?.value[language]}
+          currentProduct={product.id}
+        />
       </div>
     </div>
   );
