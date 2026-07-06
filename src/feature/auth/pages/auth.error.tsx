@@ -6,9 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export default function AuthError() {
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   return (
     <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -16,18 +18,16 @@ export default function AuthError() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">
-                Sorry, something went wrong.
-              </CardTitle>
+              <CardTitle className="text-2xl">{t("auth.errorTitle")}</CardTitle>
             </CardHeader>
             <CardContent>
               {searchParams?.get("error") ? (
                 <p className="text-sm text-muted-foreground">
-                  Code error: {searchParams?.get("error")}
+                  {t("auth.errorCode", { code: searchParams.get("error") })}
                 </p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  An unspecified error occurred.
+                  {t("auth.errorUnspecified")}
                 </p>
               )}
             </CardContent>

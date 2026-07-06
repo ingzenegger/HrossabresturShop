@@ -8,7 +8,8 @@
     "home": "Home",
     "cart": "Cart",
     "account": "Account",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "loggingOut": "Logging out..."
   },
   "home": {
     "welcome": "Welcome to Hrossabrestur Craft Shop"
@@ -84,6 +85,10 @@
     "signUpSuccessTitle": "Thank you for signing up!",
     "signUpSuccessDescription": "Check your email to confirm",
     "signUpSuccessBody": "You've successfully signed up. Please check your email to confirm your account before signing in.",
+    "confirmingAccount": "Confirming your account...",
+    "errorTitle": "Sorry, something went wrong.",
+    "errorCode": "Code error: {{code}}",
+    "errorUnspecified": "An unspecified error occurred.",
     "resetPasswordTitle": "Reset Your Password",
     "resetPasswordDescription": "Type in your email and we'll send you a link to reset your password",
     "sendResetEmail": "Send reset email",

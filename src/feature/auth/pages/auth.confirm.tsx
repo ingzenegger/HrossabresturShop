@@ -2,11 +2,13 @@ import { type EmailOtpType } from "@supabase/supabase-js";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { createClient } from "@/shared/lib/client";
+import { useTranslation } from "react-i18next";
 
 export default function AuthConfirm() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const token_hash = searchParams.get("token_hash");
@@ -38,7 +40,7 @@ export default function AuthConfirm() {
   return (
     <div className="flex min-h-0 md:min-h-svh w-full items-center justify-center">
       <p className="text-muted-foreground text-sm">
-        Confirming your account...
+        {t("auth.confirmingAccount")}
       </p>
     </div>
   );

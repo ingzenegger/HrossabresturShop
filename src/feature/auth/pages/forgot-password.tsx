@@ -12,9 +12,11 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword() {
   const supabase = createClient();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,15 +47,16 @@ export default function ForgotPassword() {
           <div className="flex flex-col gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Check Your Email</CardTitle>
+                <CardTitle className="text-2xl">
+                  {t("auth.resetSentTitle")}
+                </CardTitle>
                 <CardDescription>
-                  Password reset instructions sent
+                  {t("auth.resetSentDescription")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  If you registered using your email and password, you will
-                  receive a password reset email.
+                  {t("auth.resetSentBody")}
                 </p>
               </CardContent>
             </Card>
@@ -69,17 +72,18 @@ export default function ForgotPassword() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Reset Your Password</CardTitle>
+              <CardTitle className="text-2xl">
+                {t("auth.resetPasswordTitle")}
+              </CardTitle>
               <CardDescription>
-                Type in your email and we&apos;ll send you a link to reset your
-                password
+                {t("auth.resetPasswordDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("auth.email")}</Label>
                     <Input
                       id="email"
                       name="email"
@@ -90,13 +94,13 @@ export default function ForgotPassword() {
                   </div>
                   {error && <p className="text-sm text-red-500">{error}</p>}
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Sending..." : "Send reset email"}
+                    {loading ? t("auth.sending") : t("auth.sendResetEmail")}
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  Already have an account?{" "}
+                  {t("auth.alreadyHaveAccount")}
                   <Link to="/login" className="underline underline-offset-4">
-                    Login
+                    {t("auth.login")}
                   </Link>
                 </div>
               </form>
