@@ -1,6 +1,6 @@
 # Hrossabrestur 🧶
 
-A handmade goods shop built with React, TypeScript, and Supabase. Browse crochet toys, hair accessories, home decor, clothing, and bookmarks.
+A bilingual handmade goods shop built with React, TypeScript, and Supabase. Browse crochet toys, hair accessories, home decor, clothing, and bookmarks.
 
 **Live site:** [https://hrossabrestur.ingambeck.com](https://hrossabrestur.ingambeck.com)
 
@@ -22,6 +22,7 @@ A handmade goods shop built with React, TypeScript, and Supabase. Browse crochet
 ## Features
 
 - Browse products by category
+- Bilingual interface — full Icelandic and English UI with a language switcher (Icelandic default)
 - Search for products
 - View individual product pages
 - User registration and login via Supabase Auth
@@ -40,7 +41,8 @@ A handmade goods shop built with React, TypeScript, and Supabase. Browse crochet
 - **React Router v7** for routing
 - **Supabase** for database and authentication
 - **TanStack React Query** for server state and data fetching
-- **Zustand** for global client state (cart, auth)
+- **Zustand** for global client state (cart, auth, language)
+- **i18next** with **react-i18next** for UI translations
 - **Tailwind CSS v4** for styling
 - **ShadCN UI** for component primitives
 - **Vitest** and **React Testing Library** for tests
@@ -74,7 +76,7 @@ src/
 
 ## Running locally
 
-The project connects to a shared class Supabase instance. If you have access to the Supabase project, create a `.env` file in the root with:
+The project runs against a Supabase project with the shop's schema. If you have access to the Supabase project, create a `.env` file in the root with:
 
 ```
 VITE_SUPABASE_URL=your_supabase_url
@@ -101,6 +103,11 @@ Tests cover:
 - **Cart store logic** — adding, removing, and updating item quantities (`src/shared/store/appStore.test.ts`)
 - **Checkout API** — order insert success, order insert failure, order items insert failure (`src/feature/checkout/api/checkoutApi.test.ts`)
 - **Checkout page** — empty card field validation, empty cart guard, API failure handling, successful navigation to confirmation (`src/feature/checkout/pages/CheckoutPage.test.tsx`)
+- **Language sync** — store-driven language changes applied to i18next and the document (`src/shared/i18n/useLanguageSync.test.ts`)
+- **Translation files** — key parity between English and Icelandic, no empty strings (`src/shared/i18n/locales.test.ts`)
+- **SearchBar** — renders translated strings in both languages (`src/feature/product/list/components/SearchBar.test.tsx`)
+- **Price formatting** — ISK formatting independent of browser locale support (`src/shared/lib/formatPrice.test.ts`)
+- **Date formatting** — Icelandic and English date output (`src/shared/lib/formatDate.test.ts`)
 
 ---
 
@@ -112,13 +119,13 @@ ESLint warnings in `src/shared/components/ui/` are from ShadCN UI library compon
 
 ## Future plans
 
-This project started as a school assignment but is intended to continue as a real shop for handmade goods.
+This project is an online shop for handmade goods and patterns. It started as a school assignment but is being updated and worked on further for real use.
 
-The most significant planned change is a full localisation to Icelandic, as the shop is aimed at a local market. Selling finished items abroad is not currently planned, though patterns may be offered internationally at a later stage.
+The shop is fully bilingual — Icelandic and English throughout the UI and product data, with Icelandic as the default — since it is aimed at a local market. Selling finished items abroad is not currently planned, though patterns may be offered internationally at a later stage.
 
-Other planned improvements include:
+Planned improvements include:
 
-- Icelandic language throughout the UI
+- Admin section — managing products and their translations, variants, stock, and prices without touching the database directly
 - Custom order requests — allowing customers to submit requests for specific items or restocks
 - Email confirmation on sign-up and order confirmation
 - Payment integration once the shop is ready for real transactions

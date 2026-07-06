@@ -14,6 +14,6 @@
   - decrement stock_quantity on checkout (variant if variant_id exists, else product).
   - Also needs a stock guard to prevent checkout if item is already out of stock when multiple users have the same item in cart.
   - For solution checkout Supabase RPC/database function to check and decrement atomically.
-- [ ] SETJA ALLT HELVÍTIS DRASLIÐ Á ÍSLENSKU? HVÍ GERÐI ÉG ÞAÐ EKKI STRAX???
+- [x] SETJA ALLT HELVÍTIS DRASLIÐ Á ÍSLENSKU? HVÍ GERÐI ÉG ÞAÐ EKKI STRAX???
 - [ ] Bæta við about síðu - af hverju "Hrossabrestur" - af því þannig hljóma úlnliðirnir á mér eftir of mikla handavinnu
 - [ ] á mobile view (mögulega md og up líka) þarf að fá hlekki efst fyrir flokkana,
