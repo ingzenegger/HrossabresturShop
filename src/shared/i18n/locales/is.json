@@ -1,24 +1,24 @@
 {
   "common": {
-    "loading": "Loading...",
-    "total": "Total",
-    "somethingWentWrong": "Something went wrong. Please refresh or come back later."
+    "loading": "Hleður...",
+    "total": "Samtals",
+    "somethingWentWrong": "Eitthvað fór úrskeiðis. Prufaðu að endurræsa síðuna eða komdu aftur síðar."
   },
   "nav": {
-    "home": "Home",
-    "cart": "Cart",
-    "account": "Account",
-    "logOut": "Log out"
+    "home": "Heim",
+    "cart": "Karfa",
+    "account": "Mínar síður",
+    "logOut": "Útskráning"
   },
   "home": {
-    "welcome": "Welcome to Hrossabrestur Craft Shop"
+    "welcome": "Velkomin í vefverslunina Hrossabrestur "
   },
   "search": {
-    "placeholder": "Search products...",
-    "noResults": "No products found."
+    "placeholder": "Leita að vöru...",
+    "noResults": "Ekkert fannst."
   },
   "product": {
-    "addToCart": "Add to cart",
+    "addToCart": "Setja í körfu",
     "add": "Add",
     "logInToAdd": "Please log in to add to cart",
     "customOrder": "Custom order",

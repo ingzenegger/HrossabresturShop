@@ -4,23 +4,25 @@ import { useProducts } from "@/feature/product/hooks/useProducts";
 import { useState } from "react";
 import SearchBar from "@/feature/product/list/components/SearchBar";
 import { useAppStore } from "@/shared/store/appStore";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useProducts();
   const [searchQuery, setSearchQuery] = useState("");
   const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
       <div className="flex items-center w-full justify-center">
-        <Loader message="Loading..." />
+        <Loader message={t("common.loading")} />
       </div>
     );
   }
 
   if (error || !products) {
     console.error(error);
-    return <div>Something went wrong. Please refresh or come back later.</div>;
+    return <div>{t("common.somethingWentWrong")}</div>;
   }
 
   const categories = [
@@ -35,7 +37,7 @@ const HomePage = () => {
   return (
     <div className="pt-4 pb-4">
       <div className="flex justify-center">
-        <h1>Welcome to Hrossabrestur Craft Shop</h1>
+        <h1>{t("home.welcome")}</h1>
       </div>
 
       <SearchBar
