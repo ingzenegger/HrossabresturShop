@@ -31,7 +31,7 @@
   },
   "cart": {
     "title": "Cart",
-    "empty": "no items in cart",
+    "empty": "No items in cart",
     "quantity": "Qty: {{count}}",
     "addOne": "Add 1",
     "removeOne": "Remove 1",

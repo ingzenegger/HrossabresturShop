@@ -1,13 +1,16 @@
 import LogOut from "@/feature/auth/components/logout";
 import { NavLink } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const links = [
-  { to: "/account/orders", label: "My Orders" },
-  { to: "/account/custom-orders", label: "Custom Orders" },
-  { to: "/account/settings", label: "Account Settings" },
-];
+  { to: "/account/orders", label: "account.myOrders" },
+  { to: "/account/custom-orders", label: "account.customOrders" },
+  { to: "/account/settings", label: "account.settings" },
+] as const;
 
 export default function Sidebar() {
+  const { t } = useTranslation();
+
   return (
     <nav className="flex flex-col gap-1 w-full md:w-48 shrink-0">
       {links.map((link) => (
@@ -22,7 +25,7 @@ export default function Sidebar() {
             }`
           }
         >
-          {link.label}
+          {t(link.label)}
         </NavLink>
       ))}
       <div className="mt-3 py-3 border-y border-amber-200">
