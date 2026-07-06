@@ -43,8 +43,8 @@ export default function OrderHistory() {
               <CardTitle className="text-sm font-semibold">
                 {formatDate(order.submitted_at, language)}
               </CardTitle>
-              <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800 capitalize">
-                {order.status}
+              <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800">
+                {t(`account.orderStatus.${order.status}`)}
               </span>
             </div>
             <p className="text-xs text-muted-foreground break-all">

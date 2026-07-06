@@ -111,6 +111,12 @@
     "newPasswordDescription": "Sláðu inn nýtt lykilorð hér að neðan",
     "saveNewPassword": "Vista nýtt lykilorð",
     "passwordRequired": "Lykilorð nauðsynlegt",
-    "passwordUpdated": "Lykilorð uppfært!"
+    "passwordUpdated": "Lykilorð uppfært!",
+    "orderStatus": {
+      "cancelled": "Ógild",
+      "fulfilled": "Afgreidd",
+      "pending": "Í vinnslu",
+      "submitted": "Send inn"
+    }
   }
 }

@@ -111,6 +111,12 @@
     "newPasswordDescription": "Please enter your new password below.",
     "saveNewPassword": "Save new password",
     "passwordRequired": "Password is required",
-    "passwordUpdated": "Password updated successfully!"
+    "passwordUpdated": "Password updated successfully!",
+    "orderStatus": {
+      "cancelled": "Cancelled",
+      "fulfilled": "Fulfilled",
+      "pending": "Pending",
+      "submitted": "Submitted"
+    }
   }
 }
