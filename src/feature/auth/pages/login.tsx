@@ -11,10 +11,12 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
 import { createClient } from "@/shared/lib/client";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const navigate = useNavigate();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,18 +52,16 @@ export default function Login() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardTitle className="text-2xl">{t("auth.login")}</CardTitle>
 
-              <CardDescription>
-                Enter your email below to login to your account
-              </CardDescription>
+              <CardDescription>{t("auth.loginDescription")}</CardDescription>
             </CardHeader>
 
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("auth.email")}</Label>
 
                     <Input
                       id="email"
@@ -74,13 +74,13 @@ export default function Login() {
 
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t("auth.password")}</Label>
 
                       <Link
                         to="/forgot-password"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                       >
-                        Forgot your password?
+                        {t("auth.forgotPassword")}
                       </Link>
                     </div>
 
@@ -95,14 +95,14 @@ export default function Login() {
                   {error && <p className="text-sm text-red-500">{error}</p>}
 
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? t("auth.loggingIn") : t("auth.login")}
                   </Button>
                 </div>
 
                 <div className="mt-4 text-center text-sm">
-                  Don&apos;t have an account?{" "}
+                  {t("auth.noAccount")}{" "}
                   <Link to="/sign-up" className="underline underline-offset-4">
-                    Sign up
+                    {t("auth.signUp")}
                   </Link>
                 </div>
               </form>

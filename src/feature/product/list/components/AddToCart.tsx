@@ -1,6 +1,7 @@
 import { Button } from "@/shared/components/ui/button";
 import { useAppStore } from "@/shared/store/appStore";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 type props = {
   btnLabel?: string;
@@ -12,6 +13,7 @@ const AddToCart = ({ btnLabel = "Add", productId, variantId }: props) => {
   const handleAddToCart = useAppStore((state) => state.handleAddToCart);
   const user = useAppStore((state) => state.user);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -24,7 +26,7 @@ const AddToCart = ({ btnLabel = "Add", productId, variantId }: props) => {
         </Button>
       ) : (
         <Button className="cursor-pointer" onClick={() => navigate("/login")}>
-          Please log in to add to cart
+          {t("product.logInToAdd")}
         </Button>
       )}
     </>

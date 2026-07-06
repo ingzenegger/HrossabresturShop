@@ -12,9 +12,11 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function SignUp() {
   const supabase = createClient();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -56,14 +58,15 @@ export default function SignUp() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">
-                Thank you for signing up!
+                {t("auth.signUpSuccessTitle")}
               </CardTitle>
-              <CardDescription>Check your email to confirm</CardDescription>
+              <CardDescription>
+                {t("auth.signUpSuccessDescription")}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                You&apos;ve successfully signed up. Please check your email to
-                confirm your account before signing in.
+                {t("auth.signUpSuccessBody")}
               </p>
               {/* það er enginn email fítus tengdur, þetta gæti farið út í skiptum fyrir navigate á protected síðu með kannski einhverjum "success" sonner, en held ég hafi þetta svona for future use */}
             </CardContent>
@@ -82,14 +85,14 @@ export default function SignUp() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Sign up</CardTitle>
-              <CardDescription>Create a new account</CardDescription>
+              <CardTitle className="text-2xl">{t("auth.signUp")}</CardTitle>
+              <CardDescription>{t("auth.signUpDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("auth.email")}</Label>
                     <Input
                       id="email"
                       name="email"
@@ -100,7 +103,7 @@ export default function SignUp() {
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t("auth.password")}</Label>
                     </div>
                     <Input
                       id="password"
@@ -111,7 +114,9 @@ export default function SignUp() {
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="repeat-password">Repeat Password</Label>
+                      <Label htmlFor="repeat-password">
+                        {t("auth.repeatPassword")}
+                      </Label>
                     </div>
                     <Input
                       id="repeat-password"
@@ -122,13 +127,13 @@ export default function SignUp() {
                   </div>
                   {error && <p className="text-sm text-red-500">{error}</p>}
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Creating an account..." : "Sign up"}
+                    {loading ? t("auth.creatingAccount") : t("auth.signUp")}
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  Already have an account?{" "}
+                  {t("auth.alreadyHaveAccount")}{" "}
                   <Link to="/login" className="underline underline-offset-4">
-                    Login
+                    {t("auth.login")}
                   </Link>
                 </div>
               </form>

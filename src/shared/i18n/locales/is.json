@@ -1,0 +1,129 @@
+{
+  "common": {
+    "loading": "Hleður...",
+    "total": "Samtals",
+    "somethingWentWrong": "Eitthvað fór úrskeiðis. Prufaðu að endurræsa síðuna eða komdu aftur síðar."
+  },
+  "nav": {
+    "home": "Heim",
+    "cart": "Karfa",
+    "account": "Mínar síður",
+    "logOut": "Útskráning",
+    "loggingOut": "Skráir út..."
+  },
+  "home": {
+    "welcome": "Velkomin í vefverslunina Hrossabrestur "
+  },
+  "search": {
+    "placeholder": "Leita að vöru...",
+    "noResults": "Ekkert fannst."
+  },
+  "product": {
+    "addToCart": "Setja í körfu",
+    "add": "Add",
+    "logInToAdd": "Skráðu þig inn til að bæta í körfuna þína",
+    "customOrder": "Serpöntun",
+    "outOfStock": "Ekki til á lager",
+    "onlyLeft_one": "Aðeins {{count}} til á lager",
+    "onlyLeft_other": "Aðeins {{count}} til á lager",
+    "inStock": "Á lager: {{count}}",
+    "selectVariant": "Veldu lit",
+    "notFound": "Vara fannst ekki",
+    "similiarItemstitle": "Þér gæti einnig líkað"
+  },
+  "cart": {
+    "title": "Karfa",
+    "empty": "Karfan þín er tóm",
+    "quantity": "{{count}} stk.",
+    "addOne": "Bæta við 1",
+    "removeOne": "Fjarlægja 1",
+    "deleteItem": "Eyða",
+    "summaryTitle": "Samantekt",
+    "itemCount": "Vörur ({{count}})",
+    "proceedToCheckout": "Áfram í greiðsluferli",
+    "addedToCart": "Vöru bætt í körfu",
+    "goToCart": "Skoða körfu"
+  },
+  "checkout": {
+    "fakePaymentTitle": "⚠️ Þetta er ekki alvöru greiðsluferli",
+    "fakePaymentBody": "Engin alvöru kaup fara fram. Ekki slá inn alvöru kortaupplýsingar. Þetta kaupferli er aðeins til sýnis sem stendur.",
+    "orderSummary": "Þín pöntun",
+    "paymentDetails": "Greiðsluupplýsingar",
+    "nameOnCard": "Nafn korthafa",
+    "cardNumber": "Kortanúmer",
+    "expiry": "Gildistími",
+    "expiryPlaceholder": "MM/ÁÁ",
+    "cvv": "CVV",
+    "pay": "Greiða {{amount}}",
+    "placingOrder": "Sendi inn pöntun...",
+    "errorEmptyFields": "Vinsamlegast fylltu út alla kortareiti.",
+    "errorEmptyCart": "Karfan þín er tóm eða þú hefur ekki skráð þig inn.",
+    "errorOrderFailed": "Eitthvað fór úrskeiðis við að senda pöntunina þína. Vinsamlegast reyndu aftur."
+  },
+  "orderConfirmation": {
+    "loading": "Hleður pöntun...",
+    "notFound": "Pöntun fannst ekki.",
+    "successTitle": "✓ Pöntun móttekin",
+    "successBody": "Takk fyrir gervi kaupin! Verið er að gervi-afgreiða pöntunina þína og mun það taka dágóðan tíma.",
+    "orderDetails": "Pöntunarupplýsingar",
+    "viewMyOrders": "Skoða mínar pantanir",
+    "continueShopping": "Halda áfram að versla"
+  },
+  "auth": {
+    "email": "Netfang",
+    "password": "Lykilorð",
+    "login": "Skrá inn",
+    "loginDescription": "Sláðu inn netfangið þitt til að skrá þig inn",
+    "loggingIn": "Skráir inn...",
+    "forgotPassword": "Gleymt lykilorð?",
+    "noAccount": "Ekki með aðgang?",
+    "signUp": "Skráning",
+    "signUpDescription": "Búa til aðgang",
+    "repeatPassword": "Lykilorð endurtekið",
+    "creatingAccount": "Býr til aðgang...",
+    "alreadyHaveAccount": "Þegar með aðgang?",
+    "passwordsDoNotMatch": "Lykilorðin eru ekki eins",
+    "signUpSuccessTitle": "Takk fyrir skráninguna!",
+    "signUpSuccessDescription": "Athugaðu tölvupóstinn þinn til að staðfesta",
+    "signUpSuccessBody": "Þú hefur skráð þig. Vinsamlegast kíktu í tölvupóstinn þinn til að staðfesta aðganginn þinn áður en þú skráir þig inn.",
+    "confirmingAccount": "Staðfestir aðganginn þinn...",
+    "errorTitle": "Úps, eitthvað fór úrskeiðis.",
+    "errorCode": "Code error: {{code}}",
+    "errorUnspecified": "An unspecified error occurred.",
+    "resetPasswordTitle": "Endurstilla lykilorð",
+    "resetPasswordDescription": "Sláðu inn netfangið þitt og við sendum þér hlekk til að velja nýtt lykilorð.",
+    "sendResetEmail": "Senda póst til að endurstilla",
+    "sending": "Sendir...",
+    "resetSentTitle": "Athugaðu tölvupóstinn þinn",
+    "resetSentDescription": "Leiðbeiningar sendar vegna endurstillingar lykilorðs",
+    "resetSentBody": "Ef þú skráðir þig mið netfangi og lykilorði þá færðu tölvupóst til að endurstilla lykliorðið."
+  },
+  "account": {
+    "myOrders": "Mínar pantanir",
+    "customOrders": "Sérpantanir",
+    "settings": "Stillingar",
+    "greeting": "Halló, <styled>{{name}}</styled>",
+    "loadingOrders": "Hleð pantanir...",
+    "noOrders": "Engar pantanir.",
+    "customOrdersComingSoon": "Í vinnslu: Pöntunarform til að senda sérpöntun (t.d. vara í öðrum lit) eða óska eftir vöru sem ekki er til á lager.",
+    "displayName": "Skjánafn",
+    "yourNamePlaceholder": "Nafnið þitt",
+    "saveName": "Vista nafn",
+    "saving": "Vistar...",
+    "nameUpdated": "Nafn uppfært!",
+    "nameUpdateFailed": "Gat ekki uppfært nafn. Vinsamlegast reyndu aftur.",
+    "passwordLabel": "Lykilorð",
+    "changePassword": "Breyta lykilorði",
+    "newPassword": "Nýtt lykilorð",
+    "newPasswordDescription": "Sláðu inn nýtt lykilorð hér að neðan",
+    "saveNewPassword": "Vista nýtt lykilorð",
+    "passwordRequired": "Lykilorð nauðsynlegt",
+    "passwordUpdated": "Lykilorð uppfært!",
+    "orderStatus": {
+      "cancelled": "Ógild",
+      "fulfilled": "Afgreidd",
+      "pending": "Í vinnslu",
+      "submitted": "Send inn"
+    }
+  }
+}

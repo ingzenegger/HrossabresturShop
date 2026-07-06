@@ -19,6 +19,12 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Separator } from "@/shared/components/ui/separator";
 import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
+import { useTranslation } from "react-i18next";
+
+type CheckoutErrorKey =
+  | "checkout.errorEmptyFields"
+  | "checkout.errorEmptyCart"
+  | "checkout.errorOrderFailed";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -28,10 +34,12 @@ export default function CheckoutPage() {
   const setCartItems = useAppStore((state) => state.setCartItems);
   const setCartId = useAppStore((state) => state.setCartId);
   const total = calculateCartTotal(cartItems);
+  const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
   // const { data: totals } = useCartTotals();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<CheckoutErrorKey | null>(null);
 
   //fake card info only stored in state
   const [cardNumber, setCardNumber] = useState("");
@@ -45,12 +53,12 @@ export default function CheckoutPage() {
 
     //check for there beying any entry, no actual requirements for them
     if (!cardNumber || !cardName || !expiry || !cvv) {
-      setError("Please fill in all card fields.");
+      setError("checkout.errorEmptyFields");
       return;
     }
     //just in case, shouldn't be seeing any checkout page if you are not logged in
     if (!cartId || !customerId || cartItems.length === 0 || !total) {
-      setError("Your cart is empty or you are not signed in.");
+      setError("checkout.errorEmptyCart");
       return;
     }
 
@@ -60,11 +68,12 @@ export default function CheckoutPage() {
       cartId,
       customerId,
       cartItems,
-      totalCents: total,
+      totalAmount: total,
+      language: language,
     });
 
     if (!orderId) {
-      setError("Something went wrong placing your order. Please try again.");
+      setError("checkout.errorOrderFailed");
       setLoading(false);
       return;
     }
@@ -79,17 +88,14 @@ export default function CheckoutPage() {
   return (
     <div className="max-w-lg mx-auto mt-8 px-4 flex flex-col gap-6">
       <div className="bg-amber-100 border border-amber-400 text-amber-900 rounded-md p-4 text-sm">
-        <p className="font-semibold mb-1">⚠️ This is a fake payment</p>
-        <p>
-          No real transaction will take place. Do not enter real card details.
-          This checkout is for demonstration purposes only.
-        </p>
+        <p className="font-semibold mb-1">{t("checkout.fakePaymentTitle")}</p>
+        <p>{t("checkout.fakePaymentBody")}</p>
       </div>
 
       {/* Order summary */}
       <Card>
         <CardHeader>
-          <CardTitle>Order Summary</CardTitle>
+          <CardTitle>{t("checkout.orderSummary")}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {cartItems.map((item) => {
@@ -97,18 +103,18 @@ export default function CheckoutPage() {
             return (
               <div key={item.id} className="flex justify-between text-sm">
                 <span>
-                  {item.product.name}
-                  {item.variant ? ` — ${item.variant.name}` : ""} x
+                  {item.product.name[language]}
+                  {item.variant ? ` — ${item.variant.name[language]}` : ""} x
                   {item.quantity}
                 </span>
-                <span>{formatPrice(unitPrice * item.quantity)}</span>
+                <span>{formatPrice(unitPrice * item.quantity, language)}</span>
               </div>
             );
           })}
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>{total ? formatPrice(total) : "—"}</span>
+            <span>{t("common.total")}</span>
+            <span>{total ? formatPrice(total, language) : "—"}</span>
           </div>
         </CardContent>
       </Card>
@@ -116,12 +122,12 @@ export default function CheckoutPage() {
       {/* Fake card form */}
       <Card className="mb-3">
         <CardHeader>
-          <CardTitle>Payment Details</CardTitle>
+          <CardTitle>{t("checkout.paymentDetails")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <Label htmlFor="cardName">Name on card</Label>
+              <Label htmlFor="cardName">{t("checkout.nameOnCard")}</Label>
               <Input
                 id="cardName"
                 placeholder="Jabberwocky"
@@ -131,7 +137,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <Label htmlFor="cardNumber">Card number</Label>
+              <Label htmlFor="cardNumber">{t("checkout.cardNumber")}</Label>
               <Input
                 id="cardNumber"
                 placeholder="1234 5678 9012 3456"
@@ -143,17 +149,17 @@ export default function CheckoutPage() {
 
             <div className="flex gap-4">
               <div className="flex flex-col gap-1 flex-1">
-                <Label htmlFor="expiry">Expiry</Label>
+                <Label htmlFor="expiry">{t("checkout.expiry")}</Label>
                 <Input
                   id="expiry"
-                  placeholder="MM/YY"
+                  placeholder={t("checkout.expiryPlaceholder")}
                   maxLength={5}
                   value={expiry}
                   onChange={(e) => setExpiry(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-1 w-24">
-                <Label htmlFor="cvv">CVV</Label>
+                <Label htmlFor="cvv">{t("checkout.cvv")}</Label>
                 <Input
                   id="cvv"
                   placeholder="123"
@@ -164,12 +170,14 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {error && <p className="text-red-600 text-sm">{error}</p>}
+            {error && <p className="text-red-600 text-sm">{t(error)}</p>}
 
             <Button type="submit" disabled={loading} className="w-full mt-2">
               {loading
-                ? "Placing order..."
-                : `Pay ${total ? formatPrice(total) : ""}`}
+                ? t("checkout.placingOrder")
+                : t("checkout.pay", {
+                    amount: ` ${total ? formatPrice(total, language) : ""}`,
+                  })}
             </Button>
           </form>
         </CardContent>

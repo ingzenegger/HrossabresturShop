@@ -13,14 +13,14 @@ const mockItem: CartItem = {
   variant_id: "44444444-4444-4444-4444-444444444444",
   product: {
     id: "33333333-3333-3333-3333-333333333333",
-    name: "Test Scarf",
+    name: { en: "Test Scarf", is: "Prufu trefill" },
     price: 2500,
     currency: "ISK",
     stock_quantity: 10,
     is_active: true,
   },
   variant: {
-    name: "Blue",
+    name: { en: "Blue", is: "Blár" },
     price: 2500,
     stock_quantity: 10,
   },
@@ -41,7 +41,10 @@ describe("cart store", () => {
   });
 
   it("adds multiple different items to the cart", () => {
-    const secondItem: CartItem = { ...mockItem, id: "55555555-5555-5555-5555-555555555555" };
+    const secondItem: CartItem = {
+      ...mockItem,
+      id: "55555555-5555-5555-5555-555555555555",
+    };
 
     useAppStore.getState().addToCart(mockItem);
     useAppStore.getState().addToCart(secondItem);
@@ -58,13 +61,18 @@ describe("cart store", () => {
   });
 
   it("does not affect other items when updating quantity", () => {
-    const secondItem: CartItem = { ...mockItem, id: "55555555-5555-5555-5555-555555555555" };
+    const secondItem: CartItem = {
+      ...mockItem,
+      id: "55555555-5555-5555-5555-555555555555",
+    };
 
     useAppStore.getState().addToCart(mockItem);
     useAppStore.getState().addToCart(secondItem);
     useAppStore.getState().updateQuantity(mockItem.id, 5);
 
-    const second = useAppStore.getState().cartItems.find(i => i.id === secondItem.id);
+    const second = useAppStore
+      .getState()
+      .cartItems.find((i) => i.id === secondItem.id);
     expect(second?.quantity).toBe(1);
   });
 
@@ -76,7 +84,10 @@ describe("cart store", () => {
   });
 
   it("only removes the correct item when multiple are in the cart", () => {
-    const secondItem: CartItem = { ...mockItem, id: "55555555-5555-5555-5555-555555555555" };
+    const secondItem: CartItem = {
+      ...mockItem,
+      id: "55555555-5555-5555-5555-555555555555",
+    };
 
     useAppStore.getState().addToCart(mockItem);
     useAppStore.getState().addToCart(secondItem);
@@ -85,5 +96,19 @@ describe("cart store", () => {
     const remaining = useAppStore.getState().cartItems;
     expect(remaining).toHaveLength(1);
     expect(remaining[0].id).toBe(secondItem.id);
+  });
+});
+
+describe("language store", () => {
+  beforeEach(() => {
+    useAppStore.setState({ language: "is" });
+  });
+
+  it("defaults to Icelandic", () => {
+    expect(useAppStore.getState().language).toBe("is");
+  });
+  it("changes language with setLanguage", () => {
+    useAppStore.getState().setLanguage("en");
+    expect(useAppStore.getState().language).toBe("en");
   });
 });

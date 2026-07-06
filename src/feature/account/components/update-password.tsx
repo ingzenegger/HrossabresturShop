@@ -10,9 +10,11 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function UpdatePassword() {
   const supabase = createClient();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -53,32 +55,40 @@ export default function UpdatePassword() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Reset Your Password</CardTitle>
+              <CardTitle className="text-2xl">
+                {t("auth.resetPasswordTitle")}
+              </CardTitle>
               <CardDescription>
-                Please enter your new password below.
+                {t("account.newPasswordDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="password">New password</Label>
+                    <Label htmlFor="password">{t("account.newPassword")}</Label>
                     <Input
                       id="password"
                       name="password"
                       type="password"
-                      placeholder="New password"
+                      placeholder={t("account.newPassword")}
                       required
                     />
                   </div>
                   {error && <p className="text-sm text-red-500">{error}</p>}
                   {success && (
                     <p className="text-sm text-green-500">
-                      Password updated successfully!
+                      {t("account.passwordUpdated")}
                     </p>
                   )}
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Saving..." : "Save new password"}
+                  <Button
+                    type="submit"
+                    className="w-full cursor-pointer"
+                    disabled={loading}
+                  >
+                    {loading
+                      ? t("account.saving")
+                      : t("account.saveNewPassword")}
                   </Button>
                 </div>
               </form>

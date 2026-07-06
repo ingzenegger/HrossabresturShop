@@ -1,6 +1,8 @@
 import { Input } from "@/shared/components/ui/input";
 import ProductCard from "./ProductCard";
 import type { Product } from "@/shared/types/product";
+import { useAppStore } from "@/shared/store/appStore";
+import { useTranslation } from "react-i18next";
 
 type SearchBarProps = {
   products: Product[];
@@ -9,11 +11,13 @@ type SearchBarProps = {
 };
 
 const SearchBar = ({ products, query, onQueryChange }: SearchBarProps) => {
+  const { t } = useTranslation();
+  const language = useAppStore((state) => state.language);
   const isSearching = query.length >= 2;
 
   const results = isSearching
     ? products.filter((product) =>
-        product.name.toLowerCase().includes(query.toLowerCase()),
+        product.name[language].toLowerCase().includes(query.toLowerCase()),
       )
     : [];
 
@@ -21,7 +25,7 @@ const SearchBar = ({ products, query, onQueryChange }: SearchBarProps) => {
     <div className="flex flex-col px-3 pt-4 items-center">
       <Input
         type="text"
-        placeholder="Search products..."
+        placeholder={t("search.placeholder")}
         value={query}
         onChange={(e) => onQueryChange(e.target.value)}
         className="max-w-sm"
@@ -36,7 +40,9 @@ const SearchBar = ({ products, query, onQueryChange }: SearchBarProps) => {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">No products found.</p>
+            <p className="text-sm text-muted-foreground">
+              {t("search.noResults")}
+            </p>
           )}
         </div>
       )}

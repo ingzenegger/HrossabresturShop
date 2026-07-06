@@ -4,6 +4,8 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { checkout } from "./checkoutApi";
+import type { CartItem } from "@/shared/types/cart";
+import type { Language } from "@/shared/types/language";
 
 //mockidy mock
 vi.mock("@/shared/lib/client", () => ({
@@ -28,7 +30,7 @@ const mockFrom = vi.fn(() => ({
 const mockSupabase = { from: mockFrom };
 
 //test data
-const cartItems = [
+const cartItems: CartItem[] = [
   {
     id: "item-1",
     cart_id: "cart-1",
@@ -39,25 +41,27 @@ const cartItems = [
     variant_id: "var-1",
     product: {
       id: "prod-1",
-      name: "Handmade Thingy",
+      name: { en: "Handmade Thingy", is: "handgert dót" },
       price: 25000,
       currency: "ISK",
       stock_quantity: 10,
       is_active: true,
     },
     variant: {
-      name: "Blue",
+      name: { en: "Blue", is: "Blár" },
       price: 25000,
       stock_quantity: 10,
     },
   },
 ];
+const language: Language = "en";
 
 const checkoutArgs = {
   cartId: "cart-1",
   customerId: "customer-1",
   cartItems,
-  totalCents: 50000,
+  totalAmount: 50000,
+  language,
 };
 
 describe("checkout", () => {
@@ -124,5 +128,30 @@ describe("checkout", () => {
     const result = await checkout(checkoutArgs);
 
     expect(result).toBe("order-123");
+  });
+
+  it("saves product name in selected language when inserting order_item", async () => {
+    // order insert succeeds:
+    mockSingle.mockResolvedValueOnce({
+      data: { id: "order-123" },
+      error: null,
+    });
+    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
+    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
+    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+
+    // Act: checkout with Icelandic selected
+    await checkout({ ...checkoutArgs, language: "is" });
+
+    // Assert: the order_items insert received the Icelandic name
+    expect(mockInsert).toHaveBeenCalledWith([
+      expect.objectContaining({ product_name: "handgert dót" }),
+    ]);
+    expect(mockInsert).toHaveBeenCalledWith([
+      expect.objectContaining({ variant_name: "Blár" }),
+    ]);
+    expect(mockInsert).not.toHaveBeenCalledWith([
+      expect.objectContaining({ product_name: "Handmade Thingy" }),
+    ]);
   });
 });

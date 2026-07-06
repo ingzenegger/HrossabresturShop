@@ -11,7 +11,7 @@ export const OrderItemSchema = z.object({
 
 export const OrderSchema = z.object({
   id: z.uuid(),
-  status: z.string(),
+  status: z.enum(["cancelled", "fulfilled", "pending", "submitted"]),
   total: z.number().int().nonnegative(),
   submitted_at: z.string(),
   order_items: z.array(OrderItemSchema).default([]),

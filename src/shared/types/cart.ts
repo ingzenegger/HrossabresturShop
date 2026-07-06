@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TranslatedTextSchema } from "./language";
 
 
 export const CartItemSchema = z.object({
@@ -11,7 +12,7 @@ export const CartItemSchema = z.object({
   variant_id: z.uuid().nullable(),
   product: z.object({
     id: z.uuid(),
-    name: z.string(),
+    name: TranslatedTextSchema,
     price: z.number().int().nonnegative(),
     currency: z.string(),
     stock_quantity: z.number(),
@@ -19,7 +20,7 @@ export const CartItemSchema = z.object({
   }),
   variant: z
     .object({
-      name: z.string(),
+      name: TranslatedTextSchema,
       price: z.number().int().nonnegative(),
       stock_quantity: z.number(),
     })

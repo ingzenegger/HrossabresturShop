@@ -7,6 +7,8 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { useProducts } from "@/feature/product/hooks/useProducts";
+import { useAppStore } from "@/shared/store/appStore";
+import { useTranslation } from "react-i18next";
 
 type props = {
   category: string | undefined;
@@ -15,6 +17,8 @@ type props = {
 
 const SimilarItems = ({ category, currentProduct }: props) => {
   const { data: products, isLoading, error } = useProducts();
+  const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   if (!category) return;
 
@@ -30,12 +34,14 @@ const SimilarItems = ({ category, currentProduct }: props) => {
   return (
     <Card className="flex gap-3 ring-0">
       <CardHeader>
-        <CardTitle>You might also like</CardTitle>
+        <CardTitle>{t("product.similiarItemstitle")}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col md:flex-row gap-3 ">
         {products
           .filter((product) =>
-            product.product_attributes?.some((attr) => attr.value === category),
+            product.product_attributes?.some(
+              (attr) => attr.value[language] === category,
+            ),
           )
           .filter((product) => product.id !== currentProduct)
           .map((product) => (

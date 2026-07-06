@@ -14,6 +14,8 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
 import { OrderSchema, type Order } from "@/shared/types/order";
+import { useAppStore } from "@/shared/store/appStore";
+import { useTranslation } from "react-i18next";
 
 async function getOrder(orderId: string) {
   const supabase = createClient();
@@ -40,6 +42,8 @@ async function getOrder(orderId: string) {
 export default function OrderConfirmationPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   const { data: order, isLoading } = useQuery<Order | null>({
     queryKey: ["order", orderId],
@@ -48,24 +52,26 @@ export default function OrderConfirmationPage() {
   });
 
   if (isLoading)
-    return <p className="mt-8 text-center">Loading your order...</p>;
-  if (!order) return <p className="mt-8 text-center">Order not found.</p>;
+    return <p className="mt-8 text-center">{t("orderConfirmation.loading")}</p>;
+  if (!order)
+    return (
+      <p className="mt-8 text-center">{t("orderConfirmation.notFound")}</p>
+    );
 
   return (
     <div className="max-w-lg mx-auto mt-8 px-4 flex flex-col gap-6">
       {/* Success banner */}
       <div className="bg-green-100 border border-green-400 text-green-900 rounded-md p-4 text-sm">
-        <p className="font-semibold mb-1">✓ Order placed successfully</p>
-        <p>
-          Thank you for your fake purchase! Your order is being
-          pretend-processed and we will take our sweet time.
+        <p className="font-semibold mb-1">
+          {t("orderConfirmation.successTitle")}
         </p>
+        <p>{t("orderConfirmation.successBody")}</p>
       </div>
 
       {/* Order details */}
       <Card>
         <CardHeader>
-          <CardTitle>Order Details</CardTitle>
+          <CardTitle>{t("orderConfirmation.orderDetails")}</CardTitle>
           <p className="text-xs text-muted-foreground break-all">#{order.id}</p>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
@@ -76,13 +82,13 @@ export default function OrderConfirmationPage() {
                 {item.variant_name ? ` — ${item.variant_name}` : ""} ×{" "}
                 {item.quantity}
               </span>
-              <span>{formatPrice(item.line_total)}</span>
+              <span>{formatPrice(item.line_total, language)}</span>
             </div>
           ))}
           <Separator className="my-2" />
           <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>{formatPrice(order.total)}</span>
+            <span>{t("common.total")}</span>
+            <span>{formatPrice(order.total, language)}</span>
           </div>
         </CardContent>
       </Card>
@@ -90,13 +96,13 @@ export default function OrderConfirmationPage() {
       <div className="flex gap-3">
         <Button
           variant="outline"
-          className="flex-1"
+          className="flex-1 cursor-pointer"
           onClick={() => navigate("/account")}
         >
-          View my orders
+          {t("orderConfirmation.viewMyOrders")}
         </Button>
-        <Button className="flex-1" onClick={() => navigate("/")}>
-          Continue shopping
+        <Button className="flex-1 cursor-pointer" onClick={() => navigate("/")}>
+          {t("orderConfirmation.continueShopping")}
         </Button>
       </div>
     </div>

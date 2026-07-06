@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { TranslatedTextSchema } from "./language";
 
 export const AssetSchema = z.object({
   id: z.uuid(),
@@ -14,7 +15,7 @@ export const AssetSchema = z.object({
 export const VariantSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
-  name: z.string(),
+  name: TranslatedTextSchema,
   price: z.number().int().nonnegative(),
   stock_quantity: z.number(),
   created_at: z.string(), //date
@@ -24,15 +25,15 @@ export const AttributeSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
   key: z.string(),
-  value: z.string(),
+  value: TranslatedTextSchema,
   created_at: z.string(), //date
 });
 
 export const ProductSchema = z.object({
   id: z.uuid(),
-  name: z.string(),
+  name: TranslatedTextSchema,
   slug: z.string(),
-  description: z.string(),
+  description: TranslatedTextSchema,
   price: z.number().int().nonnegative(),
   currency: z.string(),
   stock_quantity: z.number(),

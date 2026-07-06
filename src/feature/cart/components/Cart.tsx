@@ -7,15 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export default function Cart() {
   const cartItems = useAppStore((state) => state.cartItems);
+  const { t } = useTranslation();
 
   return (
     <>
       <Card className="flex w-fit md:max-w-2/3">
         <CardHeader>
-          <CardTitle>Cart</CardTitle>
+          <CardTitle>{t("cart.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           {cartItems.length > 0 ? (
@@ -25,7 +27,7 @@ export default function Cart() {
               ))}
             </ItemGroup>
           ) : (
-            <div>no items in cart</div>
+            <div>{t("cart.empty")}</div>
           )}
         </CardContent>
       </Card>

@@ -6,7 +6,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import { useAppStore } from "@/shared/store/appStore";
 import type { ProductVariant } from "@/shared/types/product";
+import { useTranslation } from "react-i18next";
 
 type props = {
   productVariants: ProductVariant[];
@@ -19,32 +21,31 @@ const VariantSelect = ({
   selectedVariant,
   setSelectedVariant,
 }: props) => {
-  // console.log("product variants:", productVariants);
+  const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   function handleValueChange(value: string) {
-    // console.log("value change triggered, value:", value);
-    const selected = productVariants.find((variant) => variant.name === value);
+    const selected = productVariants.find((variant) => variant.id === value);
     if (!selected) return;
-    // console.log("selected:", selected);
     setSelectedVariant(selected);
   }
 
   return (
     <div>
       <Select
-        value={selectedVariant.name}
+        value={selectedVariant.id}
         onValueChange={(value) => {
           handleValueChange(value);
         }}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Select color" />
+          <SelectValue placeholder={t("product.selectVariant")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {productVariants.map((variant) => (
-              <SelectItem value={variant.name} key={variant.id}>
-                {variant.name}
+              <SelectItem value={variant.id} key={variant.id}>
+                {variant.name[language]}
               </SelectItem>
             ))}
           </SelectGroup>

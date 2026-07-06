@@ -19,6 +19,8 @@ import {
 import { Separator } from "@/shared/components/ui/separator";
 import { useNavigate } from "react-router";
 import { Button } from "@/shared/components/ui/button";
+import { useAppStore } from "@/shared/store/appStore";
+import { useTranslation } from "react-i18next";
 
 type props = {
   product: Product;
@@ -30,9 +32,12 @@ const ProductDetail = ({ product, category }: props) => {
     product.product_variants[0],
   );
   const navigate = useNavigate();
+  const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   const isLowStock = selectedVariant.stock_quantity <= 2;
   const isOutOfStock = selectedVariant.stock_quantity === 0;
+  console.log(product);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 items-center md:items-start justify-center">
@@ -46,15 +51,15 @@ const ProductDetail = ({ product, category }: props) => {
       <div className="flex flex-col gap-5 m-3 min-w-0">
         <Card className="ring-0 flex-1 max-w-md bg-amber-50">
           <CardHeader>
-            <CardTitle className="text-2x1">{product.name}</CardTitle>
+            <CardTitle className="text-2x1">{product.name[language]}</CardTitle>
             <p className="text-xl font-semibold">
-              {formatPrice(selectedVariant.price)}
+              {formatPrice(selectedVariant.price, language)}
             </p>
           </CardHeader>
           <Separator />
           <CardContent className="flex flex-col gap-4 pt-4">
             <p className="text-muted-foreground text-sm">
-              {product.description}
+              {product.description[language]}
             </p>
 
             <span
@@ -65,10 +70,14 @@ const ProductDetail = ({ product, category }: props) => {
               }`}
             >
               {isLowStock && isOutOfStock
-                ? "Out of stock"
+                ? t("product.outOfStock")
                 : isLowStock
-                  ? `Only ${selectedVariant.stock_quantity} left`
-                  : `In stock: ${selectedVariant.stock_quantity}`}
+                  ? t("product.onlyLeft_other", {
+                      count: selectedVariant.stock_quantity,
+                    })
+                  : t("product.inStock", {
+                      count: selectedVariant.stock_quantity,
+                    })}
             </span>
 
             <VariantSelect
@@ -83,18 +92,21 @@ const ProductDetail = ({ product, category }: props) => {
                 className="cursor-pointer"
                 onClick={() => navigate("/account/custom-orders")}
               >
-                Custom order
+                {t("product.customOrder")}
               </Button>
             ) : (
               <AddToCart
                 productId={product.id}
                 variantId={selectedVariant.id}
-                btnLabel="Add to cart"
+                btnLabel={t("product.addToCart")}
               />
             )}
           </CardFooter>
         </Card>
-        <SimilarItems category={category?.value} currentProduct={product.id} />
+        <SimilarItems
+          category={category?.value[language]}
+          currentProduct={product.id}
+        />
       </div>
     </div>
   );
