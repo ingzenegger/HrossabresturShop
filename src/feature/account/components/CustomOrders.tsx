@@ -1,10 +1,13 @@
+import { useTranslation } from "react-i18next";
+
 export default function CustomOrders() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-lg font-semibold">Custom Orders</h2>
+      <h2 className="text-lg font-semibold">{t("account.customOrders")}</h2>
       <p className="text-sm text-muted-foreground">
-        Feature coming soon: Fill in form to submit custom orders or request
-        restock of item in shop.
+        {t("account.customOrdersComingSoon")}
       </p>
     </div>
   );
