@@ -96,6 +96,7 @@
     "myOrders": "My Orders",
     "customOrders": "Custom Orders",
     "settings": "Account Settings",
+    "greeting": "Hello, <styled>{{name}}</styled>",
     "loadingOrders": "Loading orders...",
     "noOrders": "No orders yet.",
     "customOrdersComingSoon": "Feature coming soon: Fill in form to submit custom orders or request restock of item in shop.",

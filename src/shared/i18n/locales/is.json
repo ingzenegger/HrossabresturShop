@@ -96,6 +96,7 @@
     "myOrders": "Mínar pantanir",
     "customOrders": "Sérpantanir",
     "settings": "Stillingar",
+    "greeting": "Halló, <styled>{{name}}</styled>",
     "loadingOrders": "Hleð pantanir...",
     "noOrders": "Engar pantanir.",
     "customOrdersComingSoon": "Í vinnslu: Pöntunarform til að senda sérpöntun (t.d. vara í öðrum lit) eða óska eftir vöru sem ekki er til á lager.",

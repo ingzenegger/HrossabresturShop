@@ -1,10 +1,12 @@
 import { Navigate, Outlet } from "react-router";
 import { useAppStore } from "@/shared/store/appStore";
 import Sidebar from "./components/Sidebar";
+import { Trans, useTranslation } from "react-i18next";
 
 export default function AccountLayout() {
   const user = useAppStore((state) => state.user);
   const customerName = useAppStore((state) => state.customerName);
+  const { t } = useTranslation();
 
   if (!user) return <Navigate to="/login" />;
 
@@ -14,7 +16,14 @@ export default function AccountLayout() {
   return (
     <div className="max-w-4xl mx-auto mt-8 px-4 flex flex-col gap-6">
       <p>
-        Hello, <span className="text-primary font-semibold">{displayName}</span>
+        <Trans
+          t={t}
+          i18nKey="account.greeting"
+          values={{ name: displayName }}
+          components={{
+            styled: <span className="text-primary font-semibold" />,
+          }}
+        />
       </p>
       <div className="flex flex-col md:flex-row gap-8">
         <Sidebar />
