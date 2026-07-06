@@ -98,7 +98,7 @@ export default function ForgotPassword() {
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  {t("auth.alreadyHaveAccount")}
+                  {t("auth.alreadyHaveAccount")}{" "}
                   <Link to="/login" className="underline underline-offset-4">
                     {t("auth.login")}
                   </Link>

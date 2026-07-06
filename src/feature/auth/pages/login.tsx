@@ -100,7 +100,7 @@ export default function Login() {
                 </div>
 
                 <div className="mt-4 text-center text-sm">
-                  {t("auth.noAccount")}
+                  {t("auth.noAccount")}{" "}
                   <Link to="/sign-up" className="underline underline-offset-4">
                     {t("auth.signUp")}
                   </Link>
