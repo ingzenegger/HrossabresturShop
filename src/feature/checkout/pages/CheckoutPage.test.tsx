@@ -8,6 +8,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import CheckoutPage from "./CheckoutPage";
+import i18n from "@/shared/i18n/i18n";
 
 // Mockidy mock:
 const mockNavigate = vi.hoisted(() => vi.fn());
@@ -26,28 +27,36 @@ vi.mock("@/feature/checkout/api/checkoutApi", () => ({
 }));
 
 // Mock Zustand store
-const mockSetCartItems = vi.fn();
-const mockSetCartId = vi.fn();
+const { mockStore } = vi.hoisted(() => {
+  const mockSetCartItems = vi.fn();
+  const mockSetCartId = vi.fn();
+  const mockStore = {
+    language: "en",
+    cartId: "cart-1",
+    customerId: "customer-1",
+    cartItems: [
+      {
+        id: "item-1",
+        quantity: 2,
+        product: {
+          name: { en: "Handmade Thingy", is: "handgert dót" },
+          price: 25000,
+        },
+        variant: { name: "Blue", price: 25000 },
+      },
+    ],
+    setCartItems: mockSetCartItems,
+    setCartId: mockSetCartId,
+  };
+  return { mockStore };
+});
 
-const mockStore = {
-  cartId: "cart-1",
-  customerId: "customer-1",
-  cartItems: [
-    {
-      id: "item-1",
-      quantity: 2,
-      product: { name: { en: "Handmade Thingy", is: "handgert dót" }, price: 25000 },
-      variant: { name: "Blue", price: 25000 },
-    },
-  ],
-  setCartItems: mockSetCartItems,
-  setCartId: mockSetCartId,
-};
-
-vi.mock("@/shared/store/appStore", () => ({
-  useAppStore: (selector: (state: typeof mockStore) => unknown) =>
-    selector(mockStore),
-}));
+vi.mock("@/shared/store/appStore", () => {
+  const useAppStore = (selector: (state: typeof mockStore) => unknown) =>
+    selector(mockStore);
+  useAppStore.getState = () => mockStore;
+  return { useAppStore };
+});
 
 // Helper to fill card fields with valid values.
 async function fillCardForm() {
@@ -62,8 +71,9 @@ async function fillCardForm() {
 
 //actual tests
 describe("CheckoutPage form validation", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await i18n.changeLanguage("en");
   });
 
   it("shows an error when card fields are empty and form is submitted", async () => {
@@ -93,7 +103,10 @@ describe("CheckoutPage form validation", () => {
       {
         id: "item-1",
         quantity: 2,
-        product: { name: { en: "Handmade Thingy", is: "handgert dót" }, price: 25000 },
+        product: {
+          name: { en: "Handmade Thingy", is: "handgert dót" },
+          price: 25000,
+        },
         variant: { name: "Blue", price: 25000 },
       },
     ];
