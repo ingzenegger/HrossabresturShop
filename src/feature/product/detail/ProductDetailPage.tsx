@@ -4,14 +4,16 @@ import { useProducts } from "@/feature/product/hooks/useProducts";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import ProductDetail from "./components/ProductDetail";
+import { useTranslation } from "react-i18next";
 
 const ProductDetailPage = () => {
   const params = useParams();
   const productId = params.productId;
+  const { t } = useTranslation();
 
   const { data: products, isLoading, error } = useProducts();
   const product = products?.find((product) => product.id === productId);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productId]);
@@ -19,7 +21,7 @@ const ProductDetailPage = () => {
   if (isLoading) {
     return (
       <div className="flex items-center w-full justify-center">
-        <Loader message="Loading..." />
+        <Loader message={t("common.loading")} />
       </div>
     );
   }
@@ -27,14 +29,14 @@ const ProductDetailPage = () => {
   if (error || !products) {
     return (
       <div className="flex items-center w-full justify-center">
-        Something went wrong. Please refresh or come back later.
+        {t("common.somethingWentWrong")}
       </div>
     );
   }
   if (!product)
     return (
       <div className="flex items-center w-full justify-center">
-        Product not found
+        {t("product.notFound")}
       </div>
     );
 

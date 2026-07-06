@@ -8,6 +8,7 @@ import {
 } from "@/shared/components/ui/select";
 import { useAppStore } from "@/shared/store/appStore";
 import type { ProductVariant } from "@/shared/types/product";
+import { useTranslation } from "react-i18next";
 
 type props = {
   productVariants: ProductVariant[];
@@ -21,6 +22,7 @@ const VariantSelect = ({
   setSelectedVariant,
 }: props) => {
   const language = useAppStore((state) => state.language);
+  const { t } = useTranslation();
 
   function handleValueChange(value: string) {
     const selected = productVariants.find((variant) => variant.id === value);
@@ -37,7 +39,7 @@ const VariantSelect = ({
         }}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Select color" />
+          <SelectValue placeholder={t("product.selectVariant")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

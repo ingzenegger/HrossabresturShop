@@ -28,7 +28,8 @@
     "onlyLeft_other": "Only {{count}} left",
     "inStock": "In stock: {{count}}",
     "selectVariant": "Select color",
-    "notFound": "Product not found"
+    "notFound": "Product not found",
+    "similiarItemstitle": "You might also like"
   },
   "cart": {
     "title": "Cart",

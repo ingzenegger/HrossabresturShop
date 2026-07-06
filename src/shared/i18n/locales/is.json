@@ -28,7 +28,8 @@
     "onlyLeft_other": "Aðeins {{count}} til á lager",
     "inStock": "Á lager: {{count}}",
     "selectVariant": "Veldu lit",
-    "notFound": "Vara fannst ekki"
+    "notFound": "Vara fannst ekki",
+    "similiarItemstitle": "Þér gæti einnig líkað"
   },
   "cart": {
     "title": "Karfa",
