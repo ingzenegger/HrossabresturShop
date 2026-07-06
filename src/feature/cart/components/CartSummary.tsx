@@ -11,6 +11,7 @@ import { useAppStore } from "@/shared/store/appStore";
 import { useNavigate } from "react-router";
 import { Separator } from "@/shared/components/ui/separator";
 import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
+import { useTranslation } from "react-i18next";
 
 export default function CartSummary() {
   const cartItems = useAppStore((state) => state.cartItems);
@@ -18,20 +19,21 @@ export default function CartSummary() {
   const total = calculateCartTotal(cartItems);
   const language = useAppStore((state) => state.language);
   const isEmpty = cartItems.length === 0;
+  const { t } = useTranslation();
 
   return (
     <Card className="self-start">
       <CardHeader>
-        <CardTitle>Cart Summary</CardTitle>
+        <CardTitle>{t("cart.summaryTitle")}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div className="flex justify-between text-sm text-muted-foreground">
-          <span>Items({cartItems.length})</span>
+          <span>{t("cart.itemCount", { count: cartItems.length })}</span>
           <span>{formatPrice(total, language)}</span>
         </div>
         <Separator />
         <div className="flex justify-between font-semibold">
-          <span>Total: </span>
+          <span>{t("common.total")}: </span>
           <span>{formatPrice(total, language)}</span>
         </div>
       </CardContent>
@@ -41,7 +43,7 @@ export default function CartSummary() {
           disabled={isEmpty}
           onClick={() => navigate("/checkout")}
         >
-          Proceed to Checkout
+          {t("cart.proceedToCheckout")}
         </Button>
       </CardFooter>
     </Card>

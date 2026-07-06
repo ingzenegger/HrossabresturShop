@@ -30,17 +30,17 @@
     "notFound": "Vara fannst ekki"
   },
   "cart": {
-    "title": "Cart",
-    "empty": "no items in cart",
-    "quantity": "Qty: {{count}}",
-    "addOne": "Add 1",
-    "removeOne": "Remove 1",
-    "deleteItem": "Delete item",
-    "summaryTitle": "Cart Summary",
-    "itemCount": "Items ({{count}})",
-    "proceedToCheckout": "Proceed to Checkout",
-    "addedToCart": "Product has been added to cart",
-    "goToCart": "Go to Cart"
+    "title": "Karfa",
+    "empty": "Karfan þín er tóm",
+    "quantity": "{{count}} stk.",
+    "addOne": "Bæta við 1",
+    "removeOne": "Fjarlægja 1",
+    "deleteItem": "Eyða",
+    "summaryTitle": "Samantekt",
+    "itemCount": "Vörur ({{count}})",
+    "proceedToCheckout": "Áfram í greiðsluferli",
+    "addedToCart": "Vöru bætt í körfu",
+    "goToCart": "Skoða körfu"
   },
   "checkout": {
     "fakePaymentTitle": "⚠️ This is a fake payment",
