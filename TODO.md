@@ -17,3 +17,14 @@
 - [x] SETJA ALLT HELVÍTIS DRASLIÐ Á ÍSLENSKU? HVÍ GERÐI ÉG ÞAÐ EKKI STRAX???
 - [ ] Bæta við about síðu - af hverju "Hrossabrestur" - af því þannig hljóma úlnliðirnir á mér eftir of mikla handavinnu
 - [ ] á mobile view (mögulega md og up líka) þarf að fá hlekki efst fyrir flokkana,
+
+
+## admin page todos
+- [ ] Access control - restrict /admin routes only to owner (role-check with supabase)
+- [ ] Admin layout and nav - simple shell page with links to product list, add products etc
+- [ ] Product list view - table/list of existing products (name, stock, active status) with edit links.
+- [ ] Add product form - create new product, name in both languages, price, description, stock etc
+- [ ] Edit product form - update existing product fields
+- [ ] variant management - add/edit/remove variants (color, price, stock) for a product
+- [ ] image upload/management - add/replace/delete product photos(supabase storage) with limit to size
+- [ ] Deactivate product - soft delete via is_active on product table. 
