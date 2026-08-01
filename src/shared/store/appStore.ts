@@ -5,12 +5,14 @@ import type { Language } from "../types/language";
 
 interface AppStore {
   //state of user/customer
-  user: User | null;
+  user: User | null | undefined;
   setUser: (user: User | null) => void;
   customerId: string | null;
   setCustomerId: (id: string | null) => void;
   customerName: string | null;
   setCustomerName: (name: string | null) => void;
+  userRole: string | null | undefined;
+  setUserRole: (role: string | null) => void;
   //state of cart
   cartId: string | null;
   setCartId: (id: string | null) => void;
@@ -37,7 +39,7 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
-  user: null,
+  user: undefined,
   setUser: (currentUser: User | null) => set({ user: currentUser }),
 
   customerId: null,
@@ -45,6 +47,9 @@ export const useAppStore = create<AppStore>((set) => ({
 
   customerName: null,
   setCustomerName: (name: string | null) => set({ customerName: name }),
+
+  userRole: undefined,
+  setUserRole: (role: string | null) => set({ userRole: role }),
 
   cartId: null,
   setCartId: (id: string | null) => set({ cartId: id }),
