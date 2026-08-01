@@ -11,6 +11,7 @@ export default function useCustomer() {
   const supabase = createClient();
   const setCustomerId = useAppStore((state) => state.setCustomerId);
   const setCustomerName = useAppStore((state) => state.setCustomerName);
+  const setUserRole = useAppStore((state) => state.setUserRole);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
@@ -20,7 +21,7 @@ export default function useCustomer() {
         const updateUser = async () => {
           const { data: profile, error } = await supabase
             .from("profiles")
-            .select("id, name")
+            .select("id, name, role")
             .eq("id", session.user.id)
             .single();
 
@@ -30,11 +31,14 @@ export default function useCustomer() {
           }
           setCustomerId(profile.id);
           setCustomerName(profile.name);
+          setUserRole(profile.role);
+          
         };
         updateUser();
       } else if (event === "SIGNED_OUT") {
         setCustomerId(null);
         setCustomerName(null);
+        setUserRole(null);
       }
     });
     return () => data.subscription.unsubscribe();

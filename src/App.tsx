@@ -19,6 +19,9 @@ import AccountSettings from "./feature/account/components/AccountSettings";
 import UpdatePassword from "./feature/account/components/update-password";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import AdminLayout from "./feature/admin/AdminLayout";
+import ProductsList from "./feature/admin/components/ProductsList";
+import AddProduct from "./feature/admin/components/AddProduct";
 
 function App() {
   useAuth();
@@ -45,6 +48,11 @@ function App() {
             <Route path="custom-orders" element={<CustomOrders />} />
             <Route path="settings" element={<AccountSettings />} />
             <Route path="update-password" element={<UpdatePassword />} />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="products" replace />} />
+            <Route path="products" element={<ProductsList />} />
+            <Route path="add" element={<AddProduct />} />
           </Route>
         </Route>
         <Route path="/auth/confirm" element={<AuthConfirm />} />
