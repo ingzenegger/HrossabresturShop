@@ -20,8 +20,8 @@
 
 
 ## admin page todos
-- [ ] Access control - restrict /admin routes only to owner (role-check with supabase)
-- [ ] Admin layout and nav - simple shell page with links to product list, add products etc
+- [x] Access control - restrict /admin routes only to owner (role-check with supabase)
+- [x] Admin layout and nav - simple shell page with links to product list, add products etc
 - [ ] Product list view - table/list of existing products (name, stock, active status) with edit links.
 - [ ] Add product form - create new product, name in both languages, price, description, stock etc
 - [ ] Edit product form - update existing product fields
