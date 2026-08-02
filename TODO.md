@@ -16,7 +16,8 @@
   - For solution checkout Supabase RPC/database function to check and decrement atomically.
 - [x] SETJA ALLT HELVÍTIS DRASLIÐ Á ÍSLENSKU? HVÍ GERÐI ÉG ÞAÐ EKKI STRAX???
 - [ ] Bæta við about síðu - af hverju "Hrossabrestur" - af því þannig hljóma úlnliðirnir á mér eftir of mikla handavinnu
-- [ ] á mobile view (mögulega md og up líka) þarf að fá hlekki efst fyrir flokkana,
+- [ ] á mobile view (mögulega md og up líka) þarf að fá hlekki efst fyrir flokkana
+- [ ] rename name_i18n/description_i18n columns (products, attributes, variants) back to name/description in DB — drop the `name:name_i18n` aliasing in queries once done
 
 
 ## admin page todos
@@ -28,3 +29,4 @@
 - [ ] variant management - add/edit/remove variants (color, price, stock) for a product
 - [ ] image upload/management - add/replace/delete product photos(supabase storage) with limit to size
 - [ ] Deactivate product - soft delete via is_active on product table. 
+- [ ] simplify getProducts/ProductSchema (storefront) now that getAdminProducts is separate — drop fields only admin needs
