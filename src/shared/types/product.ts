@@ -31,9 +31,15 @@ export const NewVariantSchema = z.object({
 export const AttributeSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
-  key: z.string(),
+  key: z.enum(["category"]),
   value: TranslatedTextSchema,
   created_at: z.string(), //date
+});
+
+export const NewAttributeSchema = z.object({
+  product_id: z.uuid(),
+  key: z.enum(["category"]),
+  value: TranslatedTextSchema,
 });
 
 export const ProductSchema = z.object({
@@ -74,3 +80,5 @@ export type ProductVariant = z.infer<typeof VariantSchema>;
 export type NewVariant = z.infer<typeof NewVariantSchema>;
 
 export type ProductAttribute = z.infer<typeof AttributeSchema>;
+
+export type NewAttribute = z.infer<typeof NewAttributeSchema>;

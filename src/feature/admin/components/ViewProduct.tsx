@@ -3,12 +3,16 @@ import { useAdminProducts } from "../hooks/useAdminProducts";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { VariantFormValues } from "./VariantForm";
-import { NewVariantSchema } from "@/shared/types/product";
+import { NewAttributeSchema, NewVariantSchema } from "@/shared/types/product";
 import { addVariant } from "../api/addVariant";
 import { toast } from "sonner";
 import { updateVariant } from "../api/updateVariant";
 import VariantForm from "./VariantForm";
 import { Button } from "@/shared/components/ui/button";
+import type { AttributeFormValues } from "./AttributeForm";
+import { addAttribute } from "../api/addAttribute";
+import { updateAttribute } from "../api/updateAttribute";
+import AttributeForm from "./AttributeForm";
 
 export default function ViewProduct() {
   const { id } = useParams();
@@ -17,6 +21,11 @@ export default function ViewProduct() {
 
   const [editingVariantId, setEditingVariantId] = useState<string | null>(null);
   const [addingVariant, setAddingVariant] = useState(false);
+
+  const [editingAttributeId, setEditingAttributeId] = useState<string | null>(
+    null,
+  );
+  const [addingAttribute, setAddingAttribute] = useState(false);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -78,6 +87,48 @@ export default function ViewProduct() {
     };
   }
 
+  async function handleAddAttribute(values: AttributeFormValues) {
+    const payload = {
+      product_id: productId,
+      key: values.key,
+      value: { en: values.valueEn, is: values.valueIs },
+    };
+
+    const result = NewAttributeSchema.safeParse(payload);
+    if (!result.success) {
+      throw new Error(
+        "Please check the form - something isn't filled in correctly.",
+      );
+    }
+
+    await addAttribute(result.data);
+    await queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+    toast.success(`Attribute added: ${result.data.key}`);
+    setAddingAttribute(false);
+  }
+
+  function handleEditAttribute(attributeId: string) {
+    return async (values: AttributeFormValues) => {
+      const payload = {
+        product_id: productId,
+        key: values.key,
+        value: { en: values.valueEn, is: values.valueIs },
+      };
+
+      const result = NewAttributeSchema.safeParse(payload);
+      if (!result.success) {
+        throw new Error(
+          "Please check the form - something isn't filled in correctly.",
+        );
+      }
+
+      await updateAttribute(attributeId, result.data);
+      await queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+      toast.success(`Attribute updated: ${result.data.key}`);
+      setEditingAttributeId(null);
+    };
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -116,6 +167,90 @@ export default function ViewProduct() {
           <span className="font-medium">Description (EN):</span>{" "}
           {product.description.en}
         </p>
+      </div>
+
+      <div>
+        <h3 className="text-base font-semibold mb-2">Attributes</h3>
+
+        {product.product_attributes.length === 0 && !addingAttribute && (
+          <p className="text-sm text-muted-foreground mb-2">
+            No attributes yet.
+          </p>
+        )}
+
+        <ul className="flex flex-col gap-2">
+          {product.product_attributes.map((attribute) =>
+            editingAttributeId === attribute.id ? (
+              <li key={attribute.id} className="border rounded-md p-3">
+                <AttributeForm
+                  initialValues={{
+                    valueIs: attribute.value.is,
+                    valueEn: attribute.value.en,
+                    key: attribute.key,
+                  }}
+                  submitLabel="Save"
+                  onSubmit={handleEditAttribute(attribute.id)}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="mt-2"
+                  onClick={() => setEditingAttributeId(null)}
+                >
+                  Cancel
+                </Button>
+              </li>
+            ) : (
+              <li
+                key={attribute.id}
+                className="border rounded-md p-3 text-sm flex justify-between items-center"
+              >
+                <span>{attribute.key}:</span>
+                <span>
+                  EN: {attribute.value.en} / IS: {attribute.value.is}
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingAttributeId(attribute.id)}
+                >
+                  Edit
+                </Button>
+              </li>
+            ),
+          )}
+        </ul>
+
+        {addingAttribute ? (
+          <div className="border rounded-md p-3 mt-3">
+            <AttributeForm
+              initialValues={{
+                key: "",
+                valueIs: "",
+                valueEn: "",
+              }}
+              submitLabel="Add attribute"
+              onSubmit={handleAddAttribute}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              className="mt-2"
+              onClick={() => setAddingAttribute(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        ) : (
+          <Button
+            type="button"
+            className="mt-3"
+            onClick={() => setAddingAttribute(true)}
+          >
+            + Add attribute
+          </Button>
+        )}
       </div>
 
       <div>
