@@ -12,6 +12,15 @@ export const AssetSchema = z.object({
   variant_id: z.uuid().nullable(),
 });
 
+export const NewAssetSchema = z.object({
+  product_id: z.uuid(),
+  variant_id: z.uuid().nullable(),
+  asset_url: z.url(),
+  asset_type: z.literal("image"),
+  alt_text: z.string(),
+  sort_order: z.number().int().nonnegative(),
+});
+
 export const VariantSchema = z.object({
   id: z.uuid(),
   product_id: z.uuid(),
@@ -74,6 +83,8 @@ export type NewProduct = z.infer<typeof NewProductSchema>;
 export type Product = z.infer<typeof ProductSchema>;
 
 export type ProductAsset = z.infer<typeof AssetSchema>;
+
+export type NewAsset = z.infer<typeof NewAssetSchema>;
 
 export type ProductVariant = z.infer<typeof VariantSchema>;
 
