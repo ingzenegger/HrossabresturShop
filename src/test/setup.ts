@@ -6,3 +6,14 @@ import "@testing-library/jest-dom";
 Element.prototype.hasPointerCapture = () => false;
 Element.prototype.releasePointerCapture = () => {};
 Element.prototype.scrollIntoView = () => {};
+
+// jsdom has no ResizeObserver at all. Radix's Switch (and other components)
+// use it to measure elements, so we stub it with no-op methods — the tests
+// don't care about real measurements, they just need it to exist.
+class ResizeObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+globalThis.ResizeObserver = ResizeObserverStub;
