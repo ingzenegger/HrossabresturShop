@@ -5,7 +5,7 @@ const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024; //1MB as is the bucket limit in Sup
 export async function uploadAsset(file: File, productId: string) {
 
     if (file.size > MAX_FILE_SIZE_BYTES) {
-        throw new Error ("Image is too large - please use a file under 5MB");
+        throw new Error ("Image is too large - please use a file under 1MB");
     }
 
   const supabase = createClient();

@@ -19,6 +19,7 @@ export async function addAsset(asset: NewAsset) {
 
   if (error) {
     console.error("Insert error", error);
+    throw error;
   }
   return data;
 }

@@ -1,7 +1,7 @@
 import Loader from "@/shared/components/Loader";
 import { useAppStore } from "@/shared/store/appStore";
 import { Navigate, Outlet } from "react-router";
-import AdminSidebar from "./components/AdminSidebar";
+import AdminSidebar from "./AdminSidebar";
 
 export default function AdminLayout() {
   const user = useAppStore((state) => state.user);

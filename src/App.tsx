@@ -19,11 +19,11 @@ import AccountSettings from "./feature/account/components/AccountSettings";
 import UpdatePassword from "./feature/account/components/update-password";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import AdminLayout from "./feature/admin/AdminLayout";
-import ProductsList from "./feature/admin/components/ProductsList";
-import AddProduct from "./feature/admin/components/AddProduct";
-import EditProduct from "./feature/admin/components/EditProduct";
-import ViewProduct from "./feature/admin/components/ViewProduct";
+import AdminLayout from "./feature/admin//layout/AdminLayout";
+import ProductsList from "./feature/admin/pages/ProductsList";
+import AddProduct from "./feature/admin/pages/AddProduct";
+import EditProduct from "./feature/admin/pages/EditProduct";
+import ViewProduct from "./feature/admin/pages/ViewProduct";
 
 function App() {
   useAuth();
