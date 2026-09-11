@@ -2,6 +2,8 @@ import { toast } from "sonner";
 import { NewProductSchema } from "@/shared/types/product";
 import { addProduct } from "../api/addProduct";
 import ProductForm, { type ProductFormValues } from "../components/ProductForm";
+import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const emptyValues: ProductFormValues = {
   nameIs: "",
@@ -15,6 +17,9 @@ const emptyValues: ProductFormValues = {
 };
 
 export default function AddProduct() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   async function handleSubmit(values: ProductFormValues) {
     const payload = {
       name: { en: values.nameEn, is: values.nameIs },
@@ -33,8 +38,10 @@ export default function AddProduct() {
       );
     }
 
-    await addProduct(result.data);
-    toast.success(`Product added: ${result.data.name.en}`);
+    const newProduct = await addProduct(result.data);
+    await queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+    toast.success(`Product added: ${newProduct.name.en}`);
+    navigate(`/admin/products/${newProduct.id}`);
   }
 
   return (
