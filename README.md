@@ -108,6 +108,22 @@ Tests cover:
 - **SearchBar** — renders translated strings in both languages (`src/feature/product/list/components/SearchBar.test.tsx`)
 - **Price formatting** — ISK formatting independent of browser locale support (`src/shared/lib/formatPrice.test.ts`)
 - **Date formatting** — Icelandic and English date output (`src/shared/lib/formatDate.test.ts`)
+  Admin section:
+
+- **VariantForm** — pre-fill, submit values, and error handling (`src/feature/admin/components/VariantForm.test.tsx`)
+- **AttributeForm** — pre-fill, submit values, Select interaction, and error handling (`src/feature/admin/components/AttributeForm.test.tsx`)
+- **AssetForm** — file upload, variant selection, field reset on success, and error handling (`src/feature/admin/components/AssetForm.test.tsx`)
+- **ProductForm** — pre-fill, auto-slug generation and its manual-edit override, submit values, and error handling (`src/feature/admin/components/ProductForm.test.tsx`)
+- **AttributeManager** — add/edit/cancel flows and schema validation failure (`src/feature/admin/components/AttributeManager.test.tsx`)
+- **VariantManager** — add/edit/cancel flows and schema validation failure (`src/feature/admin/components/VariantManager.test.tsx`)
+- **AssetManager** — upload flow with computed sort order, cancel, and schema validation failure (`src/feature/admin/components/AssetManager.test.tsx`)
+- **AddProduct** — successful add with redirect to the new product, and validation failure (`src/feature/admin/pages/AddProduct.test.tsx`)
+- **EditProduct** — loading/error/not-found states, pre-fill, successful update with redirect, and validation failure (`src/feature/admin/pages/EditProduct.test.tsx`)
+- **ProductsList** — loading/error/empty states, language-aware names, and stock/variant/status display (`src/feature/admin/pages/ProductsList.test.tsx`)
+- **ViewProduct** — loading/error/not-found states, product summary rendering, and prop-passing to the manager components (`src/feature/admin/pages/ViewProduct.test.tsx`)
+- **AdminLayout** — loading state, login/home redirects, and rendering the sidebar + outlet for an admin (`src/feature/admin/layout/AdminLayout.test.tsx`)
+- **AdminSidebar** — link hrefs, active-link highlighting, and rendering the logout control (`src/feature/admin/layout/AdminSidebar.test.tsx`)
+- **Admin API functions** — Supabase insert/update/select calls and error propagation for products, variants, attributes, assets, and image uploads (`src/feature/admin/api/*.test.ts`)
 
 ---
 
