@@ -1,12 +1,16 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAdminProducts } from "../hooks/useAdminProducts";
 import type { ProductFormValues } from "../components/ProductForm";
 import ProductForm from "../components/ProductForm";
 import { NewProductSchema } from "@/shared/types/product";
 import { updateProduct } from "../api/updateProduct";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function EditProduct() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const { id } = useParams();
   const { data: products, isLoading, error } = useAdminProducts();
 
@@ -61,7 +65,9 @@ export default function EditProduct() {
     }
 
     await updateProduct(productId, result.data);
+    await queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
     toast.success(`Product updated: ${result.data.name.en}`);
+    navigate(`/admin/products/${productId}`);
   }
 
   return (
