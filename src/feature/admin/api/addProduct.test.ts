@@ -15,7 +15,7 @@ const mockFrom = vi.fn(() => ({ insert: mockInsert }));
 const mockSupabase = { from: mockFrom };
 
 const newProduct: NewProduct = {
-  name: { en: "Blue Mittens", is: "Blá vettlingapar" },
+  name: { en: "Blue Mittens", is: "Bláir vettlingar" },
   slug: "blue-mittens",
   description: { en: "Warm", is: "Hlýtt" },
   price: 4500,
