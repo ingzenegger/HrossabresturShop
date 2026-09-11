@@ -35,3 +35,5 @@
 
 - [ ] admin: ProductDetail assumes every product has ≥1 variant (`product_variants[0]`) - fine for now since assets need a variant_id anyway, but revisit if patterns end up not using variants the same way
 - [ ] admin: variant delete not implemented - complicated by product_assets referencing variant_id, figure out asset handling first
+
+- [ ] AssetManager: if addAsset fails/validation fails after uploadAsset succeeds, the file is orphaned in storage with no distinct error message - either clean up the upload on failure or tell the admin the image needs re-adding.
