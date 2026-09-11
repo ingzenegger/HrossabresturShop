@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useAdminProducts } from "../hooks/useAdminProducts";
-import type { ProductFormValues } from "./ProductForm";
-import ProductForm from "./ProductForm";
+import type { ProductFormValues } from "../components/ProductForm";
+import ProductForm from "../components/ProductForm";
 import { NewProductSchema } from "@/shared/types/product";
 import { updateProduct } from "../api/updateProduct";
 import { toast } from "sonner";

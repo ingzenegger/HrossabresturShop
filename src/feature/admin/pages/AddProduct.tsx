@@ -1,11 +1,17 @@
 import { toast } from "sonner";
 import { NewProductSchema } from "@/shared/types/product";
 import { addProduct } from "../api/addProduct";
-import ProductForm, { type ProductFormValues } from "./ProductForm";
+import ProductForm, { type ProductFormValues } from "../components/ProductForm";
 
 const emptyValues: ProductFormValues = {
-  nameIs: "", nameEn: "", slug: "", descriptionIs: "", descriptionEn: "",
-  price: "", productType: "", isActive: false,
+  nameIs: "",
+  nameEn: "",
+  slug: "",
+  descriptionIs: "",
+  descriptionEn: "",
+  price: "",
+  productType: "",
+  isActive: false,
 };
 
 export default function AddProduct() {
@@ -22,7 +28,9 @@ export default function AddProduct() {
 
     const result = NewProductSchema.safeParse(payload);
     if (!result.success) {
-      throw new Error("Please check the form - something isn't filled in correctly.");
+      throw new Error(
+        "Please check the form - something isn't filled in correctly.",
+      );
     }
 
     await addProduct(result.data);
@@ -32,7 +40,11 @@ export default function AddProduct() {
   return (
     <>
       <h2 className="text-lg font-semibold">Add product</h2>
-      <ProductForm initialValues={emptyValues} submitLabel="Add product" onSubmit={handleSubmit} />
+      <ProductForm
+        initialValues={emptyValues}
+        submitLabel="Add product"
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }

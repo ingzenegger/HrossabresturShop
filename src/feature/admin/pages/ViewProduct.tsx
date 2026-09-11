@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router";
 import { useAdminProducts } from "../hooks/useAdminProducts";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import type { VariantFormValues } from "./VariantForm";
+import type { VariantFormValues } from "../components/VariantForm";
 import {
   NewAttributeSchema,
   NewVariantSchema,
@@ -11,16 +11,16 @@ import {
 import { addVariant } from "../api/addVariant";
 import { toast } from "sonner";
 import { updateVariant } from "../api/updateVariant";
-import VariantForm from "./VariantForm";
+import VariantForm from "../components/VariantForm";
 import { Button } from "@/shared/components/ui/button";
-import type { AttributeFormValues } from "./AttributeForm";
+import type { AttributeFormValues } from "../components/AttributeForm";
 import { addAttribute } from "../api/addAttribute";
 import { updateAttribute } from "../api/updateAttribute";
-import AttributeForm from "./AttributeForm";
-import type { AssetFormValues } from "./AssetForm";
+import AttributeForm from "../components/AttributeForm";
+import type { AssetFormValues } from "../components/AssetForm";
 import { uploadAsset } from "../api/uploadAsset";
 import { addAsset } from "../api/addAsset";
-import AssetForm from "./AssetForm";
+import AssetForm from "../components/AssetForm";
 
 export default function ViewProduct() {
   const { id } = useParams();
