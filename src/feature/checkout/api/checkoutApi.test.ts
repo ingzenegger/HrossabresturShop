@@ -62,6 +62,8 @@ const checkoutArgs = {
   cartItems,
   totalAmount: 50000,
   language,
+  paymentMethod: "bank_transfer" as const,
+  deliveryMethod: "pickup" as const,
 };
 
 describe("checkout", () => {
@@ -153,5 +155,30 @@ describe("checkout", () => {
     expect(mockInsert).not.toHaveBeenCalledWith([
       expect.objectContaining({ product_name: "Handmade Thingy" }),
     ]);
+  });
+
+    it("saves the chosen payment and delivery method on the order", async () => {
+    mockSingle.mockResolvedValueOnce({
+      data: { id: "order-123" },
+      error: null,
+    });
+    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
+    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
+    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+
+    await checkout({
+      ...checkoutArgs,
+      paymentMethod: "pay_on_pickup",
+      deliveryMethod: "pickup",
+    });
+
+    // the first insert is the order row
+    expect(mockInsert).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        payment_method: "pay_on_pickup",
+        delivery_method: "pickup",
+      }),
+    );
   });
 });

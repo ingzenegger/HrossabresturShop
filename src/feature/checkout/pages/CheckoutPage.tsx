@@ -70,6 +70,8 @@ export default function CheckoutPage() {
       cartItems,
       totalAmount: total,
       language: language,
+      paymentMethod: "bank_transfer",
+      deliveryMethod: "pickup",
     });
 
     if (!orderId) {
