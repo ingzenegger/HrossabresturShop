@@ -4,6 +4,14 @@ import { z } from "zod";
 export const PaymentMethodSchema = z.enum(["bank_transfer", "pay_on_pickup"]);
 export const DeliveryMethodSchema = z.enum(["pickup", "post"]);
 
+// only used when deliveryMethod is "post"; mirrors the orders table constraints
+export const ShippingAddressSchema = z.object({
+  name: z.string().trim().min(1),
+  street: z.string().trim().min(1),
+  postcode: z.string().regex(/^[0-9]{3}$/),
+  city: z.string().trim().min(1),
+});
+
 export const OrderItemSchema = z.object({
   id: z.uuid(),
   product_name: z.string(),
@@ -24,3 +32,4 @@ export type OrderItem = z.infer<typeof OrderItemSchema>;
 export type Order = z.infer<typeof OrderSchema>;
 export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
 export type DeliveryMethod = z.infer<typeof DeliveryMethodSchema>;
+export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;

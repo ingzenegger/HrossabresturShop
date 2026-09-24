@@ -92,6 +92,7 @@ export default function CheckoutPage() {
       language: language,
       paymentMethod,
       deliveryMethod,
+      shippingAddress: null,
     });
 
     if (!orderId) {

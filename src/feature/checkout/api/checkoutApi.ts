@@ -3,7 +3,11 @@
 import { createClient } from "@/shared/lib/client";
 import type { CartItem } from "@/shared/types/cart";
 import type { Language } from "@/shared/types/language";
-import type { DeliveryMethod, PaymentMethod } from "@/shared/types/order";
+import type {
+  DeliveryMethod,
+  PaymentMethod,
+  ShippingAddress,
+} from "@/shared/types/order";
 
 type CheckoutProps = {
   cartId: string;
@@ -13,6 +17,7 @@ type CheckoutProps = {
   language: Language;
   paymentMethod: PaymentMethod;
   deliveryMethod: DeliveryMethod;
+  shippingAddress: ShippingAddress | null;
 };
 
 export async function checkout({
@@ -23,6 +28,7 @@ export async function checkout({
   language,
   paymentMethod,
   deliveryMethod,
+  shippingAddress,
 }: CheckoutProps): Promise<string | null> {
   const supabase = createClient();
 
@@ -38,6 +44,10 @@ export async function checkout({
       submitted_at: new Date().toISOString(),
       payment_method: paymentMethod,
       delivery_method: deliveryMethod,
+      shipping_name: shippingAddress?.name ?? null,
+      shipping_street: shippingAddress?.street ?? null,
+      shipping_postcode: shippingAddress?.postcode ?? null,
+      shipping_city: shippingAddress?.city ?? null,
     })
     .select()
     .single();
