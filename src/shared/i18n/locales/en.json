@@ -14,7 +14,7 @@
   "home": {
     "welcome": "Welcome to Hrossabrestur Craft Shop",
     "metaTitle": "Hrossabrestur – Handmade crafts",
-  "metaDescription": "Handmade items from Iceland. Browse ready-made crafts at Hrossabrestur."
+    "metaDescription": "Handmade items from Iceland. Browse ready-made crafts at Hrossabrestur."
   },
   "search": {
     "placeholder": "Search products...",
@@ -47,20 +47,25 @@
     "goToCart": "Go to Cart"
   },
   "checkout": {
-    "fakePaymentTitle": "⚠️ This is a fake payment",
-    "fakePaymentBody": "No real transaction will take place. Do not enter real card details. This checkout is for demonstration purposes only.",
     "orderSummary": "Order Summary",
     "paymentDetails": "Payment Details",
-    "nameOnCard": "Name on card",
-    "cardNumber": "Card number",
-    "expiry": "Expiry",
-    "expiryPlaceholder": "MM/YY",
-    "cvv": "CVV",
-    "pay": "Pay {{amount}}",
     "placingOrder": "Placing order...",
-    "errorEmptyFields": "Please fill in all card fields.",
     "errorEmptyCart": "Your cart is empty or you are not signed in.",
-    "errorOrderFailed": "Something went wrong placing your order. Please try again."
+    "errorOrderFailed": "Something went wrong placing your order. Please try again.",
+    "placeOrder": "Place order – {{amount}}",
+    "delivery": {
+      "title": "Delivery",
+      "pickup": "Pick up",
+      "pickupHint": "We'll contact you to arrange a time to pick up your order.",
+      "post": "Post",
+      "postHint": "Sent by post within Iceland."
+    },
+    "payment": {
+      "bankTransfer": "Bank transfer",
+      "bankTransferHint": "You'll get our bank details after placing the order.",
+      "payOnPickup": "Pay on pickup",
+      "payOnPickupHint": "Pay when you pick up your order. Only available with pickup."
+    }
   },
   "orderConfirmation": {
     "loading": "Loading your order...",

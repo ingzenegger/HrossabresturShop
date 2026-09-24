@@ -47,20 +47,25 @@
     "goToCart": "Skoða körfu"
   },
   "checkout": {
-    "fakePaymentTitle": "⚠️ Þetta er ekki alvöru greiðsluferli",
-    "fakePaymentBody": "Engin alvöru kaup fara fram. Ekki slá inn alvöru kortaupplýsingar. Þetta kaupferli er aðeins til sýnis sem stendur.",
     "orderSummary": "Þín pöntun",
     "paymentDetails": "Greiðsluupplýsingar",
-    "nameOnCard": "Nafn korthafa",
-    "cardNumber": "Kortanúmer",
-    "expiry": "Gildistími",
-    "expiryPlaceholder": "MM/ÁÁ",
-    "cvv": "CVV",
-    "pay": "Greiða {{amount}}",
     "placingOrder": "Sendi inn pöntun...",
-    "errorEmptyFields": "Vinsamlegast fylltu út alla kortareiti.",
     "errorEmptyCart": "Karfan þín er tóm eða þú hefur ekki skráð þig inn.",
-    "errorOrderFailed": "Eitthvað fór úrskeiðis við að senda pöntunina þína. Vinsamlegast reyndu aftur."
+    "errorOrderFailed": "Eitthvað fór úrskeiðis við að senda pöntunina þína. Vinsamlegast reyndu aftur.",
+    "placeOrder": "Senda pöntun – {{amount}}",
+    "delivery": {
+      "title": "Afhending",
+      "pickup": "Sækja",
+      "pickupHint": "Við höfum samband til að finna tíma fyrir þig til að sækja pöntunina.",
+      "post": "Póstur",
+      "postHint": "Sent með pósti innanlands."
+    },
+    "payment": {
+      "bankTransfer": "Millifærsla",
+      "bankTransferHint": "Þú færð bankaupplýsingar eftir að pöntun er staðfest.",
+      "payOnPickup": "Greiða við afhendingu",
+      "payOnPickupHint": "Greitt þegar pöntunin er sótt. Aðeins í boði ef pöntun er sótt."
+    }
   },
   "orderConfirmation": {
     "loading": "Hleður pöntun...",
