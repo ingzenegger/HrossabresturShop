@@ -36,6 +36,8 @@ const HomePage = () => {
 
   return (
     <div className="pt-4 pb-4">
+      <title>{t("home.metaTitle")}</title>
+    <meta name="description" content={t("home.metaDescription")} />
       <div className="flex justify-center">
         <h1>{t("home.welcome")}</h1>
       </div>

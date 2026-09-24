@@ -35,7 +35,7 @@
 
 ## Data & schema cleanup
 
-- [ ] Now that getAdminProducts is separate from the storefront's getProducts, simplify ProductSchema/getProducts for the storefront - drop fields only admin needs (created_at/updated_at, etc.)
+- [ ] Review storefront ProductSchema/getProducts fields case by case instead of dropping them all at once. Keep created_at/updated_at for now, since they could power a "New" badge, a newest-first sort, or "pattern updated" info. Drop a field only when it's clear no storefront feature will use it. (A sitemap would query the DB directly, so it doesn't need these in the storefront schema.)
 
 ## Storefront / customer-facing
 
@@ -48,6 +48,15 @@
 ## Site content
 
 - [ ] Add social media links (Instagram, TikTok) somewhere visible — footer? about page?
+
+## SEO
+
+- [x] Page titles and meta descriptions per page (React 19 `<title>`/`<meta>` in components)
+- [ ] Product structured data (JSON-LD) on ProductDetailPage: name, price, currency, availability
+- [ ] Site-wide Open Graph tags in index.html (og:title, og:description, og:image)
+- [ ] Per-product Open Graph previews: needs prerendering or a server function, since link-preview bots don't run JavaScript
+- [x] Check that all alt_text values in the database are descriptive (not empty or "image1")
+- [ ] Update home.metaTitle/metaDescription (en + is) to mention patterns once the first patterns are in the shop
 
 ## Code organization
 

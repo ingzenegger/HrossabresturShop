@@ -15,6 +15,7 @@ export default function AccountLayout() {
 
   return (
     <div className="max-w-4xl mx-auto mt-8 px-4 flex flex-col gap-6">
+      <title>{`${t("nav.account")} – Hrossabrestur`}</title>
       <p>
         <Trans
           t={t}
