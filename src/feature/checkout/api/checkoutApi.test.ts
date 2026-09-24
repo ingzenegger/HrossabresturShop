@@ -62,6 +62,9 @@ const checkoutArgs = {
   cartItems,
   totalAmount: 50000,
   language,
+  paymentMethod: "bank_transfer" as const,
+  deliveryMethod: "pickup" as const,
+  shippingAddress: null,
 };
 
 describe("checkout", () => {
@@ -153,5 +156,84 @@ describe("checkout", () => {
     expect(mockInsert).not.toHaveBeenCalledWith([
       expect.objectContaining({ product_name: "Handmade Thingy" }),
     ]);
+  });
+
+  it("saves the chosen payment and delivery method on the order", async () => {
+    mockSingle.mockResolvedValueOnce({
+      data: { id: "order-123" },
+      error: null,
+    });
+    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
+    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
+    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+
+    await checkout({
+      ...checkoutArgs,
+      paymentMethod: "pay_on_pickup",
+      deliveryMethod: "pickup",
+    });
+
+    // the first insert is the order row
+    expect(mockInsert).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        payment_method: "pay_on_pickup",
+        delivery_method: "pickup",
+      }),
+    );
+  });
+
+  it("saves the shipping address on posted orders", async () => {
+    mockSingle.mockResolvedValueOnce({
+      data: { id: "order-123" },
+      error: null,
+    });
+    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
+    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
+    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+
+    await checkout({
+      ...checkoutArgs,
+      deliveryMethod: "post",
+      shippingAddress: {
+        name: "Jón Jónsson",
+        street: "Laugavegur 1",
+        postcode: "101",
+        city: "Reykjavík",
+      },
+    });
+
+    expect(mockInsert).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        delivery_method: "post",
+        shipping_name: "Jón Jónsson",
+        shipping_street: "Laugavegur 1",
+        shipping_postcode: "101",
+        shipping_city: "Reykjavík",
+      }),
+    );
+  });
+
+  it("saves no address on pickup orders", async () => {
+    mockSingle.mockResolvedValueOnce({
+      data: { id: "order-123" },
+      error: null,
+    });
+    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
+    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
+    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+
+    await checkout(checkoutArgs);
+
+    expect(mockInsert).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        shipping_name: null,
+        shipping_street: null,
+        shipping_postcode: null,
+        shipping_city: null,
+      }),
+    );
   });
 });

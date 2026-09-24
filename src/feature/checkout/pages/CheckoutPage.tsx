@@ -1,11 +1,6 @@
-// -< /checkout
-//warning banner with that says its a fake payment
-//Fake card form
-
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppStore } from "@/shared/store/appStore";
-// import { useCartTotals } from "@/feature/cart/hooks/useCartTotals";
 import { checkout } from "@/feature/checkout/api/checkoutApi";
 import { formatPrice } from "@/shared/lib/formatPrice";
 import {
@@ -15,16 +10,58 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
 import { Separator } from "@/shared/components/ui/separator";
+import { Label } from "@/shared/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
 import { useTranslation } from "react-i18next";
+import {
+  ShippingAddressSchema,
+  type DeliveryMethod,
+  type PaymentMethod,
+  type ShippingAddress,
+} from "@/shared/types/order";
+import ShippingAddressFields, {
+  type AddressField,
+} from "@/feature/checkout/components/ShippingAddressFields";
 
 type CheckoutErrorKey =
-  | "checkout.errorEmptyFields"
   | "checkout.errorEmptyCart"
-  | "checkout.errorOrderFailed";
+  | "checkout.errorOrderFailed"
+  | "checkout.errorAddress";
+
+const EMPTY_ADDRESS: ShippingAddress = {
+  name: "",
+  street: "",
+  postcode: "",
+  city: "",
+};
+
+const DELIVERY_OPTIONS = [
+  {
+    value: "pickup",
+    label: "checkout.delivery.pickup",
+    hint: "checkout.delivery.pickupHint",
+  },
+  {
+    value: "post",
+    label: "checkout.delivery.post",
+    hint: "checkout.delivery.postHint",
+  },
+] as const;
+
+const PAYMENT_OPTIONS = [
+  {
+    value: "bank_transfer",
+    label: "checkout.payment.bankTransfer",
+    hint: "checkout.payment.bankTransferHint",
+  },
+  {
+    value: "pay_on_pickup",
+    label: "checkout.payment.payOnPickup",
+    hint: "checkout.payment.payOnPickupHint",
+  },
+] as const;
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -36,30 +73,53 @@ export default function CheckoutPage() {
   const total = calculateCartTotal(cartItems);
   const language = useAppStore((state) => state.language);
   const { t } = useTranslation();
-  // const { data: totals } = useCartTotals();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<CheckoutErrorKey | null>(null);
 
-  //fake card info only stored in state
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardName, setCardName] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvv, setCvv] = useState("");
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<DeliveryMethod>("pickup");
+  const [paymentMethod, setPaymentMethod] =
+    useState<PaymentMethod>("bank_transfer");
+  const [address, setAddress] = useState<ShippingAddress>(EMPTY_ADDRESS);
+  const [invalidFields, setInvalidFields] = useState<AddressField[]>([]);
+
+  function handleAddressChange(field: AddressField, value: string) {
+    setAddress({ ...address, [field]: value });
+    // the customer is fixing this field, so stop marking it as invalid
+    setInvalidFields(invalidFields.filter((f) => f !== field));
+  }
+
+  function handleDeliveryChange(method: DeliveryMethod) {
+    setDeliveryMethod(method);
+    // paying on pickup is impossible if the item is posted
+    if (method === "post" && paymentMethod === "pay_on_pickup") {
+      setPaymentMethod("bank_transfer");
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
-    //check for there beying any entry, no actual requirements for them
-    if (!cardNumber || !cardName || !expiry || !cvv) {
-      setError("checkout.errorEmptyFields");
-      return;
-    }
     //just in case, shouldn't be seeing any checkout page if you are not logged in
     if (!cartId || !customerId || cartItems.length === 0 || !total) {
       setError("checkout.errorEmptyCart");
       return;
+    }
+
+    // only posted orders need an address
+    let shippingAddress: ShippingAddress | null = null;
+    if (deliveryMethod === "post") {
+      const result = ShippingAddressSchema.safeParse(address);
+      if (!result.success) {
+        setInvalidFields(
+          result.error.issues.map((issue) => issue.path[0] as AddressField),
+        );
+        setError("checkout.errorAddress");
+        return;
+      }
+      shippingAddress = result.data;
     }
 
     setLoading(true);
@@ -70,6 +130,9 @@ export default function CheckoutPage() {
       cartItems,
       totalAmount: total,
       language: language,
+      paymentMethod,
+      deliveryMethod,
+      shippingAddress,
     });
 
     if (!orderId) {
@@ -87,11 +150,6 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-lg mx-auto mt-8 px-4 flex flex-col gap-6">
-      <div className="bg-amber-100 border border-amber-400 text-amber-900 rounded-md p-4 text-sm">
-        <p className="font-semibold mb-1">{t("checkout.fakePaymentTitle")}</p>
-        <p>{t("checkout.fakePaymentBody")}</p>
-      </div>
-
       {/* Order summary */}
       <Card>
         <CardHeader>
@@ -119,64 +177,92 @@ export default function CheckoutPage() {
         </CardContent>
       </Card>
 
-      {/* Fake card form */}
+      {/* Delivery and payment choices */}
       <Card className="mb-3">
-        <CardHeader>
-          <CardTitle>{t("checkout.paymentDetails")}</CardTitle>
-        </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="cardName">{t("checkout.nameOnCard")}</Label>
-              <Input
-                id="cardName"
-                placeholder="Jabberwocky"
-                value={cardName}
-                onChange={(e) => setCardName(e.target.value)}
-              />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <h3 id="delivery-heading" className="font-semibold">
+                {t("checkout.delivery.title")}
+              </h3>
+              <RadioGroup
+                aria-labelledby="delivery-heading"
+                value={deliveryMethod}
+                onValueChange={(value) =>
+                  handleDeliveryChange(value as DeliveryMethod)
+                }
+              >
+                {DELIVERY_OPTIONS.map((option) => (
+                  <Label
+                    key={option.value}
+                    htmlFor={`delivery-${option.value}`}
+                    className="items-start gap-3 rounded-md border p-3 cursor-pointer has-data-[state=checked]:border-primary"
+                  >
+                    <RadioGroupItem
+                      value={option.value}
+                      id={`delivery-${option.value}`}
+                    />
+                    <span className="flex flex-col gap-1">
+                      <span>{t(option.label)}</span>
+                      <span className="text-sm font-normal text-muted-foreground">
+                        {t(option.hint)}
+                      </span>
+                    </span>
+                  </Label>
+                ))}
+              </RadioGroup>
+              {deliveryMethod === "post" && (
+                <ShippingAddressFields
+                  value={address}
+                  onChange={handleAddressChange}
+                  invalidFields={invalidFields}
+                />
+              )}
             </div>
 
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="cardNumber">{t("checkout.cardNumber")}</Label>
-              <Input
-                id="cardNumber"
-                placeholder="1234 5678 9012 3456"
-                maxLength={19}
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-              />
-            </div>
-
-            <div className="flex gap-4">
-              <div className="flex flex-col gap-1 flex-1">
-                <Label htmlFor="expiry">{t("checkout.expiry")}</Label>
-                <Input
-                  id="expiry"
-                  placeholder={t("checkout.expiryPlaceholder")}
-                  maxLength={5}
-                  value={expiry}
-                  onChange={(e) => setExpiry(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-1 w-24">
-                <Label htmlFor="cvv">{t("checkout.cvv")}</Label>
-                <Input
-                  id="cvv"
-                  placeholder="123"
-                  maxLength={3}
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value)}
-                />
-              </div>
+            <div className="flex flex-col gap-2">
+              <h3 id="payment-heading" className="font-semibold">
+                {t("checkout.paymentDetails")}
+              </h3>
+              <RadioGroup
+                aria-labelledby="payment-heading"
+                value={paymentMethod}
+                onValueChange={(value) =>
+                  setPaymentMethod(value as PaymentMethod)
+                }
+              >
+                {PAYMENT_OPTIONS.map((option) => (
+                  <Label
+                    key={option.value}
+                    htmlFor={`payment-${option.value}`}
+                    className="items-start gap-3 rounded-md border p-3 cursor-pointer has-data-[state=checked]:border-primary has-data-disabled:opacity-50 has-data-disabled:cursor-not-allowed"
+                  >
+                    <RadioGroupItem
+                      value={option.value}
+                      id={`payment-${option.value}`}
+                      disabled={
+                        option.value === "pay_on_pickup" &&
+                        deliveryMethod === "post"
+                      }
+                    />
+                    <span className="flex flex-col gap-1">
+                      <span>{t(option.label)}</span>
+                      <span className="text-sm font-normal text-muted-foreground">
+                        {t(option.hint)}
+                      </span>
+                    </span>
+                  </Label>
+                ))}
+              </RadioGroup>
             </div>
 
             {error && <p className="text-red-600 text-sm">{t(error)}</p>}
 
-            <Button type="submit" disabled={loading} className="w-full mt-2">
+            <Button type="submit" disabled={loading} className="w-full">
               {loading
                 ? t("checkout.placingOrder")
-                : t("checkout.pay", {
-                    amount: ` ${total ? formatPrice(total, language) : ""}`,
+                : t("checkout.placeOrder", {
+                    amount: total ? formatPrice(total, language) : "",
                   })}
             </Button>
           </form>

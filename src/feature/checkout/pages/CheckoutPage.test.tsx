@@ -1,7 +1,7 @@
-//test empty card fields stopper
 //test that end user can never see the checkoutpage if they are not signed in and or have no cart or cart items
 //test what happens if checkout fails
 //test that page navigates on success
+//test that delivery/payment choices reach checkout()
 // things that need mocking: appStore, cartTotals, checkout and useNavigate
 
 import { render, screen } from "@testing-library/react";
@@ -58,41 +58,19 @@ vi.mock("@/shared/store/appStore", () => {
   return { useAppStore };
 });
 
-// Helper to fill card fields with valid values.
-async function fillCardForm() {
-  await userEvent.type(screen.getByLabelText("Name on card"), "Jon Jonsson");
-  await userEvent.type(
-    screen.getByLabelText("Card number"),
-    "1234 5678 9012 3456",
-  );
-  await userEvent.type(screen.getByLabelText("Expiry"), "12/27");
-  await userEvent.type(screen.getByLabelText("CVV"), "123");
-}
-
 //actual tests
-describe("CheckoutPage form validation", () => {
+describe("CheckoutPage", () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     await i18n.changeLanguage("en");
   });
 
-  it("shows an error when card fields are empty and form is submitted", async () => {
-    render(<CheckoutPage />);
-
-    await userEvent.click(screen.getByRole("button", { name: /pay/i }));
-
-    expect(
-      screen.getByText("Please fill in all card fields."),
-    ).toBeInTheDocument();
-  });
-
-  it("shows an error when cart is empty even if card fields are filled", async () => {
+  it("shows an error when cart is empty", async () => {
     // Override cartItems to be empty for this test only
     mockStore.cartItems = [];
 
     render(<CheckoutPage />);
-    await fillCardForm();
-    await userEvent.click(screen.getByRole("button", { name: /pay/i }));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(
       screen.getByText("Your cart is empty or you are not signed in."),
@@ -117,8 +95,7 @@ describe("CheckoutPage form validation", () => {
     mockCheckout.mockResolvedValueOnce(null);
 
     render(<CheckoutPage />);
-    await fillCardForm();
-    await userEvent.click(screen.getByRole("button", { name: /pay/i }));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(
       screen.getByText(
@@ -131,9 +108,101 @@ describe("CheckoutPage form validation", () => {
     mockCheckout.mockResolvedValueOnce("order-123");
 
     render(<CheckoutPage />);
-    await fillCardForm();
-    await userEvent.click(screen.getByRole("button", { name: /pay/i }));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith("/order-confirmation/order-123");
+  });
+
+  it("sends pickup and bank transfer by default", async () => {
+    mockCheckout.mockResolvedValueOnce("order-123");
+
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(mockCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        deliveryMethod: "pickup",
+        paymentMethod: "bank_transfer",
+        shippingAddress: null,
+      }),
+    );
+  });
+
+  it("sends the methods the customer chose", async () => {
+    mockCheckout.mockResolvedValueOnce("order-123");
+
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByLabelText(/pay on pickup/i));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(mockCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        deliveryMethod: "pickup",
+        paymentMethod: "pay_on_pickup",
+      }),
+    );
+  });
+
+  it("switches away from pay on pickup when post is chosen", async () => {
+    render(<CheckoutPage />);
+
+    await userEvent.click(screen.getByLabelText(/pay on pickup/i));
+    await userEvent.click(screen.getByLabelText(/^post/i));
+
+    expect(screen.getByLabelText(/pay on pickup/i)).toBeDisabled();
+    expect(screen.getByLabelText(/bank transfer/i)).toBeChecked();
+  });
+
+  it("shows address fields only when post is chosen", async () => {
+    render(<CheckoutPage />);
+
+    expect(screen.queryByLabelText("Street address")).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByLabelText(/^post/i));
+
+    expect(screen.getByLabelText("Street address")).toBeInTheDocument();
+  });
+
+  it("does not place a posted order without an address", async () => {
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByLabelText(/^post/i));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(
+      screen.getByText("Please fill in the shipping address."),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Required")).toHaveLength(3);
+    expect(screen.getByText("Postcode must be 3 digits")).toBeInTheDocument();
+    expect(mockCheckout).not.toHaveBeenCalled();
+  });
+
+  it("sends the trimmed address for posted orders", async () => {
+    mockCheckout.mockResolvedValueOnce("order-123");
+
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByLabelText(/^post/i));
+    await userEvent.type(
+      screen.getByLabelText("Recipient name"),
+      " Jón Jónsson ",
+    );
+    await userEvent.type(
+      screen.getByLabelText("Street address"),
+      "Laugavegur 1",
+    );
+    await userEvent.type(screen.getByLabelText("Postcode"), "101");
+    await userEvent.type(screen.getByLabelText("Town"), "Reykjavík");
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(mockCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        deliveryMethod: "post",
+        shippingAddress: {
+          name: "Jón Jónsson",
+          street: "Laugavegur 1",
+          postcode: "101",
+          city: "Reykjavík",
+        },
+      }),
+    );
   });
 });

@@ -27,7 +27,7 @@ A bilingual handmade goods shop built with React, TypeScript, and Supabase. Brow
 - View individual product pages
 - User registration and login via Supabase Auth
 - Cart with add, remove, and quantity controls
-- Fake checkout with simulated card payment (no real transactions)
+- Checkout with option to transfer or pay on pickup of product
 - Order confirmation page
 - Order history in account section
 - Responsive design for mobile and desktop
@@ -102,7 +102,7 @@ Tests cover:
 
 - **Cart store logic** — adding, removing, and updating item quantities (`src/shared/store/appStore.test.ts`)
 - **Checkout API** — order insert success, order insert failure, order items insert failure (`src/feature/checkout/api/checkoutApi.test.ts`)
-- **Checkout page** — empty card field validation, empty cart guard, API failure handling, successful navigation to confirmation (`src/feature/checkout/pages/CheckoutPage.test.tsx`)
+- **Checkout page** — empty address field validation, empty cart guard, API failure handling, successful navigation to confirmation (`src/feature/checkout/pages/CheckoutPage.test.tsx`)
 - **Language sync** — store-driven language changes applied to i18next and the document (`src/shared/i18n/useLanguageSync.test.ts`)
 - **Translation files** — key parity between English and Icelandic, no empty strings (`src/shared/i18n/locales.test.ts`)
 - **SearchBar** — renders translated strings in both languages (`src/feature/product/list/components/SearchBar.test.tsx`)
@@ -149,6 +149,4 @@ Planned improvements include:
 
 ---
 
-## Checkout disclaimer
 
-This shop does not process real payments. The checkout flow is a simulation for demonstration purposes only. No real card details should be entered.

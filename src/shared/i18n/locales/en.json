@@ -14,7 +14,7 @@
   "home": {
     "welcome": "Welcome to Hrossabrestur Craft Shop",
     "metaTitle": "Hrossabrestur – Handmade crafts",
-  "metaDescription": "Handmade items from Iceland. Browse ready-made crafts at Hrossabrestur."
+    "metaDescription": "Handmade items from Iceland. Browse ready-made crafts at Hrossabrestur."
   },
   "search": {
     "placeholder": "Search products...",
@@ -47,26 +47,50 @@
     "goToCart": "Go to Cart"
   },
   "checkout": {
-    "fakePaymentTitle": "⚠️ This is a fake payment",
-    "fakePaymentBody": "No real transaction will take place. Do not enter real card details. This checkout is for demonstration purposes only.",
     "orderSummary": "Order Summary",
     "paymentDetails": "Payment Details",
-    "nameOnCard": "Name on card",
-    "cardNumber": "Card number",
-    "expiry": "Expiry",
-    "expiryPlaceholder": "MM/YY",
-    "cvv": "CVV",
-    "pay": "Pay {{amount}}",
     "placingOrder": "Placing order...",
-    "errorEmptyFields": "Please fill in all card fields.",
     "errorEmptyCart": "Your cart is empty or you are not signed in.",
-    "errorOrderFailed": "Something went wrong placing your order. Please try again."
+    "errorOrderFailed": "Something went wrong placing your order. Please try again.",
+    "placeOrder": "Place order – {{amount}}",
+    "delivery": {
+      "title": "Delivery",
+      "pickup": "Pick up",
+      "pickupHint": "We'll contact you to arrange a time for you to pick up your order.",
+      "post": "Post",
+      "postHint": "Sent by post within Iceland."
+    },
+    "payment": {
+      "bankTransfer": "Bank transfer",
+      "bankTransferHint": "You'll get our bank details after placing the order.",
+      "payOnPickup": "Pay on pickup",
+      "payOnPickupHint": "Pay when you pick up your order. Only available with pickup."
+    },
+    "errorAddress": "Please fill in the shipping address.",
+    "address": {
+      "name": "Recipient name",
+      "street": "Street address",
+      "postcode": "Postcode",
+      "city": "Town",
+      "required": "Required",
+      "postcodeInvalid": "Postcode must be 3 digits"
+    }
   },
   "orderConfirmation": {
     "loading": "Loading your order...",
     "notFound": "Order not found.",
     "successTitle": "✓ Order placed successfully",
-    "successBody": "Thank you for your fake purchase! Your order is being pretend-processed and we will take our sweet time.",
+    "successBody": "Thank you for your order! You'll find the next steps below.",
+    "nextSteps": "Next steps",
+    "bankTransferIntro": "Please transfer the total to the account below. Put the reference in the transfer description so we can match the payment to your order.",
+    "accountHolder": "Account holder",
+    "kennitala": "Kennitala",
+    "accountNumber": "Account number",
+    "amount": "Amount",
+    "reference": "Reference",
+    "payOnPickupInfo": "You pay when you pick up your order.",
+    "pickupInfo": "We'll contact you to arrange a time to pick up your order.",
+    "postInfo": "Your order will be sent by post to:",
     "orderDetails": "Order Details",
     "viewMyOrders": "View my orders",
     "continueShopping": "Continue shopping"
