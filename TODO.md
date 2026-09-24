@@ -11,6 +11,7 @@
 - [ ] Stock guard to prevent checkout if an item is already out of stock (race condition when two people have the same item in cart at once) — needs a Supabase RPC/database function to check-and-decrement atomically
 - [ ] Make sure orders hold onto cartID so the same cart can't be checked out twice if delete fails and cartItems come back after refresh (checkoutApi.ts step 3)
 - [ ] Admin order management: view incoming orders, see chosen payment method, mark payment received / ready for pickup
+- [ ] OrderHistory: show each order's payment and delivery method (and shipping address for posted orders) — ordersApi only selects id/status/total/submitted_at, so extend the select and use OrderConfirmationSchema (or a similar extended schema)
 - [ ] Admin cancel order flow (customer cancels, transfer never arrives, or no-show at pickup) — restores the stock quantity that was decremented at checkout
 - [ ] Iceland-only for now — no international shipping/payment support needed
 
