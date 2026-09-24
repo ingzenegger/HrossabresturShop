@@ -55,7 +55,8 @@
 - [ ] Product structured data (JSON-LD) on ProductDetailPage: name, price, currency, availability
 - [ ] Site-wide Open Graph tags in index.html (og:title, og:description, og:image)
 - [ ] Per-product Open Graph previews: needs prerendering or a server function, since link-preview bots don't run JavaScript
-- [ ] Check that all alt_text values in the database are descriptive (not empty or "image1")
+- [x] Check that all alt_text values in the database are descriptive (not empty or "image1")
+- [ ] Update home.metaTitle/metaDescription (en + is) to mention patterns once the first patterns are in the shop
 
 ## Code organization
 
