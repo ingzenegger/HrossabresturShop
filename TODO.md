@@ -51,7 +51,7 @@
 
 ## SEO
 
-- [ ] Page titles and meta descriptions per page (React 19 `<title>`/`<meta>` in components)
+- [x] Page titles and meta descriptions per page (React 19 `<title>`/`<meta>` in components)
 - [ ] Product structured data (JSON-LD) on ProductDetailPage: name, price, currency, availability
 - [ ] Site-wide Open Graph tags in index.html (og:title, og:description, og:image)
 - [ ] Per-product Open Graph previews: needs prerendering or a server function, since link-preview bots don't run JavaScript

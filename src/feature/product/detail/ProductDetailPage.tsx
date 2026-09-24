@@ -48,7 +48,7 @@ const ProductDetailPage = () => {
     (attribute) => attribute.key === "category",
   );
 
-  const metaTitle = `${product.name[language]} - Hrossabrestur`;
+  const metaTitle = `${product.name[language]} – Hrossabrestur`;
   const fullDescription = product.description[language];
   const metaDescription =
     fullDescription.length > META_DESCRIPTION_MAX
