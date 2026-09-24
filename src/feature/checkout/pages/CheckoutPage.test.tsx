@@ -123,6 +123,7 @@ describe("CheckoutPage", () => {
       expect.objectContaining({
         deliveryMethod: "pickup",
         paymentMethod: "bank_transfer",
+        shippingAddress: null,
       }),
     );
   });
@@ -150,5 +151,58 @@ describe("CheckoutPage", () => {
 
     expect(screen.getByLabelText(/pay on pickup/i)).toBeDisabled();
     expect(screen.getByLabelText(/bank transfer/i)).toBeChecked();
+  });
+
+  it("shows address fields only when post is chosen", async () => {
+    render(<CheckoutPage />);
+
+    expect(screen.queryByLabelText("Street address")).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByLabelText(/^post/i));
+
+    expect(screen.getByLabelText("Street address")).toBeInTheDocument();
+  });
+
+  it("does not place a posted order without an address", async () => {
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByLabelText(/^post/i));
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(
+      screen.getByText("Please fill in the shipping address."),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Required")).toHaveLength(3);
+    expect(screen.getByText("Postcode must be 3 digits")).toBeInTheDocument();
+    expect(mockCheckout).not.toHaveBeenCalled();
+  });
+
+  it("sends the trimmed address for posted orders", async () => {
+    mockCheckout.mockResolvedValueOnce("order-123");
+
+    render(<CheckoutPage />);
+    await userEvent.click(screen.getByLabelText(/^post/i));
+    await userEvent.type(
+      screen.getByLabelText("Recipient name"),
+      " Jón Jónsson ",
+    );
+    await userEvent.type(
+      screen.getByLabelText("Street address"),
+      "Laugavegur 1",
+    );
+    await userEvent.type(screen.getByLabelText("Postcode"), "101");
+    await userEvent.type(screen.getByLabelText("Town"), "Reykjavík");
+    await userEvent.click(screen.getByRole("button", { name: /place order/i }));
+
+    expect(mockCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({
+        deliveryMethod: "post",
+        shippingAddress: {
+          name: "Jón Jónsson",
+          street: "Laugavegur 1",
+          postcode: "101",
+          city: "Reykjavík",
+        },
+      }),
+    );
   });
 });

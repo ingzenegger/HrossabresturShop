@@ -15,9 +15,27 @@ import { Label } from "@/shared/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { calculateCartTotal } from "@/shared/lib/calculateCartTotal";
 import { useTranslation } from "react-i18next";
-import type { DeliveryMethod, PaymentMethod } from "@/shared/types/order";
+import {
+  ShippingAddressSchema,
+  type DeliveryMethod,
+  type PaymentMethod,
+  type ShippingAddress,
+} from "@/shared/types/order";
+import ShippingAddressFields, {
+  type AddressField,
+} from "@/feature/checkout/components/ShippingAddressFields";
 
-type CheckoutErrorKey = "checkout.errorEmptyCart" | "checkout.errorOrderFailed";
+type CheckoutErrorKey =
+  | "checkout.errorEmptyCart"
+  | "checkout.errorOrderFailed"
+  | "checkout.errorAddress";
+
+const EMPTY_ADDRESS: ShippingAddress = {
+  name: "",
+  street: "",
+  postcode: "",
+  city: "",
+};
 
 const DELIVERY_OPTIONS = [
   {
@@ -63,6 +81,14 @@ export default function CheckoutPage() {
     useState<DeliveryMethod>("pickup");
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("bank_transfer");
+  const [address, setAddress] = useState<ShippingAddress>(EMPTY_ADDRESS);
+  const [invalidFields, setInvalidFields] = useState<AddressField[]>([]);
+
+  function handleAddressChange(field: AddressField, value: string) {
+    setAddress({ ...address, [field]: value });
+    // the customer is fixing this field, so stop marking it as invalid
+    setInvalidFields(invalidFields.filter((f) => f !== field));
+  }
 
   function handleDeliveryChange(method: DeliveryMethod) {
     setDeliveryMethod(method);
@@ -82,6 +108,20 @@ export default function CheckoutPage() {
       return;
     }
 
+    // only posted orders need an address
+    let shippingAddress: ShippingAddress | null = null;
+    if (deliveryMethod === "post") {
+      const result = ShippingAddressSchema.safeParse(address);
+      if (!result.success) {
+        setInvalidFields(
+          result.error.issues.map((issue) => issue.path[0] as AddressField),
+        );
+        setError("checkout.errorAddress");
+        return;
+      }
+      shippingAddress = result.data;
+    }
+
     setLoading(true);
 
     const orderId = await checkout({
@@ -92,7 +132,7 @@ export default function CheckoutPage() {
       language: language,
       paymentMethod,
       deliveryMethod,
-      shippingAddress: null,
+      shippingAddress,
     });
 
     if (!orderId) {
@@ -171,6 +211,13 @@ export default function CheckoutPage() {
                   </Label>
                 ))}
               </RadioGroup>
+              {deliveryMethod === "post" && (
+                <ShippingAddressFields
+                  value={address}
+                  onChange={handleAddressChange}
+                  invalidFields={invalidFields}
+                />
+              )}
             </div>
 
             <div className="flex flex-col gap-2">

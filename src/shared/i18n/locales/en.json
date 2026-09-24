@@ -65,6 +65,15 @@
       "bankTransferHint": "You'll get our bank details after placing the order.",
       "payOnPickup": "Pay on pickup",
       "payOnPickupHint": "Pay when you pick up your order. Only available with pickup."
+    },
+    "errorAddress": "Please fill in the shipping address.",
+    "address": {
+      "name": "Recipient name",
+      "street": "Street address",
+      "postcode": "Postcode",
+      "city": "Town",
+      "required": "Required",
+      "postcodeInvalid": "Postcode must be 3 digits"
     }
   },
   "orderConfirmation": {

@@ -65,6 +65,15 @@
       "bankTransferHint": "Þú færð bankaupplýsingar eftir að pöntun er staðfest.",
       "payOnPickup": "Greiða við afhendingu",
       "payOnPickupHint": "Greitt þegar pöntunin er sótt. Aðeins í boði ef pöntun er sótt."
+    },
+    "errorAddress": "Vinsamlegast fylltu út heimilisfang.",
+    "address": {
+      "name": "Nafn viðtakanda",
+      "street": "Heimilisfang",
+      "postcode": "Póstnúmer",
+      "city": "Staður",
+      "required": "Nauðsynlegt",
+      "postcodeInvalid": "Póstnúmer þarf að vera 3 tölustafir"
     }
   },
   "orderConfirmation": {
