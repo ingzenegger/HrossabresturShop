@@ -12,7 +12,9 @@
     "loggingOut": "Logging out..."
   },
   "home": {
-    "welcome": "Welcome to Hrossabrestur Craft Shop"
+    "welcome": "Welcome to Hrossabrestur Craft Shop",
+    "metaTitle": "Hrossabrestur – Handmade crafts",
+  "metaDescription": "Handmade items from Iceland. Browse ready-made crafts at Hrossabrestur."
   },
   "search": {
     "placeholder": "Search products...",

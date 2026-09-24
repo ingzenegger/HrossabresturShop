@@ -12,7 +12,9 @@
     "loggingOut": "Skráir út..."
   },
   "home": {
-    "welcome": "Velkomin í vefverslunina Hrossabrestur "
+    "welcome": "Velkomin í vefverslunina Hrossabrestur ",
+    "metaTitle": "Hrossabrestur - Handverk",
+    "metaDescription": "Íslenskt handverk. Skoðaðu tilbúnar vörur hjá Hrossabresti."
   },
   "search": {
     "placeholder": "Leita að vöru...",
