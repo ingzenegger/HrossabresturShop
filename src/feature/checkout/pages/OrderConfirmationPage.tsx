@@ -13,9 +13,10 @@ import {
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
-import { OrderSchema, type Order } from "@/shared/types/order";
+import { OrderConfirmationSchema, type OrderConfirmation } from "@/shared/types/order";
 import { useAppStore } from "@/shared/store/appStore";
 import { useTranslation } from "react-i18next";
+import { BANK_DETAILS } from "@/shared/config/shop";
 
 async function getOrder(orderId: string) {
   const supabase = createClient();
@@ -31,7 +32,7 @@ async function getOrder(orderId: string) {
     return null;
   }
 
-  const parsed = OrderSchema.safeParse(data);
+  const parsed = OrderConfirmationSchema.safeParse(data);
   if (!parsed.success) {
     console.error("Validation error", parsed.error);
     return null;
@@ -45,7 +46,7 @@ export default function OrderConfirmationPage() {
   const language = useAppStore((state) => state.language);
   const { t } = useTranslation();
 
-  const { data: order, isLoading } = useQuery<Order | null>({
+  const { data: order, isLoading } = useQuery<OrderConfirmation | null>({
     queryKey: ["order", orderId],
     queryFn: () => getOrder(orderId!),
     enabled: !!orderId,
@@ -57,6 +58,8 @@ export default function OrderConfirmationPage() {
     return (
       <p className="mt-8 text-center">{t("orderConfirmation.notFound")}</p>
     );
+      // short, readable reference for the bank transfer description
+  const reference = order.id.slice(0, 8).toUpperCase();
 
   return (
     <div className="max-w-lg mx-auto mt-8 px-4 flex flex-col gap-6">
@@ -67,7 +70,58 @@ export default function OrderConfirmationPage() {
         </p>
         <p>{t("orderConfirmation.successBody")}</p>
       </div>
+      {/* What happens next */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("orderConfirmation.nextSteps")}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4 text-sm">
+          {order.payment_method === "bank_transfer" ? (
+            <div className="flex flex-col gap-2">
+              <p>{t("orderConfirmation.bankTransferIntro")}</p>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
+                <dt className="text-muted-foreground">
+                  {t("orderConfirmation.accountHolder")}
+                </dt>
+                <dd>{BANK_DETAILS.accountHolder}</dd>
+                <dt className="text-muted-foreground">
+                  {t("orderConfirmation.kennitala")}
+                </dt>
+                <dd>{BANK_DETAILS.kennitala}</dd>
+                <dt className="text-muted-foreground">
+                  {t("orderConfirmation.accountNumber")}
+                </dt>
+                <dd>{BANK_DETAILS.accountNumber}</dd>
+                <dt className="text-muted-foreground">
+                  {t("orderConfirmation.amount")}
+                </dt>
+                <dd>{formatPrice(order.total, language)}</dd>
+                <dt className="text-muted-foreground">
+                  {t("orderConfirmation.reference")}
+                </dt>
+                <dd className="font-semibold">{reference}</dd>
+              </dl>
+            </div>
+          ) : (
+            <p>{t("orderConfirmation.payOnPickupInfo")}</p>
+          )}
 
+          {order.delivery_method === "post" ? (
+            <div className="flex flex-col gap-1">
+              <p>{t("orderConfirmation.postInfo")}</p>
+              <address className="not-italic">
+                {order.shipping_name}
+                <br />
+                {order.shipping_street}
+                <br />
+                {order.shipping_postcode} {order.shipping_city}
+              </address>
+            </div>
+          ) : (
+            <p>{t("orderConfirmation.pickupInfo")}</p>
+          )}
+        </CardContent>
+      </Card>
       {/* Order details */}
       <Card>
         <CardHeader>

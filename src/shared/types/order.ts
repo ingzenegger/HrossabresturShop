@@ -28,8 +28,20 @@ export const OrderSchema = z.object({
   order_items: z.array(OrderItemSchema).default([]),
 });
 
+// the confirmation page also needs how the order is paid and delivered;
+// order history doesn't select these columns, so they get their own schema
+export const OrderConfirmationSchema = OrderSchema.extend({
+  payment_method: PaymentMethodSchema,
+  delivery_method: DeliveryMethodSchema,
+  shipping_name: z.string().nullable(),
+  shipping_street: z.string().nullable(),
+  shipping_postcode: z.string().nullable(),
+  shipping_city: z.string().nullable(),
+});
+
 export type OrderItem = z.infer<typeof OrderItemSchema>;
 export type Order = z.infer<typeof OrderSchema>;
 export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
 export type DeliveryMethod = z.infer<typeof DeliveryMethodSchema>;
 export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
+export type OrderConfirmation = z.infer<typeof OrderConfirmationSchema>;

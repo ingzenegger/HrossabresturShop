@@ -56,7 +56,7 @@
     "delivery": {
       "title": "Delivery",
       "pickup": "Pick up",
-      "pickupHint": "We'll contact you to arrange a time to pick up your order.",
+      "pickupHint": "We'll contact you to arrange a time for you to pick up your order.",
       "post": "Post",
       "postHint": "Sent by post within Iceland."
     },
@@ -80,7 +80,17 @@
     "loading": "Loading your order...",
     "notFound": "Order not found.",
     "successTitle": "✓ Order placed successfully",
-    "successBody": "Thank you for your fake purchase! Your order is being pretend-processed and we will take our sweet time.",
+    "successBody": "Thank you for your order! You'll find the next steps below.",
+    "nextSteps": "Next steps",
+    "bankTransferIntro": "Please transfer the total to the account below. Put the reference in the transfer description so we can match the payment to your order.",
+    "accountHolder": "Account holder",
+    "kennitala": "Kennitala",
+    "accountNumber": "Account number",
+    "amount": "Amount",
+    "reference": "Reference",
+    "payOnPickupInfo": "You pay when you pick up your order.",
+    "pickupInfo": "We'll contact you to arrange a time to pick up your order.",
+    "postInfo": "Your order will be sent by post to:",
     "orderDetails": "Order Details",
     "viewMyOrders": "View my orders",
     "continueShopping": "Continue shopping"

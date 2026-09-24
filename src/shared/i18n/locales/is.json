@@ -56,13 +56,13 @@
     "delivery": {
       "title": "Afhending",
       "pickup": "Sækja",
-      "pickupHint": "Við höfum samband til að finna tíma fyrir þig til að sækja pöntunina.",
-      "post": "Póstur",
-      "postHint": "Sent með pósti innanlands."
+      "pickupHint": "Við höfum samband til að finna tíma fyrir þig að sækja pöntunina.",
+      "post": "Fá sent",
+      "postHint": "Sent með Íslandspósti innanlands."
     },
     "payment": {
       "bankTransfer": "Millifærsla",
-      "bankTransferHint": "Þú færð bankaupplýsingar eftir að pöntun er staðfest.",
+      "bankTransferHint": "Þú færð bankaupplýsingar í næsta skrefi.",
       "payOnPickup": "Greiða við afhendingu",
       "payOnPickupHint": "Greitt þegar pöntunin er sótt. Aðeins í boði ef pöntun er sótt."
     },
@@ -80,7 +80,17 @@
     "loading": "Hleður pöntun...",
     "notFound": "Pöntun fannst ekki.",
     "successTitle": "✓ Pöntun móttekin",
-    "successBody": "Takk fyrir gervi kaupin! Verið er að gervi-afgreiða pöntunina þína og mun það taka dágóðan tíma.",
+    "successBody": "Takk fyrir pöntunina! Næstu skref eru hér fyrir neðan.",
+    "nextSteps": "Næstu skref",
+    "bankTransferIntro": "Vinsamlegast millifærðu upphæðina á reikninginn hér fyrir neðan. Settu tilvísunina í skýringu svo við getum tengt greiðsluna við pöntunina.",
+    "accountHolder": "Reikningseigandi",
+    "kennitala": "Kennitala",
+    "accountNumber": "Reikningsnúmer",
+    "amount": "Upphæð",
+    "reference": "Tilvísun",
+    "payOnPickupInfo": "Þú greiðir þegar þú sækir pöntunina.",
+    "pickupInfo": "Við höfum samband til að finna tíma til að sækja pöntunina.",
+    "postInfo": "Pöntunin verður send með pósti á:",
     "orderDetails": "Pöntunarupplýsingar",
     "viewMyOrders": "Skoða mínar pantanir",
     "continueShopping": "Halda áfram að versla"

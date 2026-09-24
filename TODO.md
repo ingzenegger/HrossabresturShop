@@ -6,7 +6,7 @@
 
 ## Order & payment flow (replacing the fake checkout)
 
-- [ ] Replace the fake card form with real payment choices at checkout: pay by bank transfer, or pay on pickup — no online charging
+- [x] Replace the fake card form with real payment choices at checkout: pay by bank transfer, or pay on pickup — no online charging
 - [ ] On checkout, decrement stock_quantity immediately (variant if variant_id exists, else product) — this reserves the item, since stock will usually only be 1-2 units
 - [ ] Stock guard to prevent checkout if an item is already out of stock (race condition when two people have the same item in cart at once) — needs a Supabase RPC/database function to check-and-decrement atomically
 - [ ] Make sure orders hold onto cartID so the same cart can't be checked out twice if delete fails and cartItems come back after refresh (checkoutApi.ts step 3)
