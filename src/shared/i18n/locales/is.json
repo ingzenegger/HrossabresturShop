@@ -52,7 +52,7 @@
     "placingOrder": "Sendi inn pöntun...",
     "errorEmptyCart": "Karfan þín er tóm eða þú hefur ekki skráð þig inn.",
     "errorOrderFailed": "Eitthvað fór úrskeiðis við að senda pöntunina þína. Vinsamlegast reyndu aftur.",
-    "placeOrder": "Senda pöntun – {{amount}}",
+    "placeOrder": "Leggja inn pöntun – {{amount}}",
     "delivery": {
       "title": "Afhending",
       "pickup": "Sækja",
