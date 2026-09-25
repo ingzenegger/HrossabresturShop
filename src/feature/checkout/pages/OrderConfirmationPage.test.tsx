@@ -41,6 +41,7 @@ const baseOrder = {
   order_items: [],
   payment_method: "bank_transfer",
   delivery_method: "pickup",
+  shipping_cost: 0,
   shipping_name: null,
   shipping_street: null,
   shipping_postcode: null,
@@ -73,9 +74,7 @@ describe("OrderConfirmationPage", () => {
     expect(await screen.findByText("Account number")).toBeInTheDocument();
     expect(screen.getByText("ABCD1234")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "We'll contact you to arrange a time to pick up your order.",
-      ),
+      screen.getByText(/arrange a time to pick up your order/),
     ).toBeInTheDocument();
   });
 
@@ -98,6 +97,8 @@ describe("OrderConfirmationPage", () => {
       data: {
         ...baseOrder,
         delivery_method: "post",
+        total: 51500,
+        shipping_cost: 1500,
         shipping_name: "Jón Jónsson",
         shipping_street: "Laugavegur 1",
         shipping_postcode: "101",
@@ -113,5 +114,16 @@ describe("OrderConfirmationPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Laugavegur 1/)).toBeInTheDocument();
     expect(screen.getByText(/101 Reykjavík/)).toBeInTheDocument();
+    expect(screen.getByText("Shipping")).toBeInTheDocument();
+    expect(screen.getByText("ISK 1,500")).toBeInTheDocument();
+  });
+
+  it("shows no shipping line for pickup orders", async () => {
+    mockSingle.mockResolvedValueOnce({ data: baseOrder, error: null });
+
+    renderPage();
+
+    expect(await screen.findByText("Next steps")).toBeInTheDocument();
+    expect(screen.queryByText("Shipping")).not.toBeInTheDocument();
   });
 });

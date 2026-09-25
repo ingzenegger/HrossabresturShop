@@ -5,6 +5,7 @@
 // things that need mocking: appStore, cartTotals, checkout and useNavigate
 
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import CheckoutPage from "./CheckoutPage";
@@ -24,6 +25,11 @@ vi.mock("@/feature/cart/hooks/useCartTotals", () => ({
 const mockCheckout = vi.hoisted(() => vi.fn());
 vi.mock("@/feature/checkout/api/checkoutApi", () => ({
   checkout: mockCheckout,
+}));
+
+// Mock the shipping price so it doesn't go to Supabase
+vi.mock("@/feature/checkout/api/shopSettingsApi", () => ({
+  getShippingPrice: () => Promise.resolve(1500),
 }));
 
 // Mock Zustand store
@@ -58,6 +64,18 @@ vi.mock("@/shared/store/appStore", () => {
   return { useAppStore };
 });
 
+// CheckoutPage uses React Query now, so it needs a QueryClientProvider
+function renderPage() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  render(
+    <QueryClientProvider client={queryClient}>
+      <CheckoutPage />
+    </QueryClientProvider>,
+  );
+}
+
 //actual tests
 describe("CheckoutPage", () => {
   beforeEach(async () => {
@@ -69,7 +87,7 @@ describe("CheckoutPage", () => {
     // Override cartItems to be empty for this test only
     mockStore.cartItems = [];
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(
@@ -94,7 +112,7 @@ describe("CheckoutPage", () => {
     // checkout returns null to simulate a failure
     mockCheckout.mockResolvedValueOnce(null);
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(
@@ -107,7 +125,7 @@ describe("CheckoutPage", () => {
   it("navigates to confirmation page when checkout succeeds", async () => {
     mockCheckout.mockResolvedValueOnce("order-123");
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith("/order-confirmation/order-123");
@@ -116,7 +134,7 @@ describe("CheckoutPage", () => {
   it("sends pickup and bank transfer by default", async () => {
     mockCheckout.mockResolvedValueOnce("order-123");
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
     expect(mockCheckout).toHaveBeenCalledWith(
@@ -131,7 +149,7 @@ describe("CheckoutPage", () => {
   it("sends the methods the customer chose", async () => {
     mockCheckout.mockResolvedValueOnce("order-123");
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByLabelText(/pay on pickup/i));
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
@@ -144,7 +162,7 @@ describe("CheckoutPage", () => {
   });
 
   it("switches away from pay on pickup when post is chosen", async () => {
-    render(<CheckoutPage />);
+    renderPage();
 
     await userEvent.click(screen.getByLabelText(/pay on pickup/i));
     await userEvent.click(screen.getByLabelText(/^post/i));
@@ -154,7 +172,7 @@ describe("CheckoutPage", () => {
   });
 
   it("shows address fields only when post is chosen", async () => {
-    render(<CheckoutPage />);
+    renderPage();
 
     expect(screen.queryByLabelText("Street address")).not.toBeInTheDocument();
 
@@ -164,7 +182,7 @@ describe("CheckoutPage", () => {
   });
 
   it("does not place a posted order without an address", async () => {
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByLabelText(/^post/i));
     await userEvent.click(screen.getByRole("button", { name: /place order/i }));
 
@@ -179,7 +197,7 @@ describe("CheckoutPage", () => {
   it("sends the trimmed address for posted orders", async () => {
     mockCheckout.mockResolvedValueOnce("order-123");
 
-    render(<CheckoutPage />);
+    renderPage();
     await userEvent.click(screen.getByLabelText(/^post/i));
     await userEvent.type(
       screen.getByLabelText("Recipient name"),
@@ -204,5 +222,17 @@ describe("CheckoutPage", () => {
         },
       }),
     );
+  });
+  it("adds the shipping price to the total when post is chosen", async () => {
+    renderPage();
+
+    // pickup: no shipping line, total is just the items
+    expect(screen.queryByText("Shipping")).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByLabelText(/^post/i));
+
+    expect(await screen.findByText("Shipping")).toBeInTheDocument();
+    expect(screen.getByText("ISK 1,500")).toBeInTheDocument();
+    expect(screen.getByText("ISK 51,500")).toBeInTheDocument();
   });
 });

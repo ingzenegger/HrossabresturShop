@@ -18,7 +18,7 @@ export const OrderItemSchema = z.object({
   variant_name: z.string().nullable(),
   quantity: z.number().int().positive(),
   line_total: z.number().int().nonnegative(),
-  });
+});
 
 export const OrderSchema = z.object({
   id: z.uuid(),
@@ -33,6 +33,7 @@ export const OrderSchema = z.object({
 export const OrderConfirmationSchema = OrderSchema.extend({
   payment_method: PaymentMethodSchema,
   delivery_method: DeliveryMethodSchema,
+  shipping_cost: z.number().int().nonnegative(),
   shipping_name: z.string().nullable(),
   shipping_street: z.string().nullable(),
   shipping_postcode: z.string().nullable(),
