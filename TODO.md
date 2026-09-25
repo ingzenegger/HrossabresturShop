@@ -7,9 +7,10 @@
 ## Order & payment flow (replacing the fake checkout)
 
 - [x] Replace the fake card form with real payment choices at checkout: pay by bank transfer, or pay on pickup — no online charging
-- [ ] On checkout, decrement stock_quantity immediately (variant if variant_id exists, else product) — this reserves the item, since stock will usually only be 1-2 units
-- [ ] Stock guard to prevent checkout if an item is already out of stock (race condition when two people have the same item in cart at once) — needs a Supabase RPC/database function to check-and-decrement atomically
-- [ ] Make sure orders hold onto cartID so the same cart can't be checked out twice if delete fails and cartItems come back after refresh (checkoutApi.ts step 3)
+- [x] On checkout, decrement stock_quantity immediately (variant if variant_id exists, else product) — this reserves the item, since stock will usually only be 1-2 units
+- [x] Stock guard to prevent checkout if an item is already out of stock (race condition when two people have the same item in cart at once) — needs a Supabase RPC/database function to check-and-decrement atomically
+- [x] Make sure orders hold onto cartID so the same cart can't be checked out twice if delete fails and cartItems come back after refresh (checkoutApi.ts step 3) - edit: cart status is "checked out"
+- [ ] Add shipping price to checkout
 - [ ] Admin order management: view incoming orders, see chosen payment method, mark payment received / ready for pickup
 - [ ] OrderHistory: show each order's payment and delivery method (and shipping address for posted orders) — ordersApi only selects id/status/total/submitted_at, so extend the select and use OrderConfirmationSchema (or a similar extended schema)
 - [ ] Admin cancel order flow (customer cancels, transfer never arrives, or no-show at pickup) — restores the stock quantity that was decremented at checkout

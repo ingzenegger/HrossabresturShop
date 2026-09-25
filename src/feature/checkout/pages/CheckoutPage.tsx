@@ -126,9 +126,6 @@ export default function CheckoutPage() {
 
     const orderId = await checkout({
       cartId,
-      customerId,
-      cartItems,
-      totalAmount: total,
       language: language,
       paymentMethod,
       deliveryMethod,
