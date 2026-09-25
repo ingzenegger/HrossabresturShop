@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useAppStore } from "@/shared/store/appStore";
 import { checkout } from "@/feature/checkout/api/checkoutApi";
+import { getShippingPrice } from "@/feature/checkout/api/shopSettingsApi";
 import { formatPrice } from "@/shared/lib/formatPrice";
 import {
   Card,
@@ -70,7 +72,7 @@ export default function CheckoutPage() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
   const setCartId = useAppStore((state) => state.setCartId);
-  const total = calculateCartTotal(cartItems);
+  const subtotal = calculateCartTotal(cartItems);
   const language = useAppStore((state) => state.language);
   const { t } = useTranslation();
 
@@ -81,6 +83,15 @@ export default function CheckoutPage() {
     useState<DeliveryMethod>("pickup");
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("bank_transfer");
+  const { data: shippingPrice } = useQuery({
+    queryKey: ["shippingPrice"],
+    queryFn: getShippingPrice,
+  });
+  // undefined while the price is still loading
+  const shippingCost = deliveryMethod === "post" ? shippingPrice : 0;
+  const total =
+    shippingCost === undefined ? undefined : subtotal + shippingCost;
+
   const [address, setAddress] = useState<ShippingAddress>(EMPTY_ADDRESS);
   const [invalidFields, setInvalidFields] = useState<AddressField[]>([]);
 
@@ -103,7 +114,7 @@ export default function CheckoutPage() {
     setError(null);
 
     //just in case, shouldn't be seeing any checkout page if you are not logged in
-    if (!cartId || !customerId || cartItems.length === 0 || !total) {
+    if (!cartId || !customerId || cartItems.length === 0 || !subtotal) {
       setError("checkout.errorEmptyCart");
       return;
     }
@@ -167,6 +178,20 @@ export default function CheckoutPage() {
             );
           })}
           <Separator className="my-2" />
+                    <div className="flex justify-between text-sm">
+            <span>{t("common.subtotal")}</span>
+            <span>{formatPrice(subtotal, language)}</span>
+          </div>
+          {deliveryMethod === "post" && (
+            <div className="flex justify-between text-sm">
+              <span>{t("common.shipping")}</span>
+              <span>
+                {shippingPrice !== undefined
+                  ? formatPrice(shippingPrice, language)
+                  : "—"}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between font-semibold">
             <span>{t("common.total")}</span>
             <span>{total ? formatPrice(total, language) : "—"}</span>
@@ -202,7 +227,12 @@ export default function CheckoutPage() {
                     <span className="flex flex-col gap-1">
                       <span>{t(option.label)}</span>
                       <span className="text-sm font-normal text-muted-foreground">
-                        {t(option.hint)}
+                        {t(option.hint, {
+                          price:
+                            shippingPrice !== undefined
+                              ? formatPrice(shippingPrice, language)
+                              : "…",
+                        })}
                       </span>
                     </span>
                   </Label>

@@ -140,6 +140,20 @@ export default function OrderConfirmationPage() {
             </div>
           ))}
           <Separator className="my-2" />
+                    {order.shipping_cost > 0 && (
+            <>
+              <div className="flex justify-between text-sm">
+                <span>{t("common.subtotal")}</span>
+                <span>
+                  {formatPrice(order.total - order.shipping_cost, language)}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>{t("common.shipping")}</span>
+                <span>{formatPrice(order.shipping_cost, language)}</span>
+              </div>
+            </>
+          )}
           <div className="flex justify-between font-semibold">
             <span>{t("common.total")}</span>
             <span>{formatPrice(order.total, language)}</span>

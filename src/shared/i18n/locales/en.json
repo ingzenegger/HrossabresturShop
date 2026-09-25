@@ -2,7 +2,9 @@
   "common": {
     "loading": "Loading...",
     "total": "Total",
-    "somethingWentWrong": "Something went wrong. Please refresh or come back later."
+    "somethingWentWrong": "Something went wrong. Please refresh or come back later.",
+    "subtotal": "Subtotal",
+"shipping": "Shipping"
   },
   "nav": {
     "home": "Home",
@@ -56,9 +58,9 @@
     "delivery": {
       "title": "Delivery",
       "pickup": "Pick up",
-      "pickupHint": "We'll contact you to arrange a time for you to pick up your order.",
+      "pickupHint": "Pick up in Grafarvogur. We'll contact you to arrange a time.",
       "post": "Post",
-      "postHint": "Sent by post within Iceland."
+      "postHint": "Sent by post within Iceland – {{price}}."
     },
     "payment": {
       "bankTransfer": "Bank transfer",
@@ -89,7 +91,7 @@
     "amount": "Amount",
     "reference": "Reference",
     "payOnPickupInfo": "You pay when you pick up your order.",
-    "pickupInfo": "We'll contact you to arrange a time to pick up your order.",
+    "pickupInfo": "We'll contact you to arrange a time to pick up your order in Grafarvogur.",
     "postInfo": "Your order will be sent by post to:",
     "orderDetails": "Order Details",
     "viewMyOrders": "View my orders",

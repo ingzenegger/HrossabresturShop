@@ -2,7 +2,9 @@
   "common": {
     "loading": "Hleður...",
     "total": "Samtals",
-    "somethingWentWrong": "Eitthvað fór úrskeiðis. Prufaðu að endurræsa síðuna eða komdu aftur síðar."
+    "somethingWentWrong": "Eitthvað fór úrskeiðis. Prufaðu að endurræsa síðuna eða komdu aftur síðar.",
+    "subtotal": "Millisamtala",
+    "shipping": "Sendingarkostnaður"
   },
   "nav": {
     "home": "Heim",
@@ -56,9 +58,9 @@
     "delivery": {
       "title": "Afhending",
       "pickup": "Sækja",
-      "pickupHint": "Við höfum samband til að finna tíma fyrir þig að sækja pöntunina.",
+      "pickupHint": "Sótt í Grafarvog. Við höfum samband til að finna tíma.",
       "post": "Fá sent",
-      "postHint": "Sent með Íslandspósti innanlands."
+      "postHint": "Sent með Íslandspósti innanlands – {{price}}"
     },
     "payment": {
       "bankTransfer": "Millifærsla",
@@ -89,7 +91,7 @@
     "amount": "Upphæð",
     "reference": "Tilvísun",
     "payOnPickupInfo": "Þú greiðir þegar þú sækir pöntunina.",
-    "pickupInfo": "Við höfum samband til að finna tíma til að sækja pöntunina.",
+    "pickupInfo": "Við höfum samband til að finna tíma til að sækja pöntunina í Grafarvog.",
     "postInfo": "Pöntunin verður send með pósti á:",
     "orderDetails": "Pöntunarupplýsingar",
     "viewMyOrders": "Skoða mínar pantanir",
