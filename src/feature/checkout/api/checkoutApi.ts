@@ -1,7 +1,7 @@
-//insert new row into orders, take cart_items and insert the into order_items
+// turn the active cart into an order via the place_order database function,
+// which checks stock, creates the order and closes the cart in one transaction
 
 import { createClient } from "@/shared/lib/client";
-import type { CartItem } from "@/shared/types/cart";
 import type { Language } from "@/shared/types/language";
 import type {
   DeliveryMethod,
@@ -11,9 +11,6 @@ import type {
 
 type CheckoutProps = {
   cartId: string;
-  customerId: string;
-  cartItems: CartItem[];
-  totalAmount: number;
   language: Language;
   paymentMethod: PaymentMethod;
   deliveryMethod: DeliveryMethod;
@@ -21,10 +18,7 @@ type CheckoutProps = {
 };
 
 export async function checkout({
-  cartId,
-  customerId,
-  cartItems,
-  totalAmount,
+  cartId,  
   language,
   paymentMethod,
   deliveryMethod,
@@ -32,65 +26,22 @@ export async function checkout({
 }: CheckoutProps): Promise<string | null> {
   const supabase = createClient();
 
-  // Step 1: Create the order
-  const { data: order, error: orderError } = await supabase
-    .from("orders")
-    .insert({
-      customer_id: customerId,
-      status: "pending",
-      subtotal: totalAmount,
-      total: totalAmount,
-      currency: cartItems[0].product.currency,
-      submitted_at: new Date().toISOString(),
-      payment_method: paymentMethod,
-      delivery_method: deliveryMethod,
-      shipping_name: shippingAddress?.name ?? null,
-      shipping_street: shippingAddress?.street ?? null,
-      shipping_postcode: shippingAddress?.postcode ?? null,
-      shipping_city: shippingAddress?.city ?? null,
-    })
-    .select()
-    .single();
-
-  if (orderError || !order) {
-    console.error("Failed to create order:", orderError);
-    return null;
-  }
-
-  // Step 2: Insert one order_item row per cart item
-  const orderItems = cartItems.map((item) => {
-    const unitPrice = item.variant?.price ?? item.product.price;
-    return {
-      order_id: order.id,
-      product_id: item.product_id,
-      variant_id: item.variant_id,
-      product_name: item.product.name[language],
-      variant_name: item.variant?.name[language] ?? null,
-      unit_price: unitPrice,
-      quantity: item.quantity,
-      line_total: unitPrice * item.quantity,
-    };
+  const { data: orderId, error } = await supabase.rpc("place_order", {
+    p_cart_id: cartId,
+    p_language: language,
+    p_payment_method: paymentMethod,
+    p_delivery_method: deliveryMethod,
+    p_shipping_name: shippingAddress?.name ?? null,
+    p_shipping_street: shippingAddress?.street ?? null,
+    p_shipping_postcode: shippingAddress?.postcode ?? null,
+    p_shipping_city: shippingAddress?.city ?? null,
   });
 
-  const { error: itemsError } = await supabase
-    .from("order_items")
-    .insert(orderItems);
-
-  if (itemsError) {
-    console.error("Failed to insert order items:", itemsError);
+  if (error || !orderId) {
+    console.error("Failed to place order:", error);
     return null;
   }
 
-  // Step 3: Delete the cart
-  const { error: cartError } = await supabase
-    .from("carts")
-    .delete()
-    .eq("id", cartId);
-
-  if (cartError) {
-    console.error("Failed to remove cart:", cartError);
-    return order.id;
-  }
-
-  return order.id;
+  return orderId;
 }
+

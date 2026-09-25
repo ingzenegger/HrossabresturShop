@@ -1,67 +1,19 @@
-//test what happens when inserting order fails (should return null)
-//test what happens when inserting order items fails (should return null as well)
-//test whta happens when this shit works (returns the order Id)
+//test that checkout calls place_order with the right arguments
+//test what happens when place_order fails (should return null)
+//test that it returns the order id on success
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { checkout } from "./checkoutApi";
-import type { CartItem } from "@/shared/types/cart";
-import type { Language } from "@/shared/types/language";
 
-//mockidy mock
+// mock supabase.rpc call
+const mockRpc = vi.fn();
 vi.mock("@/shared/lib/client", () => ({
-  createClient: () => mockSupabase,
+  createClient: () => ({ rpc: mockRpc }),
 }));
-//mocking the chaaining stuff for supabase
-const mockSingle = vi.fn();
-const mockSelect = vi.fn(() => ({ single: mockSingle }));
-const mockInsert: ReturnType<typeof vi.fn> = vi.fn(() => ({
-  select: mockSelect,
-  then: undefined,
-}));
-const mockUpdate = vi.fn(() => ({ eq: mockEq }));
-const mockDelete = vi.fn(() => ({ eq: mockEq }));
-const mockEq = vi.fn();
-const mockFrom = vi.fn(() => ({
-  insert: mockInsert,
-  update: mockUpdate,
-  delete: mockDelete,
-}));
-
-const mockSupabase = { from: mockFrom };
-
-//test data
-const cartItems: CartItem[] = [
-  {
-    id: "item-1",
-    cart_id: "cart-1",
-    product_id: "prod-1",
-    quantity: 2,
-    created_at: "2024-01-01T00:00:00Z",
-    updated_at: "2024-01-01T00:00:00Z",
-    variant_id: "var-1",
-    product: {
-      id: "prod-1",
-      name: { en: "Handmade Thingy", is: "handgert dót" },
-      price: 25000,
-      currency: "ISK",
-      stock_quantity: 10,
-      is_active: true,
-    },
-    variant: {
-      name: { en: "Blue", is: "Blár" },
-      price: 25000,
-      stock_quantity: 10,
-    },
-  },
-];
-const language: Language = "en";
 
 const checkoutArgs = {
   cartId: "cart-1",
-  customerId: "customer-1",
-  cartItems,
-  totalAmount: 50000,
-  language,
+  language: "en" as const,
   paymentMethod: "bank_transfer" as const,
   deliveryMethod: "pickup" as const,
   shippingAddress: null,
@@ -69,128 +21,48 @@ const checkoutArgs = {
 
 describe("checkout", () => {
   beforeEach(() => {
-    // Reset all mocks between tests.
+    // Reset mocks between tests.
     vi.clearAllMocks();
-
-    // Re-wire the chain after clearing.
-    mockInsert.mockReturnValue({ select: mockSelect, then: undefined });
-    mockSelect.mockReturnValue({ single: mockSingle });
-    mockUpdate.mockReturnValue({ eq: mockEq });
-    mockFrom.mockReturnValue({
-      insert: mockInsert,
-      update: mockUpdate,
-      delete: mockDelete,
-    });
-  });
-
-  it("returns null when the order insert fails", async () => {
-    mockSingle.mockResolvedValueOnce({
-      data: null,
-      error: { message: "DB error" },
-    });
-
-    const result = await checkout(checkoutArgs);
-
-    expect(result).toBeNull();
-  });
-
-  it("returns null when order_items insert fails", async () => {
-    // First call: order insert succeeds, gives back a fake order
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
-    });
-
-    // Second call: order_items insert fails.
-
-    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({
-      data: null,
-      error: { message: "Insert failed" },
-    }); // second call (order_items)
-
-    const result = await checkout(checkoutArgs);
-
-    expect(result).toBeNull();
   });
 
   it("returns the order id on success", async () => {
-    // Order insert succeeds
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
-    });
-
-    // order_items insert succeeds
-    mockInsert.mockReturnValueOnce({ select: mockSelect }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
-
-    // cart update succeeds
-    mockEq.mockResolvedValueOnce({ error: null });
+    mockRpc.mockResolvedValueOnce({ data: "order-123", error: null });
 
     const result = await checkout(checkoutArgs);
 
     expect(result).toBe("order-123");
   });
 
-  it("saves product name in selected language when inserting order_item", async () => {
-    // order insert succeeds:
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
+  it("returns null when place_order fails", async () => {
+    mockRpc.mockResolvedValueOnce({
+      data: null,
+      error: { message: "out_of_stock" },
     });
-    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
-    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
 
-    // Act: checkout with Icelandic selected
+    const result = await checkout(checkoutArgs);
+
+    expect(result).toBeNull();
+  });
+
+  it("sends the cart, language and methods to place_order", async () => {
+    mockRpc.mockResolvedValueOnce({ data: "order-123", error: null });
+
     await checkout({ ...checkoutArgs, language: "is" });
 
-    // Assert: the order_items insert received the Icelandic name
-    expect(mockInsert).toHaveBeenCalledWith([
-      expect.objectContaining({ product_name: "handgert dót" }),
-    ]);
-    expect(mockInsert).toHaveBeenCalledWith([
-      expect.objectContaining({ variant_name: "Blár" }),
-    ]);
-    expect(mockInsert).not.toHaveBeenCalledWith([
-      expect.objectContaining({ product_name: "Handmade Thingy" }),
-    ]);
+    expect(mockRpc).toHaveBeenCalledWith("place_order", {
+      p_cart_id: "cart-1",
+      p_language: "is",
+      p_payment_method: "bank_transfer",
+      p_delivery_method: "pickup",
+      p_shipping_name: null,
+      p_shipping_street: null,
+      p_shipping_postcode: null,
+      p_shipping_city: null,
+    });
   });
 
-  it("saves the chosen payment and delivery method on the order", async () => {
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
-    });
-    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
-    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
-
-    await checkout({
-      ...checkoutArgs,
-      paymentMethod: "pay_on_pickup",
-      deliveryMethod: "pickup",
-    });
-
-    // the first insert is the order row
-    expect(mockInsert).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        payment_method: "pay_on_pickup",
-        delivery_method: "pickup",
-      }),
-    );
-  });
-
-  it("saves the shipping address on posted orders", async () => {
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
-    });
-    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
-    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
+  it("splits the shipping address into separate arguments", async () => {
+    mockRpc.mockResolvedValueOnce({ data: "order-123", error: null });
 
     await checkout({
       ...checkoutArgs,
@@ -203,36 +75,14 @@ describe("checkout", () => {
       },
     });
 
-    expect(mockInsert).toHaveBeenNthCalledWith(
-      1,
+    expect(mockRpc).toHaveBeenCalledWith(
+      "place_order",
       expect.objectContaining({
-        delivery_method: "post",
-        shipping_name: "Jón Jónsson",
-        shipping_street: "Laugavegur 1",
-        shipping_postcode: "101",
-        shipping_city: "Reykjavík",
-      }),
-    );
-  });
-
-  it("saves no address on pickup orders", async () => {
-    mockSingle.mockResolvedValueOnce({
-      data: { id: "order-123" },
-      error: null,
-    });
-    mockInsert.mockReturnValueOnce({ select: mockSelect, then: undefined }); // first call (orders)
-    mockInsert.mockResolvedValueOnce({ data: null, error: null }); // second call (order_items)
-    mockEq.mockResolvedValueOnce({ error: null }); // cart delete
-
-    await checkout(checkoutArgs);
-
-    expect(mockInsert).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        shipping_name: null,
-        shipping_street: null,
-        shipping_postcode: null,
-        shipping_city: null,
+        p_delivery_method: "post",
+        p_shipping_name: "Jón Jónsson",
+        p_shipping_street: "Laugavegur 1",
+        p_shipping_postcode: "101",
+        p_shipping_city: "Reykjavík",
       }),
     );
   });
