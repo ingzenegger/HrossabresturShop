@@ -1,6 +1,14 @@
 // schema and inferred types for orders and order_items
 import { z } from "zod";
 
+// must match the orders_status_check constraint
+export const OrderStatusSchema = z.enum([
+  "pending",
+  "ready_for_pickup",
+  "shipped",
+  "completed",
+  "cancelled",
+]);
 export const PaymentMethodSchema = z.enum(["bank_transfer", "pay_on_pickup"]);
 export const DeliveryMethodSchema = z.enum(["pickup", "post"]);
 
@@ -22,7 +30,7 @@ export const OrderItemSchema = z.object({
 
 export const OrderSchema = z.object({
   id: z.uuid(),
-  status: z.enum(["cancelled", "fulfilled", "pending", "submitted"]),
+  status: OrderStatusSchema,
   total: z.number().int().nonnegative(),
   submitted_at: z.string(),
   order_items: z.array(OrderItemSchema).default([]),
@@ -46,3 +54,4 @@ export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
 export type DeliveryMethod = z.infer<typeof DeliveryMethodSchema>;
 export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
 export type OrderConfirmation = z.infer<typeof OrderConfirmationSchema>;
+export type OrderStatus = z.infer<typeof OrderStatusSchema>;

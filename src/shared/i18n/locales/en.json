@@ -4,7 +4,7 @@
     "total": "Total",
     "somethingWentWrong": "Something went wrong. Please refresh or come back later.",
     "subtotal": "Subtotal",
-"shipping": "Shipping"
+    "shipping": "Shipping"
   },
   "nav": {
     "home": "Home",
@@ -148,10 +148,11 @@
     "passwordRequired": "Password is required",
     "passwordUpdated": "Password updated successfully!",
     "orderStatus": {
-      "cancelled": "Cancelled",
-      "fulfilled": "Fulfilled",
       "pending": "Pending",
-      "submitted": "Submitted"
+      "ready_for_pickup": "Ready for pickup",
+      "shipped": "Shipped",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     }
   }
 }

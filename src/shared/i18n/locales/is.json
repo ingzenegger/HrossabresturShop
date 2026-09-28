@@ -148,10 +148,11 @@
     "passwordRequired": "Lykilorð nauðsynlegt",
     "passwordUpdated": "Lykilorð uppfært!",
     "orderStatus": {
-      "cancelled": "Ógild",
-      "fulfilled": "Afgreidd",
       "pending": "Í vinnslu",
-      "submitted": "Send inn"
+      "ready_for_pickup": "Tilbúin til afhendingar",
+      "shipped": "Send",
+      "completed": "Afgreidd",
+      "cancelled": "Ógild"
     }
   }
 }
