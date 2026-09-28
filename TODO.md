@@ -16,6 +16,18 @@
 - [ ] Admin cancel order flow (customer cancels, transfer never arrives, or no-show at pickup) — restores the stock quantity that was decremented at checkout
 - [ ] Iceland-only for now — no international shipping/payment support needed
 
+## Before launch
+
+- [x] Remove direct insert policies on orders/order_items (orders only via place_order)
+- [ ] Notify me when a new order comes in (email to me, or check admin orders regularly)
+- [ ] Confirmation email to the customer with bank details and reference
+- [ ] Set up proper email sending for Supabase auth (built-in sender is rate-limited)
+- [ ] Cancel order flow that restores stock (cancel_order function)
+- [ ] Contact info on the site (email + social links)
+- [ ] Terms of sale, seller info and privacy notice (check Neytendastofa / Skatturinn)
+- [ ] Replace pickup area placeholder with the real area
+- [ ] Soft launch: share with a few friends first
+
 ## Admin section
 
 - [x] Access control - restrict /admin routes to owner (role-check with supabase)
